@@ -42,7 +42,7 @@ if ReadDataFile then
 		end
 --]]		
 		-- fixing ki adi mundi
-		if arg[1] == "SIDE\\rep.lvl" then
+		--[[if arg[1] == "SIDE\\rep.lvl" then
 
 			local list = {unpack(arg)}
 			
@@ -58,7 +58,7 @@ if ReadDataFile then
 		if arg[1] == "SIDE\\des.lvl" or arg[1] == "SIDE\\gar.lvl" or arg[1] == "SIDE\\gun.lvl" or arg[1] == "SIDE\\wok.lvl" then
 			soundFix_ReadDataFile("REMASTER\\sounds\\Natives.lvl;nativesfix")
 --			remaSndStackClear()
-		end
+		end--]]
 
 		return soundFix_ReadDataFile(unpack(arg))
 	end
@@ -66,7 +66,7 @@ else
 	print("Remaster: Error")
 	print("        : ReadDataFile() not found!")
 end
-
+--[[
 -- try to wrap ScriptPostLoad ------------------------------------
 if ScriptPostLoad then
 	
@@ -128,4 +128,4 @@ if ScriptPostLoad then
 else
 	print("Remaster: Error")
 	print("        : ScriptPostLoad() not found!")
-end
+end--]]
