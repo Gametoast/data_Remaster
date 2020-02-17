@@ -92,6 +92,19 @@ end
 
 
 
+uf_print(_G, false, 0)
+
+
+do return end
+
+print("marker", gcinfo())
+print(GetWorldFilename())
+print(ScriptCB_GetGameName())
+
+--uf_print(_G, true, 0)
+
+do return end
+
 if ScriptCB_IsMetagameStateSaved() then
 	
 	-- load all data
@@ -145,10 +158,8 @@ if ScriptCB_IsMetagameStateSaved() then
 	end
 end
 
-
-
-
-
+ScriptCB_MinimizeWindow()
+--spawn
 do
 return
 end

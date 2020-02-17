@@ -1,7 +1,7 @@
 ------------------------------------------------------------------
 -- SWBF 2 Remaster by Anakin
 ------------------------------------------------------------------
-print("game_testscript: entered")
+print("ui_testscript: entered")
 
 
 function getn(v)
@@ -92,6 +92,60 @@ function uf_print( data, nested, depth )
 	end
 end
 
+do return end
+print("marker")
+print(ScriptCB_IsFileExist("..\\..\\addon\\RCM\\scripts"))
+
+print(ScriptCB_IsFileExist("..\\..\\addon\\ABC\\scripts"))
+
+--do return end
+print("marker test")
+local exists = ScriptCB_IsFileExist
+local myScriptTable = {}
+
+local base36 = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", 
+                 "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", 
+                 "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", 
+                 "U", "V", "W", "X", "Y", "Z" }
+				 
+				 
+testTable = {}
+local index = {}
+index[0] = 0
+index[1] = 1
+
+for x = 1, 36 do
+	for y = 1, 36 do
+		for z = 1, 36 do
+			local modID = base36[x] .. base36[y] .. base36[z]
+			
+			--if exists("..\\..\\addon\\" .. modID .. "\\scripts") ~= 0 then
+				local temp = exists("..\\..\\addon\\" .. modID .."\\scripts\\scripts.lvl")
+				local pos = index[temp]
+				testTable[pos] = modID
+				index[1] = index[1] + temp
+			--end
+		end
+	end
+end
+
+testTable[0] = nil
+
+tprint(testTable)
+
+print("marker load dll")
+
+local test = loadfile("test.lua")
+
+if test then
+	test()
+end
+
+--loadlib([[remaster_IO.dll]], "luaopen_remaster_IO")()
+
+--require 'remaster_IO.dll'
+
+print("marker done")
 
 do return end
 

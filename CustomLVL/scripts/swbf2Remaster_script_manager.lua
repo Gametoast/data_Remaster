@@ -55,40 +55,88 @@ function swbf2Remaster_loadScripts()
 	rema_database.scripts_IG = nil
 	rema_database.scripts_GT = nil
 	
-	rema_database.scripts_OP = {}
-	rema_database.scripts_IF = {}
-	rema_database.scripts_IG = {}
-	rema_database.scripts_GT = {{modID = "Remaster", filePath = "REMASTER\\swbf2Remaster_theme.lvl"},}
-	
+	local temp = {}
+	temp.scripts_OP = {}
+	temp.scripts_IF = {}
+	temp.scripts_IG = {}
+	temp.scripts_GT = {{modID = "Remaster", filePath = "REMASTER\\swbf2Remaster_theme.lvl"},}
+
+	--[[local index = {}
+	index[0] = {}
+	index[1] = {}
+	index[2] = {}
+	index[3] = {}
+	index[0][0] = 0
+	index[0][1] = 1
+	index[1][0] = 0
+	index[1][1] = 1
+	index[2][0] = 0
+	index[2][1] = 1
+	index[3][0] = 0
+	index[3][1] = 2--]]
+
 	for x = 1, 36 do
 		for y = 1, 36 do
 			for z = 1, 36 do
-			
-				local modID =  base36[x] .. base36[y] .. base36[z]
+				
+				local modID = base36[x] .. base36[y] .. base36[z]
+				
+				if exists("..\\..\\addon\\" .. modID .. "\\scripts") ~= 0 then
+					--[[local modIDpath =  "..\\..\\addon\\" .. modID .. "\\scripts\\" .. modID
+					
+					local scriptExists = exists(modIDpath .. "_option_script.lvl")
+					temp.scripts_OP[index[0][scriptExists] ] = modID
+					index[0][1] = index[0][1] + scriptExists
+					
+					local scriptExists = exists(modIDpath .. "_interface_script.lvl")
+					temp.scripts_IF[index[0][scriptExists] ] = modID
+					index[0][1] = index[0][1] + scriptExists
+					
+					local scriptExists = exists(modIDpath .. "_game_script.lvl")
+					temp.scripts_IG[index[0][scriptExists] ] = modID
+					index[0][1] = index[0][1] + scriptExists
+					
+					local scriptExists = exists(modIDpath .. "_theme_script.lvl")
+					temp.scripts_GT[index[0][scriptExists] ] = {modID = modID, filePath = modIDpath .. "_theme_script.lvl"}
+					index[0][1] = index[0][1] + scriptExists
+				--]]
+				
+				--local modID =  base36[x] .. base36[y] .. base36[z]
 				local opPath = swbf2Remaster_getOPPath(modID)
 				local ifPath = swbf2Remaster_getIFPath(modID)
 				local igPath = swbf2Remaster_getIGPath(modID)
 				local gtPath = swbf2Remaster_getGTPath(modID)
 				
 				if exists(opPath) ~= 0 then
-					rema_database.scripts_OP[table.getn(rema_database.scripts_OP) + 1] = modID
+					temp.scripts_OP[table.getn(temp.scripts_OP) + 1] = modID
 				end
 				
 				if exists(ifPath) ~= 0 then
-					rema_database.scripts_IF[table.getn(rema_database.scripts_IF) + 1] = modID
+					temp.scripts_IF[table.getn(temp.scripts_IF) + 1] = modID
 				end
 				
 				if exists(igPath) ~= 0 then
-					rema_database.scripts_IG[table.getn(rema_database.scripts_IG) + 1] = modID
+					temp.scripts_IG[table.getn(temp.scripts_IG) + 1] = modID
 				end
 				
 				if exists(gtPath) ~= 0 then
-					rema_database.scripts_GT[table.getn(rema_database.scripts_GT) + 1] = {modID = modID, filePath = gtPath}
+					temp.scripts_GT[table.getn(temp.scripts_GT) + 1] = {modID = modID, filePath = gtPath}
+				end
+				
 				end
 			end
 		end
 	end
 
+	--temp.scripts_OP[0] = nil
+	--temp.scripts_IF[0] = nil
+	--temp.scripts_IG[0] = nil
+	--temp.scripts_GT[0] = nil
+	rema_database.scripts_OP = temp.scripts_OP
+	rema_database.scripts_IF = temp.scripts_IF
+	rema_database.scripts_IG = temp.scripts_IG
+	rema_database.scripts_GT = temp.scripts_GT
+	
 end
 
 function swbf2Remaster_registerCGCButton(tag, label, func)

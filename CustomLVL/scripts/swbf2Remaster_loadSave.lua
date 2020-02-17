@@ -3,7 +3,8 @@
 -- TODO: Hack ScriptCB_GetSavedMetagameList to not show the settings
 ------------------------------------------------------------------
 
-local remaIOfilename = "RemasterSettings"
+local remaIOfilename = "RemasterGlobalSettings"
+local remaInstFilename = "RemasterInstOpt"
 
 ------------------------------------------------------------------
 -- wrap AddIFScreen
@@ -21,10 +22,13 @@ AddIFScreen = function(table, name,...)
 		
 		-- wrap ifs_instant_options.push_prefs
 		ifs_instant_options.push_prefs = function(this)
+			print("marker push_prefs")
 			-- if the setting is activated, backup the data
 			if rema_database.radios.saveSpOptions == 2 then
+				print("marker instant options saved")
 				rema_database.instOp.GamePrefs = this.GamePrefs
 				rema_database.instOp.HeroPrefs = this.HeroPrefs
+				tprint(rema_database)
 			end
 			
 			-- let the original function happen
@@ -176,6 +180,7 @@ if SetState then
 		
 		SetState = function(...)
 			-- we don't need those infos ingame
+			print("marker i killed instant options")
 			rema_database.instOp = nil
 			rema_database.scripts_GT = nil
 			rema_database.themeIdx = nil
@@ -420,41 +425,83 @@ function swbf2Remaster_getDefaultSettings()
 	return defaultSettings
 end
 
-function swbf2Remaster_loadSettings(filename, funcDone)
-
+function swbf2Remaster_loadSettings(nameIO, nameInst, funcDone, loadInstOpt)
+		
 	ifs_saveop.doOp = "LoadMetagame"
 	ifs_saveop.NoPromptSave = 1
-	ifs_saveop.filename1 = filename
+	ifs_saveop.beSneaky = 1
 	
-	ifs_saveop.OnSuccess = function()
+	if loadInstOpt == nil then
 
-		ScriptCB_PopScreen()
-		
-		rema_database = ScriptCB_LoadMetagameState()
-		ScriptCB_ClearMetagameState()
-		
-		ifs_saveop.OnSuccess = ifs_saveop_Success
-		ifs_saveop.OnCancel = ifs_saveop_Cancel
-		ifs_saveop.beSneaky = nil
-		funcDone(nil)
-	end
+		ifs_saveop.filename1 = nameIO
 	
-	ifs_saveop.OnCancel = function()
-		print("Remaster: loading settings failed, loading default..")
-		ScriptCB_PopScreen()
+		ifs_saveop.OnSuccess = function()
+
+			ScriptCB_PopScreen()
+			
+			rema_database = ScriptCB_LoadMetagameState()
+			ScriptCB_ClearMetagameState()
+			
+			ifs_saveop.OnSuccess = ifs_saveop_Success
+			ifs_saveop.OnCancel = ifs_saveop_Cancel
+			ifs_saveop.beSneaky = nil
+			swbf2Remaster_loadSettings(nameIO, nameInst, funcDone, true)
+		end
 		
-		rema_database = swbf2Remaster_getDefaultSettings()
+		ifs_saveop.OnCancel = function()
+			print("Remaster: loading settings failed, loading default..")
+			ScriptCB_PopScreen()
+			
+			rema_database = swbf2Remaster_getDefaultSettings()
+			
+			ifs_saveop.OnSuccess = ifs_saveop_Success
+			ifs_saveop.OnCancel = ifs_saveop_Cancel
+			ifs_saveop.beSneaky = nil
+			funcDone("loading failed, loading default instead")
+		end
 		
-		ifs_saveop.OnSuccess = ifs_saveop_Success
-		ifs_saveop.OnCancel = ifs_saveop_Cancel
-		ifs_saveop.beSneaky = nil
-		funcDone("loading failed, loading default instead")
+	else
+
+		if nameInst == nil then
+			print("Remaster: missing instant options, loading defaults..")
+			ifs_saveop.OnSuccess = ifs_saveop_Success
+			ifs_saveop.OnCancel = ifs_saveop_Cancel
+			ifs_saveop.beSneaky = nil
+			funcDone(nil)
+			return
+		else
+		
+			ifs_saveop.filename1 = nameInst
+			
+			ifs_saveop.OnSuccess = function()
+				
+				ScriptCB_PopScreen()
+				print("marker new defined instop")
+				rema_database.instOp = ScriptCB_LoadMetagameState()
+				ScriptCB_ClearMetagameState()
+				
+				ifs_saveop.OnSuccess = ifs_saveop_Success
+				ifs_saveop.OnCancel = ifs_saveop_Cancel
+				ifs_saveop.beSneaky = nil
+				funcDone(nil)
+			end
+			
+			ifs_saveop.OnCancel = function()
+				print("Remaster: loading instant options failed, loading defaults..")
+				ScriptCB_PopScreen()
+				
+				ifs_saveop.OnSuccess = ifs_saveop_Success
+				ifs_saveop.OnCancel = ifs_saveop_Cancel
+				ifs_saveop.beSneaky = nil
+				funcDone(nil)
+			end
+		end
 	end
 	
 	ScriptCB_PushScreen("ifs_saveop")
 end
 
-function swbf2Remaster_saveSettings(filename, funcDone)
+function swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, skipInst)
 	
 	if not rema_database then
 		print("Remaster: saving settings failed, no settings found..")
@@ -464,56 +511,112 @@ function swbf2Remaster_saveSettings(filename, funcDone)
 		funcDone("settings do not exist")
 		return
 	end
-
-	ScriptCB_SaveMetagameState(rema_database)
+	
+	-- save instant options?
+	local saveInstOpt = false
+	tprint(rema_database)
+	print("marker", rema_database.radios.saveSpOptions, table.getn(rema_database.instOp), skipInst)
+	if rema_database.radios.saveSpOptions == 2 and rema_database.instOp.GamePrefs ~= nil and skipInst == nil then
+		saveInstOpt = true
+	end
+	
+	-- splitt instant options from database
+	local temp = rema_database.instOp
+	print("marker splitted instant options")
+	rema_database.instOp = {}
 	
 	ifs_saveop.doOp = "SaveMetagame"
 	ifs_saveop.NoPromptSave = 1
-	ifs_saveop.filename1 = filename
-	ifs_saveop.filename2 = ScriptCB_tounicode(remaIOfilename)
+	ifs_saveop.beSneaky = 1
 	
-	ifs_saveop.OnSuccess = function()
-		ScriptCB_PopScreen()
-		ScriptCB_ClearMetagameState()
+	if saveInstOpt then
+		print("marker save instant options")
+		ScriptCB_SaveMetagameState(temp)
 		
-		ifs_saveop.OnSuccess = ifs_saveop_Success
-		ifs_saveop.OnCancel = ifs_saveop_Cancel
-		ifs_saveop.beSneaky = nil
-		funcDone(nil)
+		ifs_saveop.filename1 = nameInst
+		ifs_saveop.filename2 = ScriptCB_tounicode(remaInstFilename)
+		
+		ifs_saveop.OnSuccess = function()
+			ScriptCB_PopScreen()
+			ScriptCB_ClearMetagameState()
+			
+			ifs_saveop.OnSuccess = ifs_saveop_Success
+			ifs_saveop.OnCancel = ifs_saveop_Cancel
+			ifs_saveop.beSneaky = nil
+			print("marker save instant done")
+			swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, true)
+		end
+		
+		ifs_saveop.OnCancel = function()
+			print("Remaster: saving instant options failed..")
+			print("        : trying to save database anyway..")
+			ScriptCB_PopScreen()
+			ScriptCB_ClearMetagameState()
+			
+			ifs_saveop.OnSuccess = ifs_saveop_Success
+			ifs_saveop.OnCancel = ifs_saveop_Cancel
+			ifs_saveop.beSneaky = nil
+			swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, true)
+		end
+	else
+		print("marker save db")
+		ScriptCB_SaveMetagameState(rema_database)
+		
+		ifs_saveop.filename1 = nameIO
+		ifs_saveop.filename2 = ScriptCB_tounicode(remaIOfilename)
+	
+		ifs_saveop.OnSuccess = function()
+			ScriptCB_PopScreen()
+			ScriptCB_ClearMetagameState()
+			
+			ifs_saveop.OnSuccess = ifs_saveop_Success
+			ifs_saveop.OnCancel = ifs_saveop_Cancel
+			ifs_saveop.beSneaky = nil
+			print("marker save db done")
+			funcDone(nil)
+		end
+		
+		ifs_saveop.OnCancel = function()
+			print("Remaster: saving settings failed..")
+			ScriptCB_PopScreen()
+			ScriptCB_ClearMetagameState()
+			
+			ifs_saveop.OnSuccess = ifs_saveop_Success
+			ifs_saveop.OnCancel = ifs_saveop_Cancel
+			ifs_saveop.beSneaky = nil
+			funcDone("saving failed")
+		end
 	end
 	
-	ifs_saveop.OnCancel = function()
-		print("Remaster: saving settings failed..")
-		ScriptCB_PopScreen()
-		ScriptCB_ClearMetagameState()
-		
-		ifs_saveop.OnSuccess = ifs_saveop_Success
-		ifs_saveop.OnCancel = ifs_saveop_Cancel
-		ifs_saveop.beSneaky = nil
-		funcDone("saving failed")
-	end
+	-- merge instant options and database
+	print("marker restored instant options")
+	rema_database.instOp = temp
+	temp = nil
 	
+	-- let the magic happen
 	ScriptCB_PushScreen("ifs_saveop")
+	
 end
 
-function swbf2Remaster_getFilename(filelist)
+function swbf2Remaster_getFilename(filelist, name1, name2)
 	if not filelist then
-		return nil
+		return nil, nil
 	end
 	
 	local i, currentFilename
-	local foundFilename = nil
+	local foundFilenames = { nil, nil}
 	
 	for i = 1, table.getn(filelist) do
 		currentFilename = ScriptCB_ununicode(filelist[i].filename)
 		
-		if string.find(currentFilename, remaIOfilename) == 1 then
-			foundFilename = filelist[i].filename
-			break
+		if string.find(currentFilename, name1) == 1 then
+			foundFilenames[1] = filelist[i].filename
+		elseif string.find(currentFilename, name2) == 1 then
+			foundFilenames[2] = filelist[i].filename
 		end
 	end
 	
-	return foundFilename
+	return unpack(foundFilenames)
 end
 
 -- operation = "save" or "load"
@@ -536,9 +639,9 @@ function swbf2Remaster_settingsManager(operation, funcDone)
 			
 			-- find the filename
 			local filelist, maxSaves = ScriptCB_GetSavedMetagameList(false)
-			local filename = swbf2Remaster_getFilename(filelist)
+			local filenameIO, filenameInst = swbf2Remaster_getFilename(filelist, remaIOfilename, remaInstFilename)
 			
-			if not filename then
+			if not filenameIO then
 				ifs_saveop.OnSuccess = ifs_saveop_Success
 				ifs_saveop.OnCancel = ifs_saveop_Cancel
 				ifs_saveop.beSneaky = nil
@@ -548,7 +651,7 @@ function swbf2Remaster_settingsManager(operation, funcDone)
 			end
 			
 			-- now load the data
-			swbf2Remaster_loadSettings(filename, funcDone)
+			swbf2Remaster_loadSettings(filenameIO, filenameInst, funcDone)
 		end
 		
 		ifs_saveop.OnCancel = function()
@@ -564,17 +667,17 @@ function swbf2Remaster_settingsManager(operation, funcDone)
 		end
 		
 	elseif operation == "save" then
-	
+				
 		ifs_saveop.OnSuccess = function()
 
 			ScriptCB_PopScreen()
 			
 			-- clean up first manuel to avoid pop ups
 			local filelist, maxSaves = ScriptCB_GetSavedMetagameList(false)
-			local filename = swbf2Remaster_getFilename(filelist)
+			local filenameIO, filenameInst = swbf2Remaster_getFilename(filelist, remaIOfilename, remaInstFilename)
 			
 			-- now save the data
-			swbf2Remaster_saveSettings(filename, funcDone)
+			swbf2Remaster_saveSettings(filenameIO, filenameInst, funcDone)
 		end
 		
 		ifs_saveop.OnCancel = function()
@@ -582,9 +685,8 @@ function swbf2Remaster_settingsManager(operation, funcDone)
 			ScriptCB_PopScreen()
 			
 			-- we failed, but try to save the data anyway
-			swbf2Remaster_saveSettings(nil, funcDone)
+			swbf2Remaster_saveSettings(nil, nil, funcDone)
 		end
-	
 	else
 		print("Remaster: undefined settings operation..")
 		ifs_saveop.doOp = nil
