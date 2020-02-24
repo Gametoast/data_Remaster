@@ -92,10 +92,11 @@ end
 
 
 
+do return end
+
 uf_print(_G, false, 0)
 
 
-do return end
 
 print("marker", gcinfo())
 print(GetWorldFilename())

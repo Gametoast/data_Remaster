@@ -22,13 +22,11 @@ AddIFScreen = function(table, name,...)
 		
 		-- wrap ifs_instant_options.push_prefs
 		ifs_instant_options.push_prefs = function(this)
-			print("marker push_prefs")
+
 			-- if the setting is activated, backup the data
 			if rema_database.radios.saveSpOptions == 2 then
-				print("marker instant options saved")
 				rema_database.instOp.GamePrefs = this.GamePrefs
 				rema_database.instOp.HeroPrefs = this.HeroPrefs
-				tprint(rema_database)
 			end
 			
 			-- let the original function happen
@@ -180,7 +178,6 @@ if SetState then
 		
 		SetState = function(...)
 			-- we don't need those infos ingame
-			print("marker i killed instant options")
 			rema_database.instOp = nil
 			rema_database.scripts_GT = nil
 			rema_database.themeIdx = nil
@@ -476,7 +473,6 @@ function swbf2Remaster_loadSettings(nameIO, nameInst, funcDone, loadInstOpt)
 			ifs_saveop.OnSuccess = function()
 				
 				ScriptCB_PopScreen()
-				print("marker new defined instop")
 				rema_database.instOp = ScriptCB_LoadMetagameState()
 				ScriptCB_ClearMetagameState()
 				
@@ -514,15 +510,13 @@ function swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, skipInst)
 	
 	-- save instant options?
 	local saveInstOpt = false
-	tprint(rema_database)
-	print("marker", rema_database.radios.saveSpOptions, table.getn(rema_database.instOp), skipInst)
+	
 	if rema_database.radios.saveSpOptions == 2 and rema_database.instOp.GamePrefs ~= nil and skipInst == nil then
 		saveInstOpt = true
 	end
 	
 	-- splitt instant options from database
 	local temp = rema_database.instOp
-	print("marker splitted instant options")
 	rema_database.instOp = {}
 	
 	ifs_saveop.doOp = "SaveMetagame"
@@ -530,7 +524,6 @@ function swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, skipInst)
 	ifs_saveop.beSneaky = 1
 	
 	if saveInstOpt then
-		print("marker save instant options")
 		ScriptCB_SaveMetagameState(temp)
 		
 		ifs_saveop.filename1 = nameInst
@@ -543,7 +536,6 @@ function swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, skipInst)
 			ifs_saveop.OnSuccess = ifs_saveop_Success
 			ifs_saveop.OnCancel = ifs_saveop_Cancel
 			ifs_saveop.beSneaky = nil
-			print("marker save instant done")
 			swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, true)
 		end
 		
@@ -559,7 +551,6 @@ function swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, skipInst)
 			swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, true)
 		end
 	else
-		print("marker save db")
 		ScriptCB_SaveMetagameState(rema_database)
 		
 		ifs_saveop.filename1 = nameIO
@@ -572,7 +563,6 @@ function swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, skipInst)
 			ifs_saveop.OnSuccess = ifs_saveop_Success
 			ifs_saveop.OnCancel = ifs_saveop_Cancel
 			ifs_saveop.beSneaky = nil
-			print("marker save db done")
 			funcDone(nil)
 		end
 		
@@ -589,7 +579,6 @@ function swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, skipInst)
 	end
 	
 	-- merge instant options and database
-	print("marker restored instant options")
 	rema_database.instOp = temp
 	temp = nil
 	

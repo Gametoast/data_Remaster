@@ -169,7 +169,10 @@ ScriptCB_QuitToShell = function(...)
 		
 	else
 		-- there is no old data
-		ScriptCB_SaveMetagameState(rema_database)
+		
+		if rema_database then 
+			ScriptCB_SaveMetagameState(rema_database)
+		end
 	end
 	
 	-- let the original function happen
