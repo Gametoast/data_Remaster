@@ -1125,7 +1125,13 @@ if NewIFText then
 
 	-- wrap NewIFText
 	NewIFText = function(Template,...)
-	
+		
+		if Template.font then
+			if Template.font == "gamefont_small" then Template.font = "gamefont_small_rema"
+			elseif Template.font == "gamefont_large" then Template.font = "gamefont_large_rema"
+			end
+		end--]]
+		
 		--[[old and outdated version. Now using zoom factor instead of switched fonts
 		-- if screen hight greater then 900 adjust the used fonts
 		if screenH/600 >= 1.5 then 
