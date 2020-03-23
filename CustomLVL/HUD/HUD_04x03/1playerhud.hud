@@ -133,7 +133,6 @@ Group("player1weaponinformation")
     Group("player1weapon1group")
     {
         Position(0.346161, -0.450412, 0.000000, "Viewport")
-        Scale(1.000000, 1.000000, 0.010000)
         EventEnable("initialize")
         Model3D("player1weapon1mesh")
         {
@@ -470,7 +469,7 @@ Group("player1weaponinformation")
 
             MeshInfo("hud_cis_trishot")
             {
-                Position(-0.263707, 0.352302, 0.734317, "Viewport")
+                Position(-0.263707, 0.352302, 1.500000, "Viewport")
                 Rotation(359.967194, 359.763428, 119.966087)
                 Scale(0.653289, 0.653289, 0.653289)
             }
@@ -685,7 +684,6 @@ Group("player1weaponinformation")
     Group("player1weapon2group")
     {
         Position(0.353928, -0.420490, 0.000000, "Viewport")
-        Scale(1.000000, 1.000000, 0.010000)
         EventEnable("initialize")
         Model3D("player1weapon2mesh")
         {
