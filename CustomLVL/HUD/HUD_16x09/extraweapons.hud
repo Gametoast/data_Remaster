@@ -1,0 +1,209 @@
+Code:
+
+ViewPort("Transforms")
+{
+    EventNameFilter("player%")
+    TransformNameMesh("player1weapon1")
+    {
+        NameMesh("com_weap_VF5_chaingun", "com_inv_mesh")
+        NameMesh("imp_weap_inf_e11b_rifle", "com_inv_mesh")
+        NameMesh("rep_weap_inf_DC-15A", "com_inv_mesh")
+        NameMesh("rep_weap_inf_dc17pistol", "com_inv_mesh")
+        NameMesh("mnd_weap_inf_boba_rifle", "com_inv_mesh")
+        NameMesh("imp_weap_inf_arccaster", "com_inv_mesh")
+        NameMesh("weap_acp", "com_inv_mesh")
+        NameMesh("weap_inf_jangos_r", "com_inv_mesh")
+        NameMesh("cis_weap_inf_shotgun", "com_inv_mesh")
+        NameMesh("all_weap_hero_leia_pistol", "com_inv_mesh")
+        NameMesh("all_weap_inf_dl18", "com_inv_mesh")
+        NameMesh("CR24_rifle", "com_inv_mesh")
+        NameMesh("all_weap_inf_rifle_a295", "com_inv_mesh")
+        EventInput("player1.weapon1.change")
+        EventOutput("player1.weapon1.mesh")
+    }
+
+}
+
+Group("extraWeaponDisplay")
+{
+    PropagateAlpha(1)
+    Viewport(1)
+    Position(0.000000, 0.500000, 0.000000, "Viewport")
+    ZOrder(255)
+    EventEnable("player1.weaponsEnable")
+    EventDisable("player1.weaponsDisable")
+    Group("extraWeaponIcon")
+    {
+        Viewport(1)
+        Position(0.346161, -0.450412, 0.000000, "Viewport")
+        EventEnable("initialize")
+        Model3D("player1")
+        {
+            EventMesh("player1.weapon1.change")
+            Viewport(1)
+            Position(500.000000, 500.000000, 500.000000, "Viewport")
+            Rotation(0.804269, 359.994110, 359.999695)
+            Scale(0.000000, 0.000000, 0.000000)
+            ZOrder(5)
+            EventEnable("player1.weapon1.mesh")
+            EventDisable("player1.weapon1.disable")
+            MeshInfo("weap_acp")
+            {
+                Position(-0.259442, 0.359076, 0.007261, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+				Scale(1.000000, 1.000000, 0.010000)
+            }
+
+            MeshInfo("rep_weap_inf_DC-15A")
+            {
+                Position(-0.222832, 0.361293, 0.014590, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+				Scale(1.000000, 1.000000, 0.010000)
+            }
+
+            MeshInfo("com_weap_VF5_chaingun")
+            {
+                Position(-0.239334, 0.328393, 0.007124, "Viewport")
+                Rotation(1.538445, 95.690582, 4.455857)
+                Scale(0.700000, 0.700000, 0.010000)
+            }
+
+            MeshInfo("rep_weap_inf_dc17pistol")
+            {
+                Position(-0.249442, 0.359076, 0.007261, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+                Scale(1.140000, 1.140000, 0.010000)
+            }
+
+            MeshInfo("weap_inf_jangos_r")
+            {
+                Position(-0.249442, 0.359076, 0.007261, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+                Scale(1.140000, 1.140000, 0.010000)
+            }
+
+            MeshInfo("cis_weap_inf_shotgun")
+            {
+                Position(-0.222832, 0.361293, 0.014590, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+				Scale(1.000000, 1.000000, 0.010000)
+            }
+
+            MeshInfo("all_weap_inf_dl18")
+            {
+                Position(-0.249442, 0.359076, 0.007261, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+                Scale(1.140000, 1.140000, 0.010000)
+            }
+
+            MeshInfo("all_weap_hero_leia_pistol")
+            {
+                Position(-0.249442, 0.359076, 0.007261, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+                Scale(1.140000, 1.140000, 0.010000)
+            }
+
+            MeshInfo("CR24_rifle")
+            {
+                Position(-0.222832, 0.361293, 0.014590, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+				Scale(1.000000, 1.000000, 0.010000)
+            }
+
+            MeshInfo("all_weap_inf_rifle_a295")
+            {
+                Position(-0.222832, 0.361293, 0.014590, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+				Scale(1.000000, 1.000000, 0.010000)
+            }
+
+            MeshInfo("imp_weap_inf_e11b_rifle")
+            {
+                Position(-0.222832, 0.361293, 0.014590, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+				Scale(1.000000, 1.000000, 0.010000)
+            }
+
+            MeshInfo("mnd_weap_inf_boba_rifle")
+            {
+                Position(-0.222832, 0.361293, 0.014590, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+				Scale(1.000000, 1.000000, 0.010000)
+            }
+
+            MeshInfo("imp_weap_inf_arccaster")
+            {
+                Position(-0.222832, 0.361293, 0.014590, "Viewport")
+                Rotation(0.804269, 90.747269, 359.999695)
+				Scale(1.000000, 1.000000, 0.010000)
+            }
+
+        }
+
+    }
+
+}
+
+FileInfo("1playerhud")
+{
+    Viewports(1)
+
+}
+
+Group("Test")
+{
+	Viewport(1)
+	EventEnable("initialize")
+	
+	BarBitmap("obenlinks")
+	{
+		FlashyScale(1.000000)
+		Bitmap("hud_jetpack_and_energybar_fill")
+		BitmapRect(0.1, 0.1, "Left", "Top", "Viewport")
+		Viewport(1)
+		Position(0, 0, 0, "Viewport")
+		ZOrder(255)
+		Alpha(1.0)
+		Color(255, 0, 0)
+		EventEnable("initialize")
+	}
+	
+	BarBitmap("untenlinks")
+	{
+		FlashyScale(1.000000)
+		Bitmap("hud_jetpack_and_energybar_fill")
+		BitmapRect(0.1, 0.1, "Left", "Bottom", "Viewport")
+		Viewport(1)
+		Position(0, 1, 0, "Viewport")
+		ZOrder(255)
+		Alpha(1.0)
+		Color(255, 0, 0)
+		EventEnable("initialize")
+	}
+	
+	BarBitmap("obenrechts")
+	{
+		FlashyScale(1.000000)
+		Bitmap("hud_jetpack_and_energybar_fill")
+		BitmapRect(0.1, 0.1, "Right", "Top", "Viewport")
+		Viewport(1)
+		Position(1, 0, 0, "Viewport")
+		ZOrder(255)
+		Alpha(1.0)
+		Color(255, 0, 0)
+		EventEnable("initialize")
+	}
+	
+	BarBitmap("untenrechts")
+	{
+		FlashyScale(1.000000)
+		Bitmap("hud_jetpack_and_energybar_fill")
+		BitmapRect(0.1, 0.1, "Right", "Bottom", "Viewport")
+		Viewport(1)
+		Position(1, 1, 0, "Viewport")
+		ZOrder(255)
+		Alpha(1.0)
+		Color(255, 0, 0)
+		EventEnable("initialize")
+	}
+}

@@ -13,11 +13,12 @@ if not rema_noHUD then
 	local screenWidth, screenHeight = ScriptCB_GetScreenInfo()
 	local aspectRatio = screenWidth / screenHeight
 
-	if aspectRatio <= 1.9 and aspectRatio >= 1.63 then
-		ReadDataFile("REMASTER\\stockHUDHD.lvl")
-		--ReadDataFile("REMASTER\\stockHUD.lvl")
+	if aspectRatio >= 1.63 and aspectRatio <= 1.9 then
+		ReadDataFile("REMASTER\\HUD\\hud_16x09.lvl")
+	elseif aspectRatio >= 1.4 and aspectRatio <= 1.63 then
+		ReadDataFile("REMASTER\\HUD\\hud_16x10.lvl")
 	else
-		ReadDataFile("REMASTER\\stockHUD.lvl")
+		ReadDataFile("REMASTER\\HUD\\hud_04x03.lvl")
 	end
 
 end
