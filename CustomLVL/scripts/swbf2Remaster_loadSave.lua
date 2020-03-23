@@ -286,8 +286,10 @@ function swbf2Remaster_dataIntegrityTest(failure)
 	for i = 1, table.getn(rema_database.scripts_GT) do
 		if exists(rema_database.scripts_GT[i].filePath) == 0 then
 			rema_database.scripts_GT[i] = nil
+			rema_database.themeIdx = 1
 		end
-	end
+	end	
+
 	-- clean registered settings
 	rema_database.regSet.radios = nil
 	rema_database.regSet.radios = {}
