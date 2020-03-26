@@ -156,70 +156,70 @@ Group("player1weaponinformation")
                 Rotation(3.963229, 95.690582, 4.455857)
                 Scale(0.700000, 0.700000, 0.010000)
             }
-            
+
             MeshInfo("weap_inf_jangos_r")
             {
                 Position(-0.257888, 0.359076, 0.007261, "Viewport")
                 Rotation(347.447754, 90.625710, 359.999695)
                 Scale(1.140000, 1.140000, 0.010000)
             }
-            
+
             MeshInfo("cis_weap_inf_shotgun")
             {
                 Position(-0.240835, 0.357384, 0.014590, "Viewport")
                 Rotation(0.804269, 90.747269, 359.999695)
                 Scale(0.900000, 0.900000, 0.010000)
             }
-            
+
             MeshInfo("all_weap_inf_dl18")
             {
                 Position(-0.249442, 0.359076, 0.007261, "Viewport")
                 Rotation(0.804269, 90.747269, 359.999695)
                 Scale(1.000000, 1.000000, 0.010000)
             }
-            
+
             MeshInfo("all_weap_hero_leia_pistol")
             {
                 Position(-0.249442, 0.359076, 0.007261, "Viewport")
                 Rotation(0.804269, 90.747269, 359.999695)
                 Scale(1.100000, 1.100000, 0.010000)
             }
-            
+
             MeshInfo("CR24_rifle")
             {
                 Position(-0.222832, 0.361293, 0.014590, "Viewport")
                 Rotation(0.441965, 86.749298, 359.674835)
-                Scale(0.850000, 0.850000, 0.010000)
+                Scale(0.850000, 0.850000, 0.050000)
             }
-            
+
             MeshInfo("all_weap_inf_rifle_a295")
             {
                 Position(-0.250555, 0.365021, 0.014590, "Viewport")
                 Rotation(0.804269, 90.747269, 359.999695)
                 Scale(0.900000, 0.900000, 0.010000)
             }
-            
+
             MeshInfo("mnd_weap_inf_boba_rifle")
             {
                 Position(-0.222832, 0.361293, 0.014590, "Viewport")
                 Rotation(359.426727, 90.070366, 358.737854)
                 Scale(1.000000, 1.000000, 0.010000)
             }
-            
+
             MeshInfo("imp_weap_inf_e11b_rifle")
             {
                 Position(-0.222832, 0.361293, 0.014590, "Viewport")
                 Rotation(0.804269, 90.747269, 359.999695)
                 Scale(1.000000, 1.000000, 0.010000)
             }
-            
+
             MeshInfo("imp_weap_inf_arccaster")
             {
                 Position(-0.246313, 0.361293, 0.014590, "Viewport")
                 Rotation(0.804269, 90.747269, 359.999695)
                 Scale(1.000000, 1.000000, 0.010000)
             }
-            
+
             MeshInfo("westar34")
             {
                 Position(-0.252832, 0.341293, 0.014590, "Viewport")
@@ -468,8 +468,8 @@ Group("player1weaponinformation")
                 Rotation(0.000000, 0.000000, 120.000000)
                 Scale(0.653289, 0.653289, 0.653289)
             }
-			
-			MeshInfo("hud_cis_wristblaster_award")
+
+            MeshInfo("hud_cis_wristblaster_award")
             {
                 Position(-0.264100, 0.352518, 1.022745, "Viewport")
                 Rotation(0.000000, 0.000000, 120.000000)
@@ -632,9 +632,9 @@ Group("player1weaponinformation")
 
             MeshInfo("all_weap_inf_seeker")
             {
-                Position(-0.258512, 0.360432, 101.271790, "Viewport")
+                Position(-0.186393, 0.304683, 101.271790, "Viewport")
                 Rotation(2.459811, 99.805809, 1.132509)
-                Scale(0.860000, 0.860000, 0.018740)
+                Scale(0.860000, 0.860000, 0.020000)
             }
 
             MeshInfo("ewk_spear")
@@ -808,7 +808,7 @@ Group("player1weaponinformation")
             {
                 Position(-0.266703, 0.248956, 0.000000, "Viewport")
                 Rotation(0.056783, 359.996582, 359.999695)
-                Scale(0.810000, 0.810000, 0.810000)
+                Scale(0.810000, 0.810000, 0.010000)
             }
 
             MeshInfo("com_weap_inf_detpack")
@@ -1104,7 +1104,7 @@ Group("player1healthbar")
 Group("player1vehiclehealthbar")
 {
     //Position(0.120367, 0.933836, 0.000000, "Viewport")
-	Position(0.120799, 0.986269, 0.000000, "Viewport")
+    Position(0.120799, 0.986269, 0.000000, "Viewport")
     Alpha(0.600000)
     ColorChangeRate(0.000000)
     FadeInTime(0.500000)
@@ -1119,7 +1119,7 @@ Group("player1vehiclehealthbar")
         TextFont("gamefont_large_rema")
         EventNumber("player1.vehicle.health")
         //Position(0.000000, -12.000000, 0.000000, "Pixels")
-		Position(0.000000, -61.000000, 0.000000, "Pixels")
+        Position(0.000000, -61.000000, 0.000000, "Pixels")
         ZOrder(1)
         EventEnable("player1.vehicle.health")
         EventDisable("player1.vehicle.healthDisable")
@@ -1134,7 +1134,7 @@ Group("player1vehiclehealthbar")
         BitmapRect(280.000000, 20.000000, "Center", "Center", "Pixels")
         TexCoords(0.000000, 0.500000, 1.000000, 1.000000)
         //Position(0.000000, -12.000000, 0.000000, "Pixels")
-		Position(0.000000, -61.000000, 0.000000, "Pixels")
+        Position(0.000000, -61.000000, 0.000000, "Pixels")
         ZOrder(1)
         Color(0, 200, 0)
         ColorChange(0, 0, 0)
@@ -1152,7 +1152,7 @@ Group("player1vehiclehealthbar")
         TextFont("gamefont_large_rema")
         EventNumber("player1.healthInVehicle")
         //Position(0.000000, 19.000000, 0.000000, "Pixels")
-		Position(0.000000, -30.000000, 0.000000, "Pixels")
+        Position(0.000000, -30.000000, 0.000000, "Pixels")
         ZOrder(1)
         EventEnable("player1.healthInVehicle")
         EventDisable("player1.vehicle.healthDisable")
@@ -1167,7 +1167,7 @@ Group("player1vehiclehealthbar")
         BitmapRect(280.000000, 20.000000, "Center", "Center", "Pixels")
         TexCoords(0.000000, 0.500000, 1.000000, 1.000000)
         //Position(0.000000, 19.000000, 0.000000, "Pixels")
-		Position(0.000000, -30.000000, 0.000000, "Pixels")
+        Position(0.000000, -30.000000, 0.000000, "Pixels")
         ZOrder(1)
         Color(0, 200, 0)
         ColorChange(0, 0, 0)
@@ -1183,7 +1183,7 @@ Group("player1vehiclehealthbar")
         Bitmap("hud_jetpack_and_energybar_fill")
         BitmapRect(300.000000, 52.000000, "Center", "Center", "Pixels")
         TexCoords(0.000000, 0.500000, 1.000000, 1.000000)
-		Position(0.000000, -48.500000, 0.000000, "Pixels")
+        Position(0.000000, -48.500000, 0.000000, "Pixels")
         ZOrder(1)
         Alpha(0.750000)
         Color(0, 0, 0)
