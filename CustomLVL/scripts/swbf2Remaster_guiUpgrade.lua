@@ -1128,6 +1128,7 @@ if NewIFText then
 		
 		if Template.font then
 			if Template.font == "gamefont_small" then Template.font = "gamefont_small_rema"
+			elseif Template.font == "gamefont_medium" then Template.font = "gamefont_medium_rema"
 			elseif Template.font == "gamefont_large" then Template.font = "gamefont_large_rema"
 			end
 		end--]]
