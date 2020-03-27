@@ -332,7 +332,7 @@ Group("player1weaponinformation")
 
             MeshInfo("rep_weap_inf_dc17pistol")
             {
-                Position(-0.256269, 0.356366, 145.627090, "Viewport")
+                Position(-0.150151, 0.261033, 145.627090, "Viewport")
                 Rotation(0.804269, 90.747269, 359.999695)
                 Scale(1.000000, 1.000000, 0.010000)
             }
