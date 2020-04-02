@@ -1,0 +1,70 @@
+STAR WARS BATTLEFRONT II - REMASTER
+Developer Documentation by Anakin
+
+
+Theme Tutorial
+
+We need a new lvl file that is called 'RTP_theme_script.lvl' and contains a script with the name
+'RTP_theme_script'. We can add any textures we want to change to the RTP_theme_script.lvl file. To correctly
+show your mod's name in on the settings page edit your localize and add a root scope 'rema', next a subscope
+'modName' and finaly the key 'RTP'. So finaly the entry 'rema.modName.RTP' should exist. Some texture of the
+theme will be used directly after you switch the used theme in the settings page. For all changes you need
+to restart the game. Make sure you saved the changes by pressing ok on the settings page before you quit.
+For example you can change the following textures:
+
+=LIST================================
+"iface_bg_1"
+"iface_bgmeta_space"
+"profile_manager"
+"single_player_campaign"
+"single_player_conquest"
+"single_player_option"
+
+"BF2_basicbutton_left"
+"BF2_basicbutton_mid"
+"BF2_basicbutton_right"
+"bf2_buttons_botleft"
+"bf2_buttons_botright"
+"bf2_buttons_items_center"
+"bf2_buttons_midleft"
+"bf2_buttons_midright"
+"bf2_buttons_title_center"
+"bf2_buttons_topleft"
+"bf2_buttons_topright"
+"bf2_buttons_upleft"
+"bf2_buttons_upright"
+
+"BF2_dropdown_arrow"
+
+"headerbuttonleft_highlighted"
+"headerbuttonmid_highlighted"
+"headerbuttonright_highlighted"
+"headerbuttonleft"
+"headerbuttonmid"
+"headerbuttonright"
+
+"border_3_pieces"
+"border_dropdown"
+"border_popup"
+
+"listbox_hilight"
+"window_arrow_solo"
+"slider_fg"
+"BF2_radiobutton_off"
+"BF2_radiobutton_on"
+"check_yes"
+=====================================
+
+In the script you can change global variables e.g. to change the font colors:
+==CODE=======================================================================
+gTitleTextColor = { 255, 255, 255}
+gTitleTextAlpha = 1.0
+gSelectedTextColor = { 3, 132, 201} -- { 240, 184, 37}
+gSelectedTextAlpha = 1.0
+gUnselectedTextColor = { 255, 255, 255 }
+gUnselectedTextAlpha = 1.0
+gHelptextTextColor = { 255, 255, 255}
+gHelptextTextAlpha = 1.0
+=============================================================================
+
+For more references look in the offical SWBF II modding assets.

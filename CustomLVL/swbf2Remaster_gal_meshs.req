@@ -1,0 +1,22 @@
+ucft
+{
+	REQN
+	{
+		"model"
+		"gal_prp_assaultship"
+		"cis_cap_fedcruiser_dome"
+		"gal_prp_stardestroyer"
+		"gal_prp_moncalamaricruiser"
+		"gal_shell_empty"
+		"gal_shell_adrenaline"
+		"gal_shell_supply_cache"
+		"gal_shell_bacta_refinery"
+		"gal_shell_espionage"
+		"gal_shell_leadership"
+		"gal_shell_defense_grid"
+		"gal_shell_reinforcements"
+		"gal_shell_advanced_armor"
+		"gal_shell_blaster_amplification"
+		"gal_shell_surveillance"
+	}
+}

@@ -1,0 +1,39 @@
+==NECESSARY CONTENT==
+- Credits, back button => GC map and stuck reported by sweg
+- Versionsnamen ändern
+
+- gc Auswahl von custom bedienung optimieren
+- gui lib and redesign remaster settingspage
+
+milehighguyheute um 00:37 Uhr
+Message Severity: 3
+C:\Battlefront2\main\Battlefront2\Source\LuaHelper.cpp(312)
+CallProc failed: (none):0: attempt to index global `rema_database' (a nil value)
+stack traceback: (none): in function `ScriptCB_IsFileExist' (none): in function `ifs_sideselect_fnEnter' (none): in function <(none):225>    
+
+==ADDITIONAL CONTENT==
+- move everything to git with steam and dvd branches
+
+- movie previews
+- save button for match settings
+- disable forcepowers
+- hero deny cp capture
+- don't show settings file in GC loadscreen
+- fix Han solo bug
+x side select
+
+==TO TEST==
+> new HUD
+> data integrity test
+> settings save fixen
+> MP crash after match
+> include font
+
+> load/save remaster 13 gc does not work
+> load gc doesn't work at all. Problem is the missing database already fixed?
+> campaign crash
+
+==DONE==
+sound fix fixed
+cis award rifle missing HUD icon
+campaing loadscreen

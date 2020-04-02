@@ -1,0 +1,30 @@
+STAR WARS BATTLEFRONT II - REMASTER
+Developer Documentation by Anakin
+
+
+Settings Tutorial
+
+For custom settings we need a new custom lvl with the name 'RTP_option_script.lvl' and an script called
+'RTP_option_script' inside this lvl. Define a new function called 'swbf2Remaster_getCustomSettings'. We
+don't need to worry about overwriting an existing function or that another script will overwrite our 
+function. Remaster will handle to call this function only once and to clean up afterwards. Inside the
+function we define a local table that contains the data for each of our settings. You can see the structure
+in the example script. Make sure that the tag you are using is unique. Any tags that are used twice will be
+ignored. You can use on/off yes/no or any other combination for the button labels. As shown in the example
+script you can use Republic/Rebels, too, and later in a gamescript switch the teams depending on the settings.
+Of course you can use localize strings, too. Those can be existing once as demonstrated on the example of
+the off/on buttons or completely new defined once, as shown for the second title.
+You can access the value of your custom settings by using one of the two following code snippets
+
+==CODE=======================================================================
+-- Variant 1
+local cusTag1State = rema_database.radios.cusTag1
+
+--Variant 2
+local cusTag1State = rema_database.radios["cusTag1"]
+
+=============================================================================
+
+The value depends on the order of your button strings. The first string gets value 1 and the second value 2.
+After first loading your script on the settings page you need to restart the game to show your buttons on
+the settings page.

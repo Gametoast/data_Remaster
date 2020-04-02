@@ -1,0 +1,26 @@
+STAR WARS BATTLEFRONT II - REMASTER
+Developer Documentation by Anakin
+
+
+Galactic Conquest Tutorial
+
+In order to add a new custom galactic conquest we need to add a new button on the GC interface screen. So we
+need a RTP_interface_script script that hooks into the interface and adds our button to the list. In addition
+we need a ifs_freeform_start and a ifs_freeform_init script were we actually define our galactic conquest.
+In this example i use the stock rebels vs empire galactic conquest with reduced number of planets. For more
+reference about how to write the init and start scripts i recommend to look at the stock ifs_freeform_init_xx
+and ifs_freeform_start_xx scripts in the assets/shell/scripts folder.
+Let's have a closer look at the interface script. First of all we should load all scripts that we need for our
+custom galactic conquest. Finally we need to register the button in the UI. I offer a function that will do
+this for you.
+
+==CODE=======================================================================
+swbf2Remaster_registerCGCButton(tag, name, startFunc )
+
+=============================================================================
+
+Your button is defined by a unique tag, a name and a start function. The tag needs to be unique, otherwise
+the button will be ignored. The name does not need to be unique but it should be. Otherwise you have two or
+more buttons that share all the same name, but start different gc matches. You can use localized strings
+that you defined in your Core.lvl (or maybe custom string lvl) file. For example "rtp.gc_names.cgc". The
+start function is defined in the ifs_freeform_start_cgc script by default.

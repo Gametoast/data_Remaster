@@ -1,0 +1,16 @@
+ucft
+{
+    REQN
+    {
+        "script"
+		"swbf2Remaster_game_controller"
+		"swbf2Remaster_aihero_insert"
+		"swbf2Remaster_sound_fixes"
+		"swbf2Remaster_loadSave"
+		"swbf2Remaster_v13_options"
+		"AIHeroScript"
+		"swbf2Remaster_script_manager"
+		"swbf2Remaster_noAwardWeapons"
+		"game_testscript"
+    }
+}

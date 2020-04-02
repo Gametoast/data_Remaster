@@ -1,0 +1,10 @@
+ucft
+{
+	REQN
+	{
+		"script"
+		"RTP_interface_script"
+		"ifs_freeform_init_cgc"
+		"ifs_freeform_start_cgc"
+	}
+}
