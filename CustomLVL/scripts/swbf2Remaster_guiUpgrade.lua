@@ -1001,6 +1001,51 @@ if AddIFScreen then
 					x = 0,
 				}
 			}
+			
+			local tempString = "{OptionL} Left Center Right {OptionR}"
+			this.leftTxt = NewIFText {
+				ScreenRelativeX = 0, -- center
+				ScreenRelativeY = 0, -- bottom
+				font = "gamefont_medium",
+				string = tempString,
+				textw = 500,
+				texth = 500,
+				valign = "top",
+				halign = "left",
+				nocreatebackground = 1,
+				y = 0, -- just above bottom
+				--x = 0,
+			}
+				
+			this.rightTxt = NewIFText {
+				ScreenRelativeX = 0, -- center
+				ScreenRelativeY = 0, -- bottom
+				font = "gamefont_medium",
+				string = tempString,
+				textw = 500,
+				texth = 500,
+				valign = "vcenter",
+				halign = "hcenter",
+				nocreatebackground = 1,
+				y = 0, -- just above bottom
+				--x = 0,
+			}
+				
+			this.centerTxt = NewIFText {
+				ScreenRelativeX = 0, -- center
+				ScreenRelativeY = 0, -- bottom
+				font = "gamefont_medium",
+				string = tempString,
+				textw = 500,
+				texth = 500,
+				valign = "bottom",
+				halign = "right",
+				nocreatebackground = 1,
+				y = 0, -- just above bottom
+				--x = 0,
+			}
+			
+			
 			this.btnStart = NewPCIFButton {
 				ScreenRelativeX = 1.0, -- right
 				ScreenRelativeY = 1.0, -- bottom
