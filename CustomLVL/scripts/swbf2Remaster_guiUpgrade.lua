@@ -380,6 +380,7 @@ end
 -- fix sound option screen
 -- fix online option screen
 -- change buttons to buttonlist on gc screen
+-- improve custom gc setup
 if AddIFScreen then
 	
 	-- backup old function
@@ -859,6 +860,100 @@ if AddIFScreen then
 					return
 				end
 				
+			end
+		end
+		
+		-- improve custom gc setup
+		if name == "ifs_freeform_customsetup" then
+
+			ifs_freeform_customsetup.bg.texture = "single_player_conquest"
+			
+			local BackButtonW = 150 -- made 130 to fix 6198 on PC - NM 8/18/04
+			local BackButtonH = 25
+			
+			ifs_freeform_customsetup.nextButton = NewPCIFButton {
+				ScreenRelativeX = 1.0, -- right
+				ScreenRelativeY = 1.0, -- bottom
+				y = -15, -- just above bottom
+				x = -BackButtonW * 0.5,
+				btnw = BackButtonW, 
+				btnh = BackButtonH,
+				font = "gamefont_medium", 
+				bg_width = BackButtonW, 
+				noTransitionFlash = 1,
+				tag = "_next",
+				string = "ifs.mp.leaderboard.next",
+			}
+			
+			-- show left right option only for value, not era
+			local cgcPopItem = ifs_freeform_customsetup_PopulateItem
+			ifs_freeform_customsetup_PopulateItem = function(Dest, Tag, bSelected, iColorR, iColorG, iColorB, fAlpha, ...)
+				local returnValues = {cgcPopItem(Dest, Tag, bSelected, iColorR, iColorG, iColorB, fAlpha,unpack(arg))}
+				
+				if Tag == "era" then
+					local CWUStr = ScriptCB_getlocalizestr("common.era.cw")
+					local GCWUStr = ScriptCB_getlocalizestr("common.era.gcw")
+					local ValUStr
+					if(ifs_freeform_customsetup.Prefs.iEra == 1) then
+						ValUStr = CWUStr
+					else
+						ValUStr = GCWUStr
+					end
+					IFText_fnSetUString(Dest.textitem,ScriptCB_usprintf("rema.cgcEra", ValUStr))
+				end
+				
+				return unpack(returnValues)
+			end
+			
+			ifs_freeform_customsetup_layout.PopulateFn = ifs_freeform_customsetup_PopulateItem
+			
+			-- Input accept fix
+			local cgcInputAcc = ifs_freeform_customsetup.Input_Accept
+			ifs_freeform_customsetup.Input_Accept = function(this,...)
+				
+				-- install changes only for PC
+				if(gPlatformStr == "PC") then
+
+					if gMouseListBox == this.listbox then
+						
+						local focusIdx = gMouseListBox.Layout.SelectedIdx
+						local curIdx = gMouseListBox.Layout.CursorIdx
+						
+						-- change focusIdx
+						if focusIdx ~= curIdx then
+							ifelm_shellscreen_fnPlaySound("shell_select_change")
+							gMouseListBox.Layout.SelectedIdx = curIdx
+							ListManager_fnAutoscroll(gMouseListBox, gMouseListBox.Contents, gMouseListBox.Layout)
+						else -- action belongs on the position that was triggered
+							local tag = this.CurTags[focusIdx]
+							if curIdx == 1 or curIdx == 2 then
+								ifs_freeform_customsetup_fnAdjustValue(this, tag, 1)							
+							elseif curIdx == 3 then
+								this.Prefs.iVictoryType = math.mod(this.Prefs.iVictoryType,4) + 1
+								-- Fix for 9397 - NM 8/9/05 - Ken says that base conquest no longer
+								-- a valid setup type. So, do this again to skip over the option
+								if(this.Prefs.iVictoryType == 2) then
+									this.Prefs.iVictoryType = math.mod(this.Prefs.iVictoryType,4) + 1
+								end
+							end
+							
+							ifs_freeform_customsetup_fnSetListboxContents(this)
+						end
+						
+						return
+					end
+					
+					-- handle button press
+					if this.CurButton == "_back" then
+						ScriptCB_SndPlaySound("shell_menu_exit")
+						ScriptCB_PopScreen()
+						return
+					elseif this.CurButton == "_next" then
+						return cgcInputAcc(this, unpack(arg))
+					end
+				else
+					return cgcInputAcc(this, unpack(arg))
+				end
 			end
 		end
 		
