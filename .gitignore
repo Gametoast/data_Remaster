@@ -1,0 +1,6 @@
+/CustomLVL/munged/core.premunged
+_LVL_PC/*
+*.log
+_build/HUD/MUNGED/*
+_build/Fonts/MUNGED/*
+_build/CustomLVL/MUNGED/*
