@@ -957,6 +957,65 @@ if AddIFScreen then
 			end
 		end
 
+		if name == "ifs_freeform_sides" then
+			print("marker ifs_freeform_sides")
+			tprint(ifs_freeform_sides)
+			
+			this = ifs_freeform_sides
+			
+			-- delete old stuff
+			this.action.misc = nil
+			this.action.accept = nil
+			this.action.back = nil
+			
+			-- new buttons and info stuff
+			local BackButtonW = 150 -- made 130 to fix 6198 on PC - NM 8/18/04
+			local BackButtonH = 25
+			
+			this.btnBack = NewPCIFButton {
+				ScreenRelativeX = 0.0, -- left
+				ScreenRelativeY = 1.0, -- bottom
+				y = -15, -- just above bottom
+				x = BackButtonW * 0.5,
+				btnw = BackButtonW, 
+				btnh = BackButtonH,
+				font = "gamefont_medium", 
+				bg_width = BackButtonW, 
+				noTransitionFlash = 1,
+				tag = "_back",
+				string = "common.back",
+			}
+
+			this.infoTxt = NewIFContainer {
+				ScreenRelativeX = 0.56, -- center
+				ScreenRelativeY = 1, -- bottom
+			
+				NewIFText {
+					font = "gamefont_medium",
+					string = "rema.cgcControl",
+					textw = BackButtonW * 1.5,
+					halign = "left",
+					valign = "top",		
+					nocreatebackground = 1,
+					y = -25, -- just above bottom
+					x = 0,
+				}
+			}
+			this.btnStart = NewPCIFButton {
+				ScreenRelativeX = 1.0, -- right
+				ScreenRelativeY = 1.0, -- bottom
+				y = -15, -- just above bottom
+				x = -BackButtonW * 0.5,
+				btnw = BackButtonW, 
+				btnh = BackButtonH,
+				font = "gamefont_medium", 
+				bg_width = BackButtonW, 
+				noTransitionFlash = 1,
+				tag = "_start",
+				string = "ifs.missionselect.buttons.text.launch",
+			}
+		end
+		
 		-- let the original function happen
 	    return remaGUI_AddIFScreen(ifsTable, name, unpack(arg))
 	end

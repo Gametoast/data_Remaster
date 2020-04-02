@@ -1,7 +1,6 @@
 ==NECESSARY CONTENT==
 - Credits, back button => GC map and stuck reported by sweg
 - Versionsnamen ändern
-
 - gc Auswahl von custom bedienung optimieren
 - gui lib and redesign remaster settingspage
 

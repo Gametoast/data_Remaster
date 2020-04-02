@@ -80,53 +80,6 @@ if ScriptCB_IsMetagameStateSaved() then
 	end
 end
 
--- wait for AddIFScreen exists and fix gc interactions
-if ScriptCB_DoFile then
-	
-	-- backup old function
-	local remaGC_ScriptCB_DoFile = ScriptCB_DoFile
-	
-	-- wrap ScriptCB_DoFile
-	ScriptCB_DoFile = function(...)
-
-		-- install Hooks for AddIFScreen
-		if arg[1] == "ifelem_button" then
-		
-			if AddIFScreen then
-				
-				-- backup old function
-				local remaGC_AddIFScreen = AddIFScreen
-
-				-- wrap AddIFScreen
-				AddIFScreen = function(ifsTable, name,...)
-
-					-- improve custom gc setup
-					if name == "ifs_freeform_sides" then
-						this = ifs_freeform_sides
-						print("marker i was here")
-						this.misc = nil
-						this.accept = nil
-						this.back = nil
-					end
-
-					-- let the original function happen
-					return remaGC_AddIFScreen(ifsTable, name, unpack(arg))
-				end
-			else
-				print("Remaster: Error")
-				print("        : AddIFScreen() not found!")
-			end		
-			
-		end
-		
-		-- let the original function happen
-	    return remaGC_ScriptCB_DoFile(unpack(arg))
-	end
-else
-	print("Remaster: Error")
-	print("        : ScriptCB_DoFile() not found!")
-end
-
 -- hook ScriptCB_QuitFromStats to give data back
 local rema_QuitFromStats = ScriptCB_QuitFromStats
 ScriptCB_QuitFromStats = function(...)
