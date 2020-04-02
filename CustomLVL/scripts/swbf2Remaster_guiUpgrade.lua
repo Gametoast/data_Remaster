@@ -956,7 +956,7 @@ if AddIFScreen then
 				end
 			end
 		end
-		
+
 		-- let the original function happen
 	    return remaGUI_AddIFScreen(ifsTable, name, unpack(arg))
 	end
