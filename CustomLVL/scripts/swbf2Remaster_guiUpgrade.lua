@@ -958,15 +958,12 @@ if AddIFScreen then
 		end
 
 		if name == "ifs_freeform_sides" then
-			print("marker ifs_freeform_sides")
-			tprint(ifs_freeform_sides)
-			
+		
 			this = ifs_freeform_sides
 			
 			-- delete old stuff
-			this.action.misc = nil
-			this.action.accept = nil
-			this.action.back = nil
+			this.action = nil
+			this.bgImage = nil
 			
 			-- new buttons and info stuff
 			local BackButtonW = 150 -- made 130 to fix 6198 on PC - NM 8/18/04
@@ -985,67 +982,21 @@ if AddIFScreen then
 				tag = "_back",
 				string = "common.back",
 			}
-
-			this.infoTxt = NewIFContainer {
-				ScreenRelativeX = 0.56, -- center
+	
+			this.infoTxt = NewIFText {
+				ScreenRelativeX = 0.5, -- center
 				ScreenRelativeY = 1, -- bottom
-			
-				NewIFText {
-					font = "gamefont_medium",
-					string = "rema.cgcControl",
-					textw = BackButtonW * 1.5,
-					halign = "left",
-					valign = "top",		
-					nocreatebackground = 1,
-					y = -25, -- just above bottom
-					x = 0,
-				}
-			}
-			
-			local tempString = "{OptionL} Left Center Right {OptionR}"
-			this.leftTxt = NewIFText {
-				ScreenRelativeX = 0, -- center
-				ScreenRelativeY = 0, -- bottom
 				font = "gamefont_medium",
-				string = tempString,
-				textw = 500,
-				texth = 500,
+				string = "rema.cgcControl",
+				textw = 400,
 				valign = "top",
-				halign = "left",
-				nocreatebackground = 1,
-				y = 0, -- just above bottom
-				--x = 0,
-			}
-				
-			this.rightTxt = NewIFText {
-				ScreenRelativeX = 0, -- center
-				ScreenRelativeY = 0, -- bottom
-				font = "gamefont_medium",
-				string = tempString,
-				textw = 500,
-				texth = 500,
-				valign = "vcenter",
 				halign = "hcenter",
 				nocreatebackground = 1,
-				y = 0, -- just above bottom
-				--x = 0,
+				tag = "_infoTxt",
+				y = -25, -- just above bottom
+				x = 42 - 200,
 			}
-				
-			this.centerTxt = NewIFText {
-				ScreenRelativeX = 0, -- center
-				ScreenRelativeY = 0, -- bottom
-				font = "gamefont_medium",
-				string = tempString,
-				textw = 500,
-				texth = 500,
-				valign = "bottom",
-				halign = "right",
-				nocreatebackground = 1,
-				y = 0, -- just above bottom
-				--x = 0,
-			}
-			
-			
+
 			this.btnStart = NewPCIFButton {
 				ScreenRelativeX = 1.0, -- right
 				ScreenRelativeY = 1.0, -- bottom
@@ -1059,6 +1010,51 @@ if AddIFScreen then
 				tag = "_start",
 				string = "ifs.missionselect.buttons.text.launch",
 			}
+			
+			-- Input accept fix
+			local cgcInputAcc = this.Input_Accept
+			this.Input_Accept = function(this,joystick, ...)
+				
+				-- install changes only for PC
+				if(gPlatformStr == "PC") then
+
+					-- handle button press
+					if this.CurButton == "_back" then
+						ScriptCB_SndPlaySound("shell_menu_exit")
+						
+						ScriptCB_SetQuitPlayer(1)
+						Popup_YesNo.calledFrom = this
+						Popup_YesNo.CurButton = "no" -- default
+						Popup_YesNo.fnDone = function(bResult)
+							
+							if bResult then
+								Popup_YesNo.fnDone = nil
+								ScriptCB_ClearCampaignState()
+								ScriptCB_ClearMetagameState()
+								ScriptCB_ClearMissionSetup()
+								-- disable metagame rules
+								ScriptCB_SetGameRules("instantaction")
+								-- restart the shell (HACK)
+								SetState("shell")
+							else
+								Popup_YesNo.fnDone = nil
+							end
+						end
+						Popup_YesNo:fnActivate(1)
+						gPopup_fnSetTitleStr(Popup_YesNo, "ifs.pause.warn_quit")
+	
+						return
+					elseif this.CurButton == "_start" then
+						return cgcInputAcc(this, joystick, unpack(arg))
+					else
+						local newTeam = 3 - this.controllerTeam[joystick]
+						this.controllerTeam[joystick] = newTeam
+						IFObj_fnSetPos(this.players[joystick], this.players.side_x[newTeam], this.players.name_y[joystick])
+					end
+				else
+					return cgcInputAcc(this, joystick, unpack(arg))
+				end
+			end
 		end
 		
 		-- let the original function happen
@@ -1364,7 +1360,6 @@ if IFText_fnSetString then
 
 	-- wrap IFText_fnSetString
 	IFText_fnSetString = function(this, str, case)
-
 		-- increase width to display the zoomed text
 		-- this causes a position bug. So fix this, too
 		if this.textw and this.HScale then
