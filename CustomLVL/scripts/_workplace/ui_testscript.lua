@@ -92,16 +92,6 @@ function uf_print( data, nested, depth )
 	end
 end
 
-local w, h = ScriptCB_GetScreenInfo()
-print("ui_testscript read font", w, h)
-
-if h >= 2000 then
-	ReadDataFile("REMASTER\\Fonts\\arialblack_4k.lvl")
-elseif h >= 1000 then
-	ReadDataFile("REMASTER\\Fonts\\arialblack_2k.lvl")
-else
-	ReadDataFile("REMASTER\\Fonts\\arialblack_default.lvl")
-end
 
 do return end
 print("marker")

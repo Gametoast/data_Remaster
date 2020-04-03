@@ -4,10 +4,21 @@
 
 -- TEST ----------------------------------------------------------
 ScriptCB_DoFile("ui_testscript")
---ReadDataFile("REMASTER\\fontHD.lvl")
+
 ------------------------------------------------------------------
 
 rema_firstLoad = true
+
+-- load fonts
+local w, h = ScriptCB_GetScreenInfo()
+
+if h >= 2000 then
+	ReadDataFile("REMASTER\\Fonts\\arialblack_4k.lvl")
+elseif h >= 1000 then
+	ReadDataFile("REMASTER\\Fonts\\arialblack_2k.lvl")
+else
+	ReadDataFile("REMASTER\\Fonts\\arialblack_default.lvl")
+end
 
 -- load strings
 ReadDataFile("REMASTER\\swbf2remaster_localize.lvl")

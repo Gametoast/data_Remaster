@@ -7,7 +7,64 @@ ScriptCB_DoFile("game_testscript")
 
 ------------------------------------------------------------------
 
+-- load fonts
+local w, h = ScriptCB_GetScreenInfo()
 
+if h >= 2000 then
+	ReadDataFile("REMASTER\\Fonts\\arialblack_4k.lvl")
+elseif h >= 1000 then
+	ReadDataFile("REMASTER\\Fonts\\arialblack_2k.lvl")
+else
+	ReadDataFile("REMASTER\\Fonts\\arialblack_default.lvl")
+end
+
+-- wait for interface_util to be loaded and swap stock fonts
+-- with new, bigger font files
+if ScriptCB_DoFile then
+	
+	-- backup old function
+	local remaGUI_ScriptCB_DoFile = ScriptCB_DoFile
+
+	-- wrap ScriptCB_DoFile
+	ScriptCB_DoFile = function(...)
+
+		-- let the original function happen and catch the return value
+	    local remaGUI_SCBDFreturn = {remaGUI_ScriptCB_DoFile(unpack(arg))}
+
+		if arg[1] == "interface_util" then
+
+			if NewIFText then
+				
+				-- backup old function
+				local remaGUI_NewIFText = NewIFText
+
+				-- wrap NewIFText
+				NewIFText = function(Template,...)
+					
+					if Template.font then
+						if Template.font == "gamefont_small" then Template.font = "gamefont_small_rema"
+						elseif Template.font == "gamefont_medium" then Template.font = "gamefont_medium_rema"
+						elseif Template.font == "gamefont_large" then Template.font = "gamefont_large_rema"
+						end
+					end
+					
+					-- let the original function happen
+					return remaGUI_NewIFText(Template, unpack(arg))
+				end
+			else
+				print("Remaster: Error")
+				print("        : NewIFText() not found!")
+			end
+		end
+		-- return the original values
+	    return unpack(remaGUI_SCBDFreturn)
+	end
+else
+	print("Remaster: Error")
+	print("        : ScriptCB_DoFile() not found!")
+end
+
+-- load hud if not deactivated
 if not rema_noHUD then
 
 	local screenWidth, screenHeight = ScriptCB_GetScreenInfo()

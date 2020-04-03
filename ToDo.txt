@@ -1,12 +1,9 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
 - gui lib and redesign remaster settingspage
-- include code from testscripts
 - gc Enter is used as two input accepted
 
 ==ADDITIONAL CONTENT==
-- move everything to git with steam and dvd branches
-
 - movie previews
 - save button for match settings
 - disable forcepowers
@@ -16,8 +13,9 @@
 x side select
 
 ==TO TEST==
-- gc Auswahl von custom bedienung optimieren kompatibilität mit milehighguys gc??
+- milehighguys gc mod inkompatibel mit versus gc allgemein oder nur mi Optimierungen??
 - Credits, back button => GC map and stuck reported by sweg
+- include code from testscripts
 
 ==DONE==
 new HUD
