@@ -2,6 +2,7 @@
 - Versionsnamen ändern
 - gui lib and redesign remaster settingspage
 - include code from testscripts
+- gc Enter is used as two input accepted
 
 ==ADDITIONAL CONTENT==
 - move everything to git with steam and dvd branches
