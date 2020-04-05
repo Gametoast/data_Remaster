@@ -13,7 +13,7 @@ end
 -- fix gc result boxes
 -- improve versus gc setup interaction
 -- improve gc sideselect interaction
--- fix Enter buy card when on placing them
+-- fix double accept event for Enter bug (bonus and unit purchase)
 if AddIFScreen then
 	
 	-- backup old function
@@ -23,7 +23,7 @@ if AddIFScreen then
 	local screenW, screenH = ScriptCB_GetScreenInfo()
 	
 	-- wrap AddIFScreen
-	AddIFScreen = function(table, name,...)
+	AddIFScreen = function(screenTable, name,...)
 
 		-- do some graphic cosmetic
 		if name == "ifs_freeform_main" then
@@ -294,188 +294,159 @@ if AddIFScreen then
 			end
 		end
 		
-		-- fix Enter buy card when on placing them
+		-- fix double accept event for Enter bug (bonus)
 		if name == "ifs_freeform_purchase_tech" then
 			this = ifs_freeform_purchase_tech
 
-			
-			
--------------------------------------------------------------------------------------			
-		---------------------------------------------------------------------
-		
-		
-			
-			this.Input_Accept = function(this, joystick)
-			if(gPlatformStr == "PC") then
-				if ifelem_tabmanager_HandleInputAccept(this, ifs_freeform_tab_layout) then
-					return
-				end
-				print( "this.CurButton = ", this.CurButton )
-				if( this.CurButton == "_accept" ) then
-					-- purchase the item
-  				elseif( this.CurButton == "_back" ) then
-  					-- handle in Input_Back
-  					this:Input_Back(joystick)
-  					return
-  				elseif( this.CurButton == "_help" ) then
-  					-- handle in Input_Misc2
-  					this:Input_Misc2(joystick)
-  					return
-				elseif( this.CurButton == "_next" ) then
-					if this.miscScreen then
---						-- go to end
---						ScriptCB_SetIFScreen(this.miscScreen)
-					end
-				else
-					-- check double click
-					if( this.lastDoubleClickTime and ScriptCB_GetMissionTime()<this.lastDoubleClickTime+0.4 ) then
-						this.bDoubleClicked = 1
-					else
-						this.lastDoubleClickTime = ScriptCB_GetMissionTime()
-					end
-					local ScreenW,ScreenH = ScriptCB_GetScreenInfo()
-					local box_l = ScreenW * 343 / 800
-					local box_t = ScreenH * 279 / 600
-					local box_r = ScreenW * 457 / 800
-					local box_b = ScreenH * 405 / 600
-					if( this.bDoubleClicked == 1 ) then
-						this.bDoubleClicked = nil
-						if( ( this.iMouse_x >= box_l ) and ( this.iMouse_x <= box_r ) and
-							( this.iMouse_y >= box_t ) and ( this.iMouse_y <= box_b ) ) then
-							-- if click on the card
-							print( "this DoubleClicked!" )
-						else
-							-- do nothing if not click on the unit
-							return	
-						end						
-					else
-						--print( "mouse x,y = ", this.iMouse_x, this.iMouse_y )
-						-- move card if single click
-						-- move card in focus mode
-						if( this.focus == ifs_purchase_tech_focus_cards ) then
-							if( ( this.iMouse_y >= box_t ) and ( this.iMouse_y <= box_b ) ) then
-								if( this.iMouse_x < box_l ) then
-									this:Input_GeneralLeft()
-								elseif( this.iMouse_x > box_r ) then
-									this:Input_GeneralRight()
-								end
-							end
-							return
-						end
-					end
-				end				
-			end
-			
-			-- If base class handled this work, then we're done
-			if(gShellScreen_fnDefaultInputAccept(this)) then
-				return
-			end
-			
-			print("marker i come here", this.focus, this.CurButton)
-			
-			local team = this.main.playerTeam
-
-			-- if focused on cards			
-			if ( this.focus == ifs_purchase_tech_focus_cards ) then
-				local cur = this.purchaseItems[this.selected]
-				local cur_rot = cur.spin_interpolator:value()
-
-				local owned = ifs_purchase_tech_cards[team][this.selected]
-				
-				-- if enough resources...
-				local tech = ifs_purchase_tech_table[this.selected]
-				local cost = tech.cost[owned]
-				if this.main:SpendResources(nil, cost) then
-					this.main:UpdatePlayerText(this.player)
-			 		ifelm_shellscreen_fnPlaySound(this.acceptSound)
-			 		this.main:PlayVoice(string.format(ifs_purchase_tech_bought_sound[owned], this.main.playerSide, owned and tech.bonus or tech.name))
-					-- if the technology is not owned...
-					if not owned then
-						-- purchase the technology
-						owned = true
-						ifs_purchase_tech_cards[team][this.selected] = owned
-						cur.spin_interpolator = make_purchase_interpolator(cur_rot, ifs_purchase_tech_rotate[owned], ifs_purchase_tech_spin_time)
-						this:UpdateActionCarousel()
-					else
-						-- purchase the enhancement
-						IFModel_fnSetMsh(this.useItems.cursor.card, tech.mesh)
-						IFObj_fnSetColor(this.useItems.cursor.card, 255, 255, 255)
-
-						this.useItems.cursor.index = this.selected
-						
-						-- find a free slot (if any)
-						local slot = 1
-						for i, using in ipairs(ifs_purchase_tech_using[team]) do
-							if using == 0 then
-								slot = i
-								break
-							end
-						end
-						this:SetCursor(slot)
-						
-						this:FocusUsing()
-					end
-				else
-					-- not enough resources
-			 		ifelm_shellscreen_fnPlaySound(this.cancelSound)
-					this.main:PlayVoice(string.format(ifs_purchase_tech_broke_sound[owned], this.main.playerSide))
-				end
-			else
-		 		ifelm_shellscreen_fnPlaySound(this.acceptSound)
-		 		local position = this.useItems.cursor.position
-		 		local index = this.useItems.cursor.index
-		 		
-		 		-- if there is no card there...
-		 		if ifs_purchase_tech_using[team][position] == 0 then
-		 			-- place the card
-		 			this:PlaceUsing(team, position, index)
-				else
-					-- pop up a yes/no request
-					this:PromptReplace(team, position, index)
-				end
-			end
-
-		end
-		
-		
-		---------------------------------------------------------------------
--------------------------------------------------------------------------------------
-
-		
 			-- Input accept fix
 			local cgcInputAcc = this.Input_Accept
 			this.Input_Accept = function(this,joystick, ...)
-				
-				print(">>> Accept", joystick, unpack(arg))
 
-				if this.Remaster then
-					print("this was a keypress")
-					this.Remaster = nil
+				-- There is a timeStamp, potentially a critical action was performed earlier
+				if this.timeStamp then
+					local timeDiff = ScriptCB_GetMissionTime() - this.timeStamp
+					this.timeStamp = nil
+					
+					if timeDiff < 0.000001 then
+						-- First accept was triggered by Enter, this is the 2nd call
+						
+						-- First rotated, correct this
+						if this.movedWheel then
+							if this.movedWheel == -1 then
+								this:Input_GeneralRight()
+							else
+								this:Input_GeneralLeft()
+							end
+						-- First placed, do nothing
+						elseif this.placedCard then
+							this.placedCard = nil
+							this.CurButton = nil
+							return
+						-- First did nothing
+						else
+							-- let this happen
+						end
+					end
+					
+					-- First critical action has been long enough ago, so continue
+					this.placedCard = nil
+					this.movedWheel = nil
 				end
-				--print("marker accepted", joystick)
-				--tprint(this)
-				return cgcInputAcc(this, joystick, unpack(arg))
+				
+				local returnValue = {cgcInputAcc(this, joystick, unpack(arg))}
+				
+				-- if we come from keypress, reset the current button
+				if joystick == -1 then
+					this.CurButton = nil
+				end
+				
+				return unpack(returnValue)
 			end
 			
-			local cgcKeyDown = this.Input_KeyDown
-			this.Input_KeyDown = function(this, iKey, ...)
-				print(">>> Keypress", iKey, this.focus)
+			-- set marker that card was placed
+			local cgcPlaceUsing = this.PlaceUsing
+			this.PlaceUsing = function(this,...)
+				this.timeStamp = ScriptCB_GetMissionTime()
+				this.placedCard = true
 				
-				if (iKey == 10 or iKey == 13) then
-					this.Remaster = 1
+				cgcPlaceUsing(this, unpack(arg))
+			end
+			
+			-- set marker that it was rotated left
+			local cgcGeneralLeft = this.Input_GeneralLeft
+			this.Input_GeneralLeft = function(this, joystick, ...)
+				
+				if this.selected > 1 then
+					this.timeStamp = ScriptCB_GetMissionTime()
+					this.movedWheel = -1
 				end
-					--print("marker using this way")
-					--return
-					--this.CurButton = nil
-					--this:Input_Accept(-1)
-				--else
-					cgcKeyDown(this, iKey, unpack(arg))
-				--end
+				
+				cgcGeneralLeft(this, joystick, unpack(arg))
+			end
+			
+			-- set marker that it was rotated right
+			local cgcGeneralRight = this.Input_GeneralRight
+			this.Input_GeneralRight = function(this, joystick, ...)
+			
+				if this.selected < table.getn(ifs_purchase_tech_table) then
+					this.timeStamp = ScriptCB_GetMissionTime()
+					this.movedWheel = 1
+				end
+				
+				cgcGeneralRight(this, joystick, unpack(arg))
+			end
+		end
+
+		-- fix double accept event for Enter bug (unit)
+		if name == "ifs_freeform_purchase_unit" then
+			this = ifs_freeform_purchase_unit
+
+			-- Input accept fix
+			local cgcInputAcc = this.Input_Accept
+			this.Input_Accept = function(this,joystick, ...)
+
+				-- There is a timeStamp, potentially a critical action was performed earlier
+				if this.timeStamp then
+					local timeDiff = ScriptCB_GetMissionTime() - this.timeStamp
+					this.timeStamp = nil
+					
+					if timeDiff < 0.000001 then
+						-- First accept was triggered by Enter, this is the 2nd call
+						
+						-- First rotated, correct this
+						if this.movedWheel then
+							if this.movedWheel == -1 then
+								this:Input_GeneralRight()
+							else
+								this:Input_GeneralLeft()
+							end
+						-- First did nothing
+						else
+							-- let this happen
+						end
+					end
+					
+					-- First critical action has been long enough ago, so continue
+					this.movedWheel = nil
+				end
+				
+				local returnValue = {cgcInputAcc(this, joystick, unpack(arg))}
+				
+				-- if we come from keypress, reset the current button
+				if joystick == -1 then
+					this.CurButton = nil
+				end
+				
+				return unpack(returnValue)
+			end
+			
+			-- set marker that it was rotated left
+			local cgcGeneralLeft = this.Input_GeneralLeft
+			this.Input_GeneralLeft = function(this, joystick, ...)
+				
+				if this.selected > 1 then
+					this.timeStamp = ScriptCB_GetMissionTime()
+					this.movedWheel = -1
+				end
+				
+				cgcGeneralLeft(this, joystick, unpack(arg))
+			end
+			
+			-- set marker that it was rotated right
+			local cgcGeneralRight = this.Input_GeneralRight
+			this.Input_GeneralRight = function(this, joystick, ...)
+			
+				if this.selected < table.getn(this.purchaseItems) then
+					this.timeStamp = ScriptCB_GetMissionTime()
+					this.movedWheel = 1
+				end
+				
+				cgcGeneralRight(this, joystick, unpack(arg))
 			end
 		end
 
 		-- let the original function happen
-	    return remaGC_AddIFScreen(table, name, unpack(arg))
+	    return remaGC_AddIFScreen(screenTable, name, unpack(arg))
 	end
 else
 	print("Remaster: Error")

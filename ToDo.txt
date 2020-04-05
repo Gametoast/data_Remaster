@@ -1,7 +1,6 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
 - gui lib and redesign remaster settingspage
-- gc Enter is used as two input accepted
 
 ==ADDITIONAL CONTENT==
 - movie previews
@@ -13,9 +12,7 @@
 x side select
 
 ==TO TEST==
-- milehighguys gc mod inkompatibel mit versus gc allgemein oder nur mi Optimierungen??
 - Credits, back button => GC map and stuck reported by sweg
-- include code from testscripts
 
 ==DONE==
 new HUD
@@ -29,3 +26,5 @@ campaing loadscreen
 load/save remaster 13 gc does not work
 load gc doesn't work at all. Problem is the missing database already fixed?
 campaign crash
+gc Enter is used as two input accepted
+include code from testscripts
