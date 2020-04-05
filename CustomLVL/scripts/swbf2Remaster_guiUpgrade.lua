@@ -333,9 +333,9 @@ if ScriptCB_DoFile then
 			
 			gPCOptionsTabsLayout[1].xPos = gPCOptionsTabsLayout[1].xPos - 14
 			
-			table.insert(gPCOptionsTabsLayout, 2, {tag = "_tab_remaster", string = "REMASTER", screen = "ifs_opt_remaster", yPos = 45, width = tabWidth})
+			table.insert(gPCOptionsTabsLayout, 2, {tag = "_tab_remaster", string = "REMASTER", screen = "ifs_opt2_remaster", yPos = 45, width = tabWidth})
 		elseif arg[1] == "ifs_opt_sound" then 
-			ScriptCB_DoFile("ifs_opt_remaster")
+			ScriptCB_DoFile("ifs_opt2_remaster")
 		end
 		
 		-- return the original values
@@ -1202,5 +1202,3 @@ else
 	print("Remaster: Error")
 	print("        : NewPCIFButton() not found!")
 end
-
-
