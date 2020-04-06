@@ -8,14 +8,38 @@
 
 ------------------------------------------------------------------
 -- Tab functions
-function ifs_opt_remaster_fnClickTabButtons(this)
-	print("Tab was klicked", this.CurButton)
+function ifs_opt_remaster_fnClickTabButtons(this, screen)
+	print("Tab was klicked", this.CurButton, screen)
 	ifelem_tabmanager_SetSelected(this, remaTabsLayout, this.CurButton, 2)
+	
+	IFObj_fnSetVis(this.screens[1].screen, false)
+	IFObj_fnSetVis(this.screens[2].screen, false)
+	IFObj_fnSetVis(remaTabsLayout[3].screen, false)
+	
+	if this.CurButton == "_tab_1" then
+		IFObj_fnSetVis(this.screens[1].screen, true)
+		IFObj_fnSetVis(this.screens[1].screen.txt, true)
+	elseif this.CurButton == "_tab_2" then
+		IFObj_fnSetVis(this.screens[2].screen, true)
+		IFObj_fnSetVis(this.screens[2].screen.txt, true)
+	elseif this.CurButton == "_tab_3" then
+		ScriptCB_SetIFScreen("rema_tab_3")
+		IFObj_fnSetVis(remaTabsLayout[3].screen, true)
+		IFObj_fnSetVis(remaTabsLayout[3].screen.txt, true)
+	end
+	print("marker ========")
+	print("1")
+	tprint(this.screens[1].screen)
+	print("2")
+	tprint(this.screens[2].screen)
+	print("3")
+	tprint(remaTabsLayout[3].screen)
+	
 end
 
 function ifs_opt_remaster_fnChangeTabsLayout(this)
 	local i
-	
+	print("marker 1")
 	local setting_width = 170
 	local setting_x_pos = 100
 	local setting_y_pos = 120
@@ -31,6 +55,57 @@ function ifs_opt_remaster_fnChangeTabsLayout(this)
 			remaTabsLayout[i].yPos = setting_y_pos + setting_y_offset + (i - 2) * setting_y_offset1
 		end
 	end
+	print("marker 2")
+	
+	this.screens[1] = {}
+	this.screens[2] = {}
+	
+	this.screens[1].screen = NewIFContainer{
+		ScreenRelativeX = 0.5,
+		ScreenRelativeY = 0.5,
+	}
+	
+	this.screens[1].screen.txt = NewIFText {
+		halign = "left", valign = "top",
+		x = 0,
+		y = 0,
+		font = "gamefont_medium", 
+		textw = 300, texth = 100,
+		flashy = 0,
+		string = "screen 1",
+	}
+	
+	this.screens[2].screen = NewIFContainer{
+		ScreenRelativeX = 0.5,
+		ScreenRelativeY = 0.9,
+	}
+
+	this.screens[2].screen.txt = NewIFText {
+		halign = "left", valign = "top",
+		x = 0,
+		y = 0,
+		font = "gamefont_medium", 
+		textw = 300, texth = 100,
+		flashy = 0,
+		string = "screen 2",
+	}
+	
+	remaTabsLayout[3].screen = NewIFContainer{
+		ScreenRelativeX = 0.5,
+		ScreenRelativeY = 0.1,
+	}
+	
+	remaTabsLayout[3].screen.txt = NewIFText {
+		halign = "left", valign = "top",
+		bInertPos = true,
+		x = 0,
+		y = 0,
+		font = "gamefont_medium", 
+		textw = 300, texth = 100,
+		flashy = 0,
+		string = "screen 3",
+	}
+	
 end
 
 ------------------------------------------------------------------
@@ -50,9 +125,9 @@ end
 
 remaTabsLayout = {
 	font = "gamefont_medium",
-	{tag = "_tab_1", string = "1st Tab",},
-	{tag = "_tab_2", string = "2nd Tab",},
-	{tag = "_tab_3", string = "3rd Tab",},
+	{ tag = "_tab_1", string = "1st Tab", screen = nil, },
+	{ tag = "_tab_2", string = "2nd Tab", screen = nil, },
+	{ tag = "_tab_3", string = "3rd Tab", screen = nil, },	
 }
 
 ------------------------------------------------------------------
@@ -83,7 +158,6 @@ ifs_opt2_remaster = NewIFShellScreen {
 			end
 			
 			this.settings = rema_database
-			print("We have data!")
 		end
 		
         gIFShellScreenTemplate_fnEnter(this, bFwd) -- call default enter function
@@ -137,11 +211,23 @@ function ifs_opt_remaster_fnBuildScreen(this)
 	local w
     local h
     w,h = ScriptCB_GetSafeScreenInfo()
+	
+	if rema_database then
+		print("We have data!")
+	else
+		print("marker no data")
+	end
+	
+	this.screens = NewIFContainer{
+		ScreenRelativeX = 0,
+		ScreenRelativeY = 0,
+	}
 
 	-- default stuff
 	AddPCTitleText(this) 
 	ifs_opt_remaster_fnChangeTabsLayout(this)
 	ifelem_tabmanager_Create(this, gPCMainTabsLayout, gPCOptionsTabsLayout, remaTabsLayout)
+
 
 	-- Buttons
 	local BackButtonW = 150 -- made 130 to fix 6198 on PC - NM 8/18/04
@@ -179,3 +265,7 @@ ifs_opt_remaster_fnBuildScreen(ifs_opt2_remaster)
 ifs_opt_remaster_fnBuildScreen = nil
 AddIFScreen(ifs_opt2_remaster,"ifs_opt2_remaster")
 ifs_opt_remaster = DoPostDelete(ifs_opt2_remaster)
+
+--AddIFScreen(remaTabsLayout[1].screen, "rema_tab_1")
+--AddIFScreen(remaTabsLayout[2].screen, "rema_tab_2")
+AddIFObjContainer(remaTabsLayout[3].screen, "rema_tab_3")
