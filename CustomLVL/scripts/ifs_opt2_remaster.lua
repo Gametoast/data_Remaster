@@ -2,6 +2,79 @@
 -- SWBF 2 Remaster by Anakin
 ------------------------------------------------------------------
 
+
+
+testscreen = NewIFShellScreen{
+	bg_texture = nil,
+	movieIntro      = nil,
+	movieBackground = nil,
+    music           = "shell_soundtrack",
+    bNohelptext_backPC = 1,
+	
+	Enter = function(this, bFwd)
+		print("marker Enter testscreen", bFwd)
+		
+		this.timer = 0
+		
+		if ScriptCB_IsScreenInStack("ifs_opt2_remaster") then
+			print("ifs_opt2_remaster on stack")
+		else
+			print("ifs_opt2_remaster not on stack")
+		end
+	end,
+	
+	Exit = function(this, bFwd)
+		print("marker Exit testscreen", bFwd)
+	end,
+	
+	Update = function(this)
+		
+		if this.timer then
+			if this.timer > 50 then
+				--ScriptCB_EndIFScreen("testscreen")
+				ScriptCB_SetIFScreen("ifs_opt2_remaster")
+				--ScriptCB_PopScreen()
+			else
+				this.timer = this.timer + 1
+			end
+		else
+			this.timer = 0
+		end
+		
+	end,
+	
+	setVisible = function(this)
+	
+		IFObj_fnSetVis(this, true)
+		IFObj_fnSetVis(this.screens, true)
+		IFObj_fnSetVis(this.screens.txt, true)
+	end,
+}
+
+function build_testscreen(this)
+
+	this.screens = NewIFContainer{
+		ScreenRelativeX = 0.5,
+		ScreenRelativeY = 0.5,
+	}
+	
+	this.screens.txt = NewIFText {
+		halign = "left", valign = "top",
+		x = 0,
+		y = 0,
+		font = "gamefont_medium", 
+		textw = 300, texth = 100,
+		flashy = 0,
+		string = "Testscreen",
+	}
+	
+end
+
+build_testscreen(testscreen)
+build_testscreen = nil
+AddIFScreen(testscreen,"testscreen")
+ifs_opt_remaster = DoPostDelete(testscreen)
+
 ------------------------------------------------------------------
 -- utility functions
 
@@ -12,28 +85,37 @@ function ifs_opt_remaster_fnClickTabButtons(this, screen)
 	print("Tab was klicked", this.CurButton, screen)
 	ifelem_tabmanager_SetSelected(this, remaTabsLayout, this.CurButton, 2)
 	
-	IFObj_fnSetVis(this.screens[1].screen, false)
-	IFObj_fnSetVis(this.screens[2].screen, false)
-	IFObj_fnSetVis(remaTabsLayout[3].screen, false)
+	--IFObj_fnSetVis(this.screens[1].screen, false)
+	--IFObj_fnSetVis(this.screens[2].screen, false)
+	--IFObj_fnSetVis(remaTabsLayout[3].screen, false)
 	
 	if this.CurButton == "_tab_1" then
-		IFObj_fnSetVis(this.screens[1].screen, true)
-		IFObj_fnSetVis(this.screens[1].screen.txt, true)
+		--IFObj_fnSetVis(this.screens[1].screen, true)
+		--IFObj_fnSetVis(this.screens[1].screen.txt, true)
 	elseif this.CurButton == "_tab_2" then
-		IFObj_fnSetVis(this.screens[2].screen, true)
-		IFObj_fnSetVis(this.screens[2].screen.txt, true)
+		--IFObj_fnSetVis(this.screens[2].screen, true)
+		--IFObj_fnSetVis(this.screens[2].screen.txt, true)
+		ScriptCB_PushScreen("testscreen")
 	elseif this.CurButton == "_tab_3" then
-		ScriptCB_SetIFScreen("rema_tab_3")
-		IFObj_fnSetVis(remaTabsLayout[3].screen, true)
-		IFObj_fnSetVis(remaTabsLayout[3].screen.txt, true)
+		--testscreen:setVisible()
+		if ScriptCB_IsScreenInStack("testscreen") then
+			print("testscreen on stack")
+		else
+			print("testscreen not on stack")
+		end
+		
+		ScriptCB_SetIFScreen("testscreen")
+		--ScriptCB_EndIFScreen
+		--IFObj_fnSetVis(remaTabsLayout[3].screen, true)
+		--IFObj_fnSetVis(remaTabsLayout[3].screen.txt, true)
 	end
 	print("marker ========")
 	print("1")
-	tprint(this.screens[1].screen)
+	--tprint(this.screens[1].screen)
 	print("2")
-	tprint(this.screens[2].screen)
+	--tprint(this.screens[2].screen)
 	print("3")
-	tprint(remaTabsLayout[3].screen)
+	--tprint(remaTabsLayout[3].screen)
 	
 end
 
@@ -56,7 +138,7 @@ function ifs_opt_remaster_fnChangeTabsLayout(this)
 		end
 	end
 	print("marker 2")
-	
+	--[[
 	this.screens[1] = {}
 	this.screens[2] = {}
 	
@@ -105,7 +187,7 @@ function ifs_opt_remaster_fnChangeTabsLayout(this)
 		flashy = 0,
 		string = "screen 3",
 	}
-	
+	--]]
 end
 
 ------------------------------------------------------------------
@@ -218,10 +300,10 @@ function ifs_opt_remaster_fnBuildScreen(this)
 		print("marker no data")
 	end
 	
-	this.screens = NewIFContainer{
-		ScreenRelativeX = 0,
-		ScreenRelativeY = 0,
-	}
+	--this.screens = NewIFContainer{
+	--	ScreenRelativeX = 0,
+	--	ScreenRelativeY = 0,
+	--}
 
 	-- default stuff
 	AddPCTitleText(this) 
@@ -268,4 +350,4 @@ ifs_opt_remaster = DoPostDelete(ifs_opt2_remaster)
 
 --AddIFScreen(remaTabsLayout[1].screen, "rema_tab_1")
 --AddIFScreen(remaTabsLayout[2].screen, "rema_tab_2")
-AddIFObjContainer(remaTabsLayout[3].screen, "rema_tab_3")
+--AddIFObjContainer(remaTabsLayout[3].screen, "rema_tab_3")
