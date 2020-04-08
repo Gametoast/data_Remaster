@@ -1,6 +1,7 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
 - gui lib and redesign remaster settingspage
+- ScriptCB_GetFontheigh hacken und fontnamen austauschen
 
 ==ADDITIONAL CONTENT==
 - movie previews

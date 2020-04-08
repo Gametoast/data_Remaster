@@ -2,6 +2,7 @@
 -- SWBF 2 Remaster by Anakin
 ------------------------------------------------------------------
 
+ScriptCB_DoFile("ifelem_minipage")
 
 
 testscreen = NewIFShellScreen{
@@ -62,7 +63,7 @@ function build_testscreen(this)
 		halign = "left", valign = "top",
 		x = 0,
 		y = 0,
-		font = "gamefont_medium", 
+		font = "gamefont_medium_rema", 
 		textw = 300, texth = 100,
 		flashy = 0,
 		string = "Testscreen",
@@ -78,6 +79,13 @@ ifs_opt_remaster = DoPostDelete(testscreen)
 ------------------------------------------------------------------
 -- utility functions
 
+function ifs_opt_remaster_getRadioListLineNumber()
+	local w, h = ScriptCB_GetScreenInfo()
+	
+	-- 60% of screenheight devided by line height + 0.5 to round off
+	return math.floor(h * 0.6 / (ScriptCB_GetFontHeight("gamefont_medium_rema") + 10) + 0.5)
+end
+
 
 ------------------------------------------------------------------
 -- Tab functions
@@ -85,37 +93,17 @@ function ifs_opt_remaster_fnClickTabButtons(this, screen)
 	print("Tab was klicked", this.CurButton, screen)
 	ifelem_tabmanager_SetSelected(this, remaTabsLayout, this.CurButton, 2)
 	
-	--IFObj_fnSetVis(this.screens[1].screen, false)
-	--IFObj_fnSetVis(this.screens[2].screen, false)
-	--IFObj_fnSetVis(remaTabsLayout[3].screen, false)
-	
 	if this.CurButton == "_tab_1" then
-		--IFObj_fnSetVis(this.screens[1].screen, true)
-		--IFObj_fnSetVis(this.screens[1].screen.txt, true)
+		IFObj_fnSetVis(this.screens.general, true)
 	elseif this.CurButton == "_tab_2" then
-		--IFObj_fnSetVis(this.screens[2].screen, true)
-		--IFObj_fnSetVis(this.screens[2].screen.txt, true)
-		ScriptCB_PushScreen("testscreen")
+		IFObj_fnSetVis(this.screens.general, false)
 	elseif this.CurButton == "_tab_3" then
-		--testscreen:setVisible()
-		if ScriptCB_IsScreenInStack("testscreen") then
-			print("testscreen on stack")
-		else
-			print("testscreen not on stack")
-		end
-		
-		ScriptCB_SetIFScreen("testscreen")
-		--ScriptCB_EndIFScreen
-		--IFObj_fnSetVis(remaTabsLayout[3].screen, true)
-		--IFObj_fnSetVis(remaTabsLayout[3].screen.txt, true)
+		IFObj_fnSetVis(this.screens.general, false)
 	end
-	print("marker ========")
-	print("1")
-	--tprint(this.screens[1].screen)
-	print("2")
-	--tprint(this.screens[2].screen)
-	print("3")
-	--tprint(remaTabsLayout[3].screen)
+
+	--ScriptCB_PushScreen("testscreen")
+	--ScriptCB_IsScreenInStack("testscreen")
+	--ScriptCB_SetIFScreen("testscreen")
 	
 end
 
@@ -137,65 +125,97 @@ function ifs_opt_remaster_fnChangeTabsLayout(this)
 			remaTabsLayout[i].yPos = setting_y_pos + setting_y_offset + (i - 2) * setting_y_offset1
 		end
 	end
-	print("marker 2")
-	--[[
-	this.screens[1] = {}
-	this.screens[2] = {}
-	
-	this.screens[1].screen = NewIFContainer{
-		ScreenRelativeX = 0.5,
-		ScreenRelativeY = 0.5,
-	}
-	
-	this.screens[1].screen.txt = NewIFText {
-		halign = "left", valign = "top",
-		x = 0,
-		y = 0,
-		font = "gamefont_medium", 
-		textw = 300, texth = 100,
-		flashy = 0,
-		string = "screen 1",
-	}
-	
-	this.screens[2].screen = NewIFContainer{
-		ScreenRelativeX = 0.5,
-		ScreenRelativeY = 0.9,
-	}
-
-	this.screens[2].screen.txt = NewIFText {
-		halign = "left", valign = "top",
-		x = 0,
-		y = 0,
-		font = "gamefont_medium", 
-		textw = 300, texth = 100,
-		flashy = 0,
-		string = "screen 2",
-	}
-	
-	remaTabsLayout[3].screen = NewIFContainer{
-		ScreenRelativeX = 0.5,
-		ScreenRelativeY = 0.1,
-	}
-	
-	remaTabsLayout[3].screen.txt = NewIFText {
-		halign = "left", valign = "top",
-		bInertPos = true,
-		x = 0,
-		y = 0,
-		font = "gamefont_medium", 
-		textw = 300, texth = 100,
-		flashy = 0,
-		string = "screen 3",
-	}
-	--]]
 end
 
 ------------------------------------------------------------------
 -- Button events
 
+function ifs_opt_remaster_callbackToggle(buttongroup, btnNum)
+	
+	ifs_opt2_remaster.settings.radios[buttongroup.tag] = btnNum
+end
+
 
 ------------------------------------------------------------------
 -- Listbox
+
+function ifs_opt_remaster_radiolist_CreateItem(layout)
+
+	-- Make a coordinate system pegged to the top-left of where the cursor would go.
+	local Temp = NewIFContainer { x = layout.x - 0.5 * layout.width, y=layout.y - 0.5 * layout.height}
+
+	local LineFont = ifs_opt_remaster_radiolist_layout.FontStr
+	local FontHeight = ifs_opt_remaster_radiolist_layout.iFontHeight
+
+	local XLeft = 10
+
+	Temp.NameStr = NewIFText { 
+		x = XLeft, y = 0, 
+		halign = "left", textw = layout.width - 20,
+		valign = "vcenter", texth = FontHeight,
+		font = LineFont,
+		nocreatebackground=1, startdelay=math.random()*0.5,
+		string = "XXX",
+	}
+	
+	local radioX = 0
+	local radioY = 0
+	local radioTag = "1"
+	local ifs_opt_remaster_radio_layout = {
+		spacing = 75,
+		font = "gamefont_medium_rema",
+		strings = {"placeholderNo", "placeholderYes"}, --
+		x = 0,
+		callback = ifs_opt_remaster_callbackToggle
+	}
+	
+	Temp.radiobuttons = NewIFContainer {
+		x = 250,
+		y = 10,
+	}
+	
+	ifelem_AddRadioButtonGroup(Temp, radioX, radioY, ifs_opt_remaster_radio_layout, radioTag)
+	
+	return Temp
+end
+
+function ifs_opt_remaster_radiolist_PopulateItem(Dest, Data, bSelected, iColorR, iColorG, iColorB, fAlpha)
+	if(Data) then
+
+		-- set visible
+		IFObj_fnSetVis(Dest, 1)
+
+		-- set strings
+		IFText_fnSetUString(Dest.NameStr,ScriptCB_tounicode(Data.title))
+		IFText_fnSetUString(Dest.radiobuttons["1"][1].radiotext, ScriptCB_tounicode(Data.buttonStrings[1]))
+		IFText_fnSetUString(Dest.radiobuttons["1"][2].radiotext, ScriptCB_tounicode(Data.buttonStrings[2]))
+		
+		-- select correct value
+		ifelem_SelectRadioButton(Dest.radiobuttons["1"], ifs_opt2_remaster.settings.radios[Data.tag], true)
+		
+		-- need this to identify the button group.numChildren
+		Dest.radiobuttons["1"].tag = Data.tag
+
+	else
+		-- clear strings
+		IFText_fnSetString(Dest.NameStr,"")
+		IFText_fnSetUString(Dest.radiobuttons["1"][1].radiotext, "")
+		IFText_fnSetUString(Dest.radiobuttons["1"][2].radiotext, "")
+		
+		-- clear the tag if disabled
+		Dest.radiobuttons["1"].tag = nil
+		
+		-- set invisible
+		IFObj_fnSetVis(Dest, nil)
+	end
+
+end
+
+function ifs_opt_remaster_fillRadioList(this)
+	
+	local dest = this.screens.general.list
+	ListManager_fnFillContents(dest, rema_database.regSet.radios, ifs_opt_remaster_radiolist_layout)
+end
 
 
 ------------------------------------------------------------------
@@ -206,10 +226,23 @@ end
 -- Layouts
 
 remaTabsLayout = {
-	font = "gamefont_medium",
+	font = "gamefont_medium_rema",
 	{ tag = "_tab_1", string = "1st Tab", screen = nil, },
 	{ tag = "_tab_2", string = "2nd Tab", screen = nil, },
 	{ tag = "_tab_3", string = "3rd Tab", screen = nil, },	
+}
+
+ifs_opt_remaster_radiolist_layout = {
+	showcount = ifs_opt_remaster_getRadioListLineNumber(),
+	yHeight = ScriptCB_GetFontHeight("gamefont_medium_rema") + 10,
+	ySpacing  = 0, --34 - ScriptCB_GetFontHeight("gamefont_medium_rema"),
+	width = 425,
+	x = 0,
+	FontStr = "gamefont_medium_rema",
+	iFontHeight = ScriptCB_GetFontHeight("gamefont_medium_rema"),
+	slider = 1,
+	CreateFn = ifs_opt_remaster_radiolist_CreateItem,
+	PopulateFn = ifs_opt_remaster_radiolist_PopulateItem,
 }
 
 ------------------------------------------------------------------
@@ -221,8 +254,13 @@ ifs_opt2_remaster = NewIFShellScreen {
     movieBackground = nil, -- played while the screen is displayed
     bNohelptext_backPC = 1,
     bNohelptext_accept = 1,
-	--bDimBackdrop = 1,
 	bg_texture = "iface_bg_1",
+	
+	screens = {
+		ScreenRelativeX = 0.75,
+		ScreenRelativeY = 0.2,
+		--bCreateHidden = true,
+	},
 
     -- When entering this screen, check if we need to save (triggered
     -- by a subscreen or something). If so, start that process.
@@ -238,12 +276,14 @@ ifs_opt2_remaster = NewIFShellScreen {
 			if not rema_database then
 				print("Houston, we got a problem!!")
 			end
-			
+			print("Data is here and this.settings, too")
 			this.settings = rema_database
 		end
 		
         gIFShellScreenTemplate_fnEnter(this, bFwd) -- call default enter function
-
+		
+		ifs_opt_remaster_fillRadioList(this)
+		
     end, -- function Enter()
     
     Exit = function(this)
@@ -300,16 +340,32 @@ function ifs_opt_remaster_fnBuildScreen(this)
 		print("marker no data")
 	end
 	
-	--this.screens = NewIFContainer{
-	--	ScreenRelativeX = 0,
-	--	ScreenRelativeY = 0,
-	--}
-
 	-- default stuff
 	AddPCTitleText(this) 
 	ifs_opt_remaster_fnChangeTabsLayout(this)
 	ifelem_tabmanager_Create(this, gPCMainTabsLayout, gPCOptionsTabsLayout, remaTabsLayout)
 
+	-- General Screen rema.settings
+	this.screens.general = NewIFContainer{
+		list = NewButtonWindow {
+			x = 0,
+			y = ifs_opt_remaster_radiolist_layout.yHeight * ifs_opt_remaster_radiolist_layout.showcount / 2,
+			width = ifs_opt_remaster_radiolist_layout.width,
+			height = ifs_opt_remaster_radiolist_layout.yHeight * ifs_opt_remaster_radiolist_layout.showcount,
+		}
+	}
+	
+	ListManager_fnInitList(this.screens.general.list, ifs_opt_remaster_radiolist_layout)
+	
+	this.screens.general.list.skin = nil
+	this.screens.general.list.hilight.skin = nil
+	this.screens.general.list.cursor.skin = nil
+	
+	
+	-- Script Screen rema.scriptManager
+	this.screens.scripts = NewIFContainer{
+		
+	}
 
 	-- Buttons
 	local BackButtonW = 150 -- made 130 to fix 6198 on PC - NM 8/18/04
@@ -321,7 +377,7 @@ function ifs_opt_remaster_fnBuildScreen(this)
 		y = -15, -- just above bottom						
 		btnw = BackButtonW * 1.5,
 		btnh = BackButtonH,
-		font = "gamefont_medium",
+		font = "gamefont_medium_rema",
 		noTransitionFlash = 1,
 		tag = "_reset",
 		string = "common.reset",
@@ -334,7 +390,7 @@ function ifs_opt_remaster_fnBuildScreen(this)
 		x = -BackButtonW * 0.5,
 		btnw = BackButtonW, 
 		btnh = BackButtonH,
-		font = "gamefont_medium", 
+		font = "gamefont_medium_rema", 
 		bg_width = BackButtonW, 
 		noTransitionFlash = 1,
 		tag = "_ok",
