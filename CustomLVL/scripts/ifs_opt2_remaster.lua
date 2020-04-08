@@ -363,7 +363,6 @@ ifs_opt_remaster = NewIFShellScreen {
 		ifelem_tabmanager_SetSelected(this, remaTabsLayout, "_tab_1", 2)
 		
 		if not this.curMinipage then
-			print("marker marker")
 			this.curMinipage = "general"
 		end
 
@@ -379,8 +378,7 @@ ifs_opt_remaster = NewIFShellScreen {
 		
 		ifs_opt_remaster_fillRadioList(this)
 		ifs_opt_remaster_fillScriptLists(this)
-		
-		tprint(this)
+
 		ifelem_minipage_update(this)
 		
     end, -- function Enter()
