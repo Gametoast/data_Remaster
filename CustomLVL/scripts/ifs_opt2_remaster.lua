@@ -17,10 +17,10 @@ testscreen = NewIFShellScreen{
 		
 		this.timer = 0
 		
-		if ScriptCB_IsScreenInStack("ifs_opt2_remaster") then
-			print("ifs_opt2_remaster on stack")
+		if ScriptCB_IsScreenInStack("ifs_opt_remaster") then
+			print("ifs_opt_remaster on stack")
 		else
-			print("ifs_opt2_remaster not on stack")
+			print("ifs_opt_remaster not on stack")
 		end
 	end,
 	
@@ -33,7 +33,7 @@ testscreen = NewIFShellScreen{
 		if this.timer then
 			if this.timer > 50 then
 				--ScriptCB_EndIFScreen("testscreen")
-				ScriptCB_SetIFScreen("ifs_opt2_remaster")
+				ScriptCB_SetIFScreen("ifs_opt_remaster")
 				--ScriptCB_PopScreen()
 			else
 				this.timer = this.timer + 1
@@ -79,6 +79,13 @@ ifs_opt_remaster = DoPostDelete(testscreen)
 ------------------------------------------------------------------
 -- utility functions
 
+function ifs_opt_remaster_getListboxLineNumber()
+	local w, h = ScriptCB_GetScreenInfo()
+	
+	-- 60% of screenheight devided by line height and 3 (there are 3 boxes) + 0.5 to round off
+	return math.floor(h * 0.6 / (3 * 35) + 0.5)
+end
+
 function ifs_opt_remaster_getRadioListLineNumber()
 	local w, h = ScriptCB_GetScreenInfo()
 	
@@ -94,17 +101,18 @@ function ifs_opt_remaster_fnClickTabButtons(this, screen)
 	ifelem_tabmanager_SetSelected(this, remaTabsLayout, this.CurButton, 2)
 	
 	if this.CurButton == "_tab_1" then
-		IFObj_fnSetVis(this.screens.general, true)
+		this.curMinipage = "general"
 	elseif this.CurButton == "_tab_2" then
-		IFObj_fnSetVis(this.screens.general, false)
+		this.curMinipage = "scripts"
 	elseif this.CurButton == "_tab_3" then
-		IFObj_fnSetVis(this.screens.general, false)
+		this.curMinipage = "tab_screen"
 	end
-
+	
+	ifelem_minipage_update(this)
+	
 	--ScriptCB_PushScreen("testscreen")
 	--ScriptCB_IsScreenInStack("testscreen")
 	--ScriptCB_SetIFScreen("testscreen")
-	
 end
 
 function ifs_opt_remaster_fnChangeTabsLayout(this)
@@ -132,12 +140,80 @@ end
 
 function ifs_opt_remaster_callbackToggle(buttongroup, btnNum)
 	
-	ifs_opt2_remaster.settings.radios[buttongroup.tag] = btnNum
+	ifs_opt_remaster.settings.radios[buttongroup.tag] = btnNum
 end
 
 
 ------------------------------------------------------------------
 -- Listbox
+
+
+function ifs_opt_remaster_listbox_CreateItem(layout)
+	-- Make a coordinate system pegged to the top-left of where the cursor would go.
+	local Temp = NewIFContainer { x = layout.x - 0.5 * layout.width, y=layout.y - 0.5 * layout.height}
+
+	local LineFont = ifs_opt_remaster_listbox_layout.FontStr
+	local FontHeight = ifs_opt_remaster_listbox_layout.iFontHeight
+
+	local XLeft = 10
+
+	Temp.NameStr = NewIFText { 
+		x = XLeft, y = 0, 
+		halign = "left", textw = layout.width - 20,
+		valign = "vcenter", texth = FontHeight,
+		font = LineFont,
+		nocreatebackground=1, startdelay=math.random()*0.5,
+		string = "XXX",
+	}
+	
+	return Temp
+end
+
+function ifs_opt_remaster_listbox_PopulateItem(Dest, Data, bSelected, iColorR, iColorG, iColorB, fAlpha)
+	if(Data) then
+
+		IFObj_fnSetVis(Dest.NameStr, 1)
+
+		IFText_fnSetFont(Dest.NameStr, ifs_opt_remaster_listbox_layout.FontStr)
+
+		IFText_fnSetUString(Dest.NameStr,Data)
+		
+		IFObj_fnSetColor(Dest.NameStr, iColorR, iColorG, iColorB)
+		IFObj_fnSetAlpha(Dest.NameStr, fAlpha)
+
+	else
+		-- Blank this entry
+		IFText_fnSetString(Dest.NameStr,"")
+	end
+
+end
+
+function ifs_opt_remaster_fillScriptLists(this)
+
+	-- some help variables
+	local dest = this.screens.scripts
+	
+	local opStrings = {}
+	local ifStrings = {}
+	local igStrings = {}
+	
+	for i = 1, table.getn(rema_database.scripts_OP) do
+		opStrings[i] = ScriptCB_tounicode(rema_database.scripts_OP[i])
+	end
+	
+	for i = 1, table.getn(rema_database.scripts_IF) do
+		ifStrings[i] = ScriptCB_tounicode(rema_database.scripts_IF[i])
+	end
+	
+	for i = 1, table.getn(rema_database.scripts_IG) do
+		igStrings[i] = ScriptCB_tounicode(rema_database.scripts_IG[i])
+	end
+	
+	ListManager_fnFillContents(dest.opScripts.list, opStrings, ifs_opt_remaster_listbox_layout)
+	ListManager_fnFillContents(dest.ifScripts.list, ifStrings, ifs_opt_remaster_listbox_layout)
+	ListManager_fnFillContents(dest.igScripts.list, igStrings, ifs_opt_remaster_listbox_layout)
+	
+end
 
 function ifs_opt_remaster_radiolist_CreateItem(layout)
 
@@ -191,7 +267,7 @@ function ifs_opt_remaster_radiolist_PopulateItem(Dest, Data, bSelected, iColorR,
 		IFText_fnSetUString(Dest.radiobuttons["1"][2].radiotext, ScriptCB_tounicode(Data.buttonStrings[2]))
 		
 		-- select correct value
-		ifelem_SelectRadioButton(Dest.radiobuttons["1"], ifs_opt2_remaster.settings.radios[Data.tag], true)
+		ifelem_SelectRadioButton(Dest.radiobuttons["1"], ifs_opt_remaster.settings.radios[Data.tag], true)
 		
 		-- need this to identify the button group.numChildren
 		Dest.radiobuttons["1"].tag = Data.tag
@@ -232,6 +308,19 @@ remaTabsLayout = {
 	{ tag = "_tab_3", string = "3rd Tab", screen = nil, },	
 }
 
+ifs_opt_remaster_listbox_layout = {
+	showcount = ifs_opt_remaster_getListboxLineNumber(),
+	yHeight = ScriptCB_GetFontHeight("gamefont_small"),
+	ySpacing  = 34 - ScriptCB_GetFontHeight("gamefont_small"),
+	width = 80,
+	x = 0,
+	FontStr = "gamefont_small",
+	iFontHeight = ScriptCB_GetFontHeight("gamefont_small"),
+	slider = 1,
+	CreateFn = ifs_opt_remaster_listbox_CreateItem,
+	PopulateFn = ifs_opt_remaster_listbox_PopulateItem,
+}
+
 ifs_opt_remaster_radiolist_layout = {
 	showcount = ifs_opt_remaster_getRadioListLineNumber(),
 	yHeight = ScriptCB_GetFontHeight("gamefont_medium_rema") + 10,
@@ -248,13 +337,14 @@ ifs_opt_remaster_radiolist_layout = {
 ------------------------------------------------------------------
 -- Build
 
-ifs_opt2_remaster = NewIFShellScreen {
+ifs_opt_remaster = NewIFShellScreen {
     nologo = 1,
     movieIntro      = nil, -- played before the screen is displayed
     movieBackground = nil, -- played while the screen is displayed
     bNohelptext_backPC = 1,
     bNohelptext_accept = 1,
 	bg_texture = "iface_bg_1",
+	curMinipage = nil,
 	
 	screens = {
 		ScreenRelativeX = 0.75,
@@ -266,12 +356,17 @@ ifs_opt2_remaster = NewIFShellScreen {
     -- by a subscreen or something). If so, start that process.
     Enter = function(this, bFwd)
 		print(">>> Hello there", bFwd)
-		
+
 		UpdatePCTitleText(this)
 		ifelem_tabmanager_SetSelected(this, gPCMainTabsLayout, "_tab_options")
 		ifelem_tabmanager_SetSelected(this, gPCOptionsTabsLayout, "_tab_remaster", 1)
 		ifelem_tabmanager_SetSelected(this, remaTabsLayout, "_tab_1", 2)
 		
+		if not this.curMinipage then
+			print("marker marker")
+			this.curMinipage = "general"
+		end
+
 		if bFwd then
 			if not rema_database then
 				print("Houston, we got a problem!!")
@@ -283,6 +378,10 @@ ifs_opt2_remaster = NewIFShellScreen {
         gIFShellScreenTemplate_fnEnter(this, bFwd) -- call default enter function
 		
 		ifs_opt_remaster_fillRadioList(this)
+		ifs_opt_remaster_fillScriptLists(this)
+		
+		tprint(this)
+		ifelem_minipage_update(this)
 		
     end, -- function Enter()
     
@@ -363,9 +462,110 @@ function ifs_opt_remaster_fnBuildScreen(this)
 	
 	
 	-- Script Screen rema.scriptManager
-	this.screens.scripts = NewIFContainer{
-		
+	local y_spacing = 35
+	
+	this.screens.scripts = NewIFContainer {
+		theme = NewIFContainer {
+			y = -12,
+		},
+		opScripts = NewIFContainer {
+			y = 35 + 0 * 35 * ifs_opt_remaster_listbox_layout.showcount - 12,
+		},
+		ifScripts = NewIFContainer {
+			y = 35 + 1 * 35 * ifs_opt_remaster_listbox_layout.showcount - 12,
+		},
+		igScripts = NewIFContainer {
+			y = 35 + 2 * 35 * ifs_opt_remaster_listbox_layout.showcount - 12,
+		},
 	}
+	
+	-- settings scripts
+	dest = this.screens.scripts.opScripts
+	dest.title = NewIFText {
+		string = "rema.Labels.setScript",
+		font = "gamefont_medium_rema",
+		halign = "right",
+		textw = 200,
+		texth = 30,
+		x = - 200,
+		y = 0,
+		bgleft = "",
+		bgmid = "",
+		bgright = "",
+	}
+	
+	dest.list = NewButtonWindow {
+		x = 70,
+		y = y_spacing * ifs_opt_remaster_listbox_layout.showcount / 2,
+		width = 100,
+		height = y_spacing * ifs_opt_remaster_listbox_layout.showcount,
+		font = "gamefont_small",
+	}
+	dest.list.skin = nil
+	
+	ListManager_fnInitList(dest.list, ifs_opt_remaster_listbox_layout)
+	
+	dest.list.hilight.skin = nil
+	dest.list.cursor.skin = nil
+
+	-- interface scripts
+	dest = this.screens.scripts.ifScripts
+	dest.title = NewIFText {
+		string = "rema.Labels.infScript",
+		font = "gamefont_medium_rema",
+		halign = "right",
+		textw = 200,
+		texth = 30,
+		x = - 200,
+		y = 0,
+		bgleft = "",
+		bgmid = "",
+		bgright = "",
+	}
+	
+	dest.list = NewButtonWindow {
+		x = 70,
+		y = y_spacing * ifs_opt_remaster_listbox_layout.showcount / 2,
+		width = 100,
+		height = y_spacing * ifs_opt_remaster_listbox_layout.showcount,
+		font = "gamefont_small",
+	}
+	dest.list.skin = nil
+	
+	ListManager_fnInitList(dest.list, ifs_opt_remaster_listbox_layout)
+	
+	dest.list.hilight.skin = nil
+	dest.list.cursor.skin = nil
+	
+	-- game scripts
+	dest = this.screens.scripts.igScripts
+	dest.title = NewIFText {
+		string = "rema.Labels.gmScript",
+		font = "gamefont_medium_rema",
+		halign = "right",
+		textw = 200,
+		texth = 30,
+		x = - 200,
+		y = 0,
+		bgleft = "",
+		bgmid = "",
+		bgright = "",
+	}
+	
+	dest.list = NewButtonWindow {
+		x = 70,
+		y = y_spacing * ifs_opt_remaster_listbox_layout.showcount / 2,
+		width = 100,
+		height = y_spacing * ifs_opt_remaster_listbox_layout.showcount,
+		font = "gamefont_small",
+	}
+	dest.list.skin = nil
+	
+	ListManager_fnInitList(dest.list, ifs_opt_remaster_listbox_layout)
+	
+	dest.list.hilight.skin = nil
+	dest.list.cursor.skin = nil
+	
 
 	-- Buttons
 	local BackButtonW = 150 -- made 130 to fix 6198 on PC - NM 8/18/04
@@ -399,10 +599,10 @@ function ifs_opt_remaster_fnBuildScreen(this)
 	
 end
 
-ifs_opt_remaster_fnBuildScreen(ifs_opt2_remaster)
+ifs_opt_remaster_fnBuildScreen(ifs_opt_remaster)
 ifs_opt_remaster_fnBuildScreen = nil
-AddIFScreen(ifs_opt2_remaster,"ifs_opt2_remaster")
-ifs_opt_remaster = DoPostDelete(ifs_opt2_remaster)
+AddIFScreen(ifs_opt_remaster,"ifs_opt_remaster")
+ifs_opt_remaster = DoPostDelete(ifs_opt_remaster)
 
 --AddIFScreen(remaTabsLayout[1].screen, "rema_tab_1")
 --AddIFScreen(remaTabsLayout[2].screen, "rema_tab_2")
