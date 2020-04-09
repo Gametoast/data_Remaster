@@ -1088,6 +1088,30 @@ else
 	print("        : NewIFContainer() not found!")
 end
 
+-- try to wrap ScriptCB_GetFontHeight ----------------------------------------
+-- return font height of the new fonts 
+if ScriptCB_GetFontHeight then
+	
+	-- backup old function
+	local remaGUI_GetFontHeight = ScriptCB_GetFontHeight
+	
+	-- wrap NewIFImage
+	ScriptCB_GetFontHeight = function(font,...)
+		
+		-- change font names
+		if font == "gamefont_small" then font = "gamefont_small_rema"
+		elseif font == "gamefont_medium" then font = "gamefont_medium_rema"
+		elseif font == "gamefont_large" then font = "gamefont_large_rema"
+		end
+		
+		-- let the original function happen
+		return remaGUI_GetFontHeight(font, unpack(arg))
+	end
+else
+	print("Remaster: Error")
+	print("        : ScriptCB_GetFontHeight() not found!")
+end
+
 -- try to wrap NewIFImage ----------------------------------------
 -- Fix gamespy logo
 if NewIFImage then
@@ -1117,7 +1141,7 @@ else
 end
 
 -- try to wrap NewIFText -----------------------------------------
--- Zoom all text
+-- replace font names
 if NewIFText then
 	
 	-- backup old function
