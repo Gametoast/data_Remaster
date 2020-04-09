@@ -76,6 +76,15 @@ build_testscreen = nil
 AddIFScreen(testscreen,"testscreen")
 ifs_opt_remaster = DoPostDelete(testscreen)
 
+
+function dummyAddTabData()
+
+	print("marker size screens", table.getn(ifs_opt_remaster.screens))
+	ifs_opt_remaster.screens[1] = { modID = "ABC", screen = "testscreen"}
+	ifs_opt_remaster.screens[2] = { modID = "XYZ", screen = "testscreen"}
+end
+
+
 ------------------------------------------------------------------
 -- utility functions
 
@@ -128,6 +137,7 @@ function ifs_opt_remaster_fnSetupTabsLayout()
 	local setting_y_pos = 120
 	local setting_y_offset = remaTabsLayout.yHeight
 
+	-- init all tabs
 	for i = 1, max_tabs do
 		if i > 2 then
 			j = 0
@@ -142,6 +152,12 @@ function ifs_opt_remaster_fnSetupTabsLayout()
 								yPos = setting_y_pos + (i - j) * setting_y_offset
 							}
 	end
+	
+	remaTabsLayout[1].string = "rema.settings"
+	remaTabsLayout[2].string = "rema.scriptManager"
+	
+	-- TODO: fill tabs with data and hide ununsed
+	dummyAddTabData()
 	
 	--[[for i = 1, table.getn( remaTabsLayout ) do
 		remaTabsLayout[i].callback = ifs_opt_remaster_fnClickTabButtons
