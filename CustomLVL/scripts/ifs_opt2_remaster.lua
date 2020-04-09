@@ -82,7 +82,7 @@ ifs_opt_remaster = DoPostDelete(testscreen)
 function ifs_opt_remaster_getLineCount(layout)
 	local w, h = ifelem_minipage_getSize()
 	
-	-- 60% of screenheight devided by line height + 0.5 to round off
+	-- 90% of screenheight devided by elemet height + 0.5 to round off
 	return math.floor(h * 0.9 / (layout.yHeight) + 0.5)
 end
 
@@ -115,16 +115,35 @@ function ifs_opt_remaster_fnClickTabButtons(this, screen)
 	--ScriptCB_SetIFScreen("testscreen")
 end
 
-function ifs_opt_remaster_fnChangeTabsLayout(this)
+function ifs_opt_remaster_fnSetupTabsLayout()
+	
+	remaTabsLayout.yHeight = 25
+	remaTabsLayout.font = "gamefont_medium_rema"
+	
+	local max_tabs = ifs_opt_remaster_getLineCount(remaTabsLayout) - 1
 	local i
-
+	local j = 1
 	local setting_width = 170
 	local setting_x_pos = 100
 	local setting_y_pos = 120
-	local setting_y_offset = 50
-	local setting_y_offset1 = 30
+	local setting_y_offset = remaTabsLayout.yHeight
+
+	for i = 1, max_tabs do
+		if i > 2 then
+			j = 0
+		end
+		
+		remaTabsLayout[i] = {	tag = "_tab_" .. tostring(i),
+								string = "Tab",
+								screen = nil,
+								callback = ifs_opt_remaster_fnClickTabButtons,
+								width = setting_width,
+								xPos = setting_x_pos,
+								yPos = setting_y_pos + (i - j) * setting_y_offset
+							}
+	end
 	
-	for i = 1, table.getn( remaTabsLayout ) do
+	--[[for i = 1, table.getn( remaTabsLayout ) do
 		remaTabsLayout[i].callback = ifs_opt_remaster_fnClickTabButtons
 		remaTabsLayout[i].width = setting_width
 		remaTabsLayout[i].xPos = setting_x_pos
@@ -132,7 +151,7 @@ function ifs_opt_remaster_fnChangeTabsLayout(this)
 		if( i > 1 ) then
 			remaTabsLayout[i].yPos = setting_y_pos + setting_y_offset + (i - 2) * setting_y_offset1
 		end
-	end
+	end--]]
 end
 
 ------------------------------------------------------------------
@@ -166,9 +185,7 @@ function ifs_opt_remaster_radiolist_CreateItem(layout)
 		nocreatebackground=1, startdelay=math.random()*0.5,
 		string = "XXX",
 	}
-	
-	local radioX = 0
-	local radioY = 0
+
 	local radioTag = "1"
 	
 	local ifs_opt_remaster_radio_layout = {
@@ -183,10 +200,10 @@ function ifs_opt_remaster_radiolist_CreateItem(layout)
 	
 	Temp.radiobuttons = NewIFContainer {
 		x = offsetX,
-		y = layout.height / 2,--10,
+		y = layout.height / 2,
 	}
 	
-	ifelem_AddRadioButtonGroup(Temp, radioX, radioY, ifs_opt_remaster_radio_layout, radioTag)
+	ifelem_AddRadioButtonGroup(Temp, 0, 0, ifs_opt_remaster_radio_layout, radioTag)
 	
 	return Temp
 end
@@ -305,11 +322,7 @@ end
 ------------------------------------------------------------------
 -- Layouts
 
-remaTabsLayout = {
-	font = "gamefont_medium_rema",
-	{ tag = "_tab_1", string = "1st Tab", screen = nil, },
-	{ tag = "_tab_2", string = "2nd Tab", screen = nil, },
-	{ tag = "_tab_3", string = "3rd Tab", screen = nil, },	
+remaTabsLayout = {	
 }
 
 ifs_opt_remaster_radiolist_layout = {
@@ -610,7 +623,7 @@ function ifs_opt_remaster_fnBuildScreen(this)
 	
 	-- default stuff
 	AddPCTitleText(this) 
-	ifs_opt_remaster_fnChangeTabsLayout(this)
+	ifs_opt_remaster_fnSetupTabsLayout()
 	ifelem_tabmanager_Create(this, gPCMainTabsLayout, gPCOptionsTabsLayout, remaTabsLayout)
 
 	-- Testscreen
