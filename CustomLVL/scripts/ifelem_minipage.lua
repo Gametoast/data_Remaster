@@ -8,9 +8,9 @@ ifelem_minipage_tables = { { tabID = "_tab_1", screen = "ifs_opt_remaster", }, }
 -- ifelem_minipage_getSize()
 -- returns the absolute size of the minipage
 --
---	parameter: none
+--	parameter:	none
 --
---	return: width, heigh
+--	return:		width, heigh
 --
 function ifelem_minipage_getSize()
 	return gSafeW * 0.75, gSafeH * 0.8
@@ -24,7 +24,7 @@ end
 --				relX - relative x-coordinate, float[0..1]
 --				relY - relative y-coordinate, float[0..1]
 --
---	return: none
+--	return:		none
 --
 function ifelem_minipage_setRelativePos(dest, relX, relY)
 	
@@ -46,6 +46,8 @@ end
 --				fnExit			- callback for exit event, function
 --				fnInputAccept	- callback for Input_Accept event, function
 --				fnUpdate		- callback for Update event, function
+--
+--	return:		none
 --
 function ifelem_minipage_add(modID, elements, fnEnter, fnExit, fnInputAccept, fnUpdate)
 	

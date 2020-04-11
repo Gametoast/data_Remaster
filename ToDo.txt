@@ -2,6 +2,7 @@
 - Versionsnamen ändern
 - gui lib and redesign remaster settingspage
 - ScriptCB_GetFontheigh hacken und fontnamen austauschen
+- heros have no 2nd life bar in vehicle
 
 ==ADDITIONAL CONTENT==
 - movie previews
