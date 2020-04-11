@@ -15,13 +15,6 @@ ScriptCB_DoFile("ifs_minipage_script")
 
 -- utility functions
 
-function ifs_opt_remaster_getLineCount(layout)
-	local w, h = ifelem_minipage_getSize()
-	
-	-- 90% of screenheight devided by elemet height + 0.5 to round off
-	return math.floor(h * 0.9 / (layout.yHeight) + 0.5)
-end
-
 function ifs_opt_remaster_updateTabNames(this)
 	local i
 	local NUM_TABS = table.getn(remaTabsLayout)
@@ -135,6 +128,7 @@ end
 
 
 -- Layouts
+
 remaTabsLayout = {	
 }
 
@@ -254,7 +248,8 @@ function ifs_opt_remaster_fnBuildTabsLayout()
 	remaTabsLayout.yHeight = 25
 	remaTabsLayout.font = "gamefont_medium_rema"
 	
-	local max_tabs = ifs_opt_remaster_getLineCount(remaTabsLayout) - 1
+	local w, h = ifelem_minipage_getSize()
+	local max_tabs = ifelem_minipage_getLineCount(remaTabsLayout.yHeight, h * 0.9) - 1
 	local i
 	local j = 1
 	local setting_width = 170
@@ -353,7 +348,8 @@ function ifs_opt_remaster_fnBuildScreen(this)
 	-- some variables need to be set up
 	local BackButtonW = 150 -- made 130 to fix 6198 on PC - NM 8/18/04
 	local BackButtonH = 25
-	ifs_opt_remaster_radiolist_layout.showcount = ifs_opt_remaster_getLineCount(ifs_opt_remaster_radiolist_layout)
+	local w, h = ifelem_minipage_getSize()
+	ifs_opt_remaster_radiolist_layout.showcount = ifelem_minipage_getLineCount(ifs_opt_remaster_radiolist_layout.yHeight, h * 0.9)
 
 
 	-- radio buttons

@@ -5,12 +5,25 @@
 ifelem_minipage_tables = { { tabID = "_tab_1", screen = "ifs_opt_remaster", }, }
 
 ------------------------------------------------------------------
+-- ifelem_minipage_getLineCount(elementHeight, boxHeight)
+-- calculactes the number of elements that fit on the screen
+--
+--	parameter:	elementHeight	- height of one list element, int
+--				boxHeight		- height of the list area, int
+--
+--	return:		lineCount		- number of elements fiting in the area, int
+--
+function ifelem_minipage_getLineCount(elementHeight, boxHeight)
+	return math.floor(boxHeight / elementHeight + 0.5)
+end
+
+------------------------------------------------------------------
 -- ifelem_minipage_getSize()
 -- returns the absolute size of the minipage
 --
 --	parameter:	none
 --
---	return:		width, heigh
+--	return:		width, height
 --
 function ifelem_minipage_getSize()
 	return gSafeW * 0.75, gSafeH * 0.8
@@ -28,12 +41,55 @@ end
 --
 function ifelem_minipage_setRelativePos(dest, relX, relY)
 	
-	local width, heigh = ifelem_minipage_getSize()
+	local width, height = ifelem_minipage_getSize()
 	local oldX = dest.x or 0
 	local oldY = dest.y or 0
 	
 	dest.x = width * relX + oldX
-	dest.y = heigh * relY + oldY
+	dest.y = height * relY + oldY
+end
+
+--	layout = {
+--		tag = string		- Dropdown tag
+--		string = string		- Button Displayname
+--		btnw = int			- Button width
+--		btnwh = int			- Button height
+--		x = int				- Position X
+--		y = int				- Position Y
+--		btnFont = string	- Button Font
+--		lstFont = string	- Dropdownlist Font
+--		lstHeight = int		- height of droplist
+--		lstHAlign = string	- align of list item text
+--	}
+
+function ifelem_minipage_NewDropDownButton(layout)
+	
+	local container = NewIFContainer{
+		x = layout.x,
+		y = layout.y,
+		expanded = false,
+		tag = "_dropdown_" .. layout.tag,
+		button = NewPCDropDownButton {
+			btnw = layout.btnw,
+			btnh = layout.btnh,
+			font = btnFont,	--?
+			halign = "hcenter",				--?
+			string = layout.string,			--?
+			tag = "button_" .. layout.tag,	--?
+		},
+		listbox = NewButtonWindow {
+			x = 0,
+			y = 0,
+			width = layout.btnw,
+			height = layout.lstHeight,
+			font = layout.lstFont,
+			halign = layout.lstHAlign,
+			tag = "list_" .. layout.tag,
+			bg_texture = "border_dropdown",
+		},
+	}
+	
+	return container
 end
 
 ------------------------------------------------------------------
