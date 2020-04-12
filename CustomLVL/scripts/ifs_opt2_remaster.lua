@@ -151,7 +151,7 @@ function ifs_opt_remaster_radiolist_CreateItem(layout)
 	-- Make a coordinate system pegged to the top-left of where the cursor would go.
 	local Temp = NewIFContainer { x = layout.x - 0.5 * layout.width, y=layout.y - 0.5 * layout.height}
 
-	local LineFont = ifs_opt_remaster_radiolist_layout.FontStr
+	local LineFont = layout.listboxlayout.font
 	local xSpacing = 0.1
 	
 	-- Text right aligned - spacing 0.1 rel - radiobuttons 200 abs - spacing 0.1 rel
@@ -233,7 +233,7 @@ ifs_opt_remaster_radiolist_layout = {
 	x = 0,
 	ySpacing  = 0,
 	width = ifelem_minipage_getSize(), -- 1st return value is width, 2nd not used
-	FontStr = "gamefont_medium_rema",
+	font = "gamefont_medium_rema",
 	yHeight = ScriptCB_GetFontHeight("gamefont_medium_rema") + 10,
 	slider = 1,
 	CreateFn = ifs_opt_remaster_radiolist_CreateItem,
@@ -347,7 +347,7 @@ function ifs_opt_remaster_fnBuildScreen(this)
 
 	-- some variables need to be set up
 	local BackButtonW = 150 -- made 130 to fix 6198 on PC - NM 8/18/04
-	local BackButtonH = 25
+	local BackButtonH = ScriptCB_GetFontHeight("gamefont_medium_rema")
 	local w, h = ifelem_minipage_getSize()
 	ifs_opt_remaster_radiolist_layout.showcount = ifelem_minipage_getLineCount(ifs_opt_remaster_radiolist_layout.yHeight, h * 0.9)
 
