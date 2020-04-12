@@ -59,7 +59,7 @@ function dropdown_lst_CreateItem(layout)
 	
 	Temp.NameStr = NewIFText { 
 		x = 7,
-		y = 0,
+		y = 3,
 		textw = layout.width - 14,
 		texth = layout.listboxlayout.yHeight,
 		valign = layout.listboxlayout.valign or "vcenter",
@@ -80,8 +80,10 @@ end
 
 function dropdown_lst_PopulateItem(Dest, Data, bSelected, iColorR, iColorG, iColorB, fAlpha)
 	print("PopulateFn")
-	--tprint(Dest)
-	--tprint(Data)
+	tprint(Dest)
+	tprint(Data)
+	
+	do return end
 	
 	if(Data) then
 
@@ -161,6 +163,11 @@ function ifelem_minipage_NewDropDownButton(layout)
 	}
 	
 	ListManager_fnInitList(container.listbox, layout.lst)
+	
+	local i, v 
+	for i, v in ipairs(container.listbox) do
+		v.fHotspotY = 0
+	end
 	
 	--IFObj_fnSetVis(container.listbox, false)
 	
