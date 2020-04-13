@@ -50,12 +50,12 @@ function ifelem_minipage_setRelativePos(dest, relX, relY)
 end
 
 
+------------------------------------------------------------------
+-- Helper functions
 function dropdown_lst_CreateItem(layout)
-	print("CreateFn")
-	tprint(layout)
-	
 	-- Make a coordinate system pegged to the top-left of where the cursor would go.
 	local Temp = NewIFContainer { x = layout.x - 0.5 * layout.width, y = layout.y - 0.5 * layout.height}
+	Temp.cbPopulate = layout.listboxlayout.cbPopulate
 	
 	Temp.NameStr = NewIFText { 
 		x = 7,
@@ -70,41 +70,34 @@ function dropdown_lst_CreateItem(layout)
 		string = "XXX",
 	}
 	
+	-- callback if it exists
 	if layout.listboxlayout.cbCreate then
 		layout.listboxlayout.cbCreate(layout, Temp)
 	end
 	
 	return Temp
-	
 end
 
 function dropdown_lst_PopulateItem(Dest, Data, bSelected, iColorR, iColorG, iColorB, fAlpha)
-	print("PopulateFn")
-	tprint(Dest)
-	tprint(Data)
 	
-	do return end
-	
-	if(Data) then
-
-		IFObj_fnSetVis(Dest.NameStr, 1)
-
-		--IFText_fnSetFont(Dest.NameStr, ifs_minipage_script_scriptListbox_layout.FontStr)
-
-		IFText_fnSetUString(Dest.NameStr,Data)
+	-- maybe custom data, or nil
+	if type(Data) == "string" then
+		IFObj_fnSetVis(Dest, true)
 		
-		IFObj_fnSetColor(Dest.NameStr, iColorR, iColorG, iColorB)
-		IFObj_fnSetAlpha(Dest.NameStr, fAlpha)
-
+		-- maybe a custom layout and the string does not exist
+		if Dest.NameStr then
+			IFText_fnSetString(Dest.NameStr,Data)
+			IFObj_fnSetColor(Dest.NameStr, iColorR, iColorG, iColorB)
+			IFObj_fnSetAlpha(Dest.NameStr, fAlpha)
+		end
 	else
-		-- Blank this entry
-		IFText_fnSetString(Dest.NameStr,"This is a very long text to fill the whole box")
+		IFObj_fnSetVis(Dest, false)
 	end
 	
-	if layout.listboxlayout.cbPopulate then
-		layout.listboxlayout.cbPopulate(Dest, Data, bSelected, iColorR, iColorG, iColorB, fAlpha)
+	-- callback if it exists
+	if Dest.cbPopulate then
+		Dest.cbPopulate(Dest, Data, bSelected, iColorR, iColorG, iColorB, fAlpha)
 	end
-	
 end
 
 --	layout = {
@@ -139,7 +132,7 @@ function ifelem_minipage_NewDropDownButton(layout)
 	local container = NewIFContainer{
 		x = layout.x + layout.btnw * 0.5,
 		y = layout.y + layout.btnh * 0.5,
-		expanded = true,
+		expanded = false,
 		tag = "_dropdown_" .. layout.tag,
 		button = NewPCDropDownButton {
 			x = 12,							-- always 12, no idea why
@@ -147,7 +140,7 @@ function ifelem_minipage_NewDropDownButton(layout)
 			btnh = layout.btnh,
 			font = layout.btnFont,
 			string = layout.string,
-			tag = "button_" .. layout.tag,
+			tag = "_ifeDropBtn_" .. layout.tag,
 		},
 		listbox = NewButtonWindow {
 			x = layout.btnh * 0.5,			-- button is wider 
@@ -168,8 +161,6 @@ function ifelem_minipage_NewDropDownButton(layout)
 	for i, v in ipairs(container.listbox) do
 		v.fHotspotY = 0
 	end
-	
-	--IFObj_fnSetVis(container.listbox, false)
 	
 	return container
 end
@@ -280,3 +271,4 @@ function ifelem_minipage_add(modID, elements, fnEnter, fnExit, fnInputAccept, fn
 	screen = DoPostDelete(screen)
 	_G["minipage_" .. modID] = screen
 end
+
