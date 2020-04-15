@@ -135,7 +135,7 @@ if AddIFScreen then
 					else
 						ValUStr = GCWUStr
 					end
-					IFText_fnSetUString(Dest.textitem,ScriptCB_usprintf("rema.cgcEra", ValUStr))
+					IFText_fnSetUString(Dest.textitem,ScriptCB_usprintf("rema.ifs.cgc.era", ValUStr))
 				end
 				
 				return unpack(returnValues)
@@ -224,7 +224,7 @@ if AddIFScreen then
 				ScreenRelativeX = 0.5, -- center
 				ScreenRelativeY = 1, -- bottom
 				font = "gamefont_medium",
-				string = "rema.cgcControl",
+				string = "rema.ifs.cgc.control",
 				textw = 400,
 				valign = "top",
 				halign = "hcenter",

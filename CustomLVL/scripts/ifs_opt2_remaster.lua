@@ -3,8 +3,6 @@
 ------------------------------------------------------------------
 
 -- TODO:
--- localize rema.modName.REMA1
--- localize rema.modName.REMA2
 -- in ifs_opt_remaster_Input_Accept how does nextscreen work can we use this for save?
 
 ScriptCB_DoFile("ifelem_minipage")
@@ -53,6 +51,34 @@ function ifs_opt_remaster_fnClickTabButtons(this, screen)
 	end
 end
 
+function ifs_opt_remaster_ok_Pressed(this)
+
+	-- forget instant options if they shouldn't be saved
+	if this.settings.radios.saveSpOptions == false then
+		this.settings.instOp = { }
+	end
+
+	-- save global
+	rema_database = this.settings
+	
+	-- save to the disk
+	--this.Disable_Saving()
+	swbf2Remaster_settingsManager("save", function(...) end)--, this.Enable_Saving)
+end
+
+function ifs_opt_remaster_reset_Pressed(this)
+	
+	-- restore default settings
+	this.settings = swbf2Remaster_getDefaultSettings()
+	
+	-- save global
+	rema_database = this.settings
+	
+	-- save to the disk
+	--this.Disable_Saving()
+	swbf2Remaster_settingsManager("save", function(...) end)--, this.Enable_Saving)
+end
+
 
 -- screen event functions
 
@@ -70,6 +96,46 @@ function ifs_opt_remaster_Enter(this, bFwd)
 		if not rema_database then
 			print("Houston, we got a problem!!")
 		end
+		rema_database["scripts_IF"] = {	"GDB",
+										"ABC",
+										"XXX",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										"XY1",
+										}
+		rema_database["scripts_GT"] = {	{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										}
+		tprint(rema_database)
 		print("Data is here and this.settings, too")
 		this.settings = rema_database
 	end
@@ -84,7 +150,7 @@ end
 function ifs_opt_remaster_Input_Accept(this)
 
 	-- if default handles this, we are done
-	if(gShellScreen_fnDefaultInputAccept(this)) then
+	if gShellScreen_fnDefaultInputAccept(this, true) then
 		return
 	end
 	
@@ -180,7 +246,7 @@ function ifs_opt_remaster_radiolist_CreateItem(layout)
 	
 	Temp.radiobuttons = NewIFContainer {
 		x = offsetX,
-		y = layout.height / 2,
+		y = layout.height * 0.5,
 	}
 	
 	ifelem_AddRadioButtonGroup(Temp, 0, 0, ifs_opt_remaster_radio_layout, radioTag)
@@ -195,7 +261,7 @@ function ifs_opt_remaster_radiolist_PopulateItem(Dest, Data, bSelected, iColorR,
 		IFObj_fnSetVis(Dest, 1)
 
 		-- set strings
-		IFText_fnSetUString(Dest.NameStr,ScriptCB_tounicode(Data.title))
+		IFText_fnSetUString(Dest.NameStr,ScriptCB_getlocalizestr("rema.ifs.opt.REMA1." .. Data.tag))
 		IFText_fnSetUString(Dest.radiobuttons["1"][1].radiotext, ScriptCB_tounicode(Data.buttonStrings[1]))
 		IFText_fnSetUString(Dest.radiobuttons["1"][2].radiotext, ScriptCB_tounicode(Data.buttonStrings[2]))
 		
@@ -320,6 +386,11 @@ ifs_opt_remaster = NewIFShellScreen {
 
     Input_Accept = function(this)
 		ifs_opt_remaster_Input_Accept(this)
+		
+		-- check default again but with listboxes this time
+		if gShellScreen_fnDefaultInputAccept(this, false) then
+			return
+		end
 		
 		-- Check radio buttons
 		for i = 1, table.getn(this.minipage.list) do

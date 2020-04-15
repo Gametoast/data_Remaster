@@ -8,13 +8,13 @@ local remaInstFilename = "RemasterInstOpt"
 
 ------------------------------------------------------------------
 -- wrap AddIFScreen
--- wrap ifs_instant_options.push_prefs to save to database, too
+-- save and restore instant options
 -- install backdoor in ifs_saveop.Exit
 local remaIO_AddIFScreen = AddIFScreen
 
 AddIFScreen = function(table, name,...)
 	
-	-- waiting for ifs_instant_options, need to save options here
+	-- save and restore instant options
 	if name == "ifs_instant_options" then
 		
 		-- backup old function
@@ -60,7 +60,7 @@ AddIFScreen = function(table, name,...)
 		end
 	end
 	
-	-- waiting for ifs_saveop, need a backdoor here
+	-- instal backdoor to avoid errors
 	if name == "ifs_saveop" then
 					
 		-- backup old function
@@ -179,10 +179,10 @@ if SetState then
 		SetState = function(...)
 			-- we don't need those infos ingame
 			rema_database.instOp = nil
+			rema_database.scripts_OP = nil
 			rema_database.scripts_GT = nil
 			rema_database.themeIdx = nil
 			rema_database.regSet = nil
-			rema_database.scripts_OP = nil
 			
 			if ScriptCB_IsMetagameStateSaved() then
 				-- there is old data
@@ -365,37 +365,31 @@ function swbf2Remaster_getDefRegSettings()
 		radios = {
 			{
 				tag = "aihero",
-				title = ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.radio.aihero")),
 				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.no")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.yes"))},
 				default = 2
 			},
 			{
 				tag = "heroVO",
-				title = ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.radio.herovo")),
 				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.no")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.yes"))},
 				default = 2
 			},
 			{
 				tag = "customColor",
-				title = ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.radio.customcolor")),
 				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.off")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.on"))},
 				default = 2
 			},
 			{
 				tag = "awardEffects",
-				title = ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.radio.awardeffects")),
 				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.off")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.on"))},
 				default = 1
 			},
 			{
 				tag = "awardWeapons",
-				title = ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.radio.awardweapons")),
 				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.off")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.on"))},
 				default = 2
 			},
 			{
 				tag = "saveSpOptions",
-				title = ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.radio.saveopt")),
 				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.no")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.yes"))},
 				default = 1
 			},
@@ -415,7 +409,7 @@ function swbf2Remaster_getDefaultSettings()
 		scripts_IG = {},
 		scripts_OP = {},
 		scripts_GT = {
-			{modID = "Remaster", filePath = "REMASTER\\swbf2Remaster_theme.lvl"},
+			{modID = "REMA", filePath = "REMASTER\\swbf2Remaster_theme.lvl"},
 		},
 		themeIdx = 1,
 		regSet = swbf2Remaster_getDefRegSettings(),

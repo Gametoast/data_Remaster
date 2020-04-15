@@ -59,7 +59,7 @@ function swbf2Remaster_loadScripts()
 	temp.scripts_OP = {}
 	temp.scripts_IF = {}
 	temp.scripts_IG = {}
-	temp.scripts_GT = {{modID = "Remaster", filePath = "REMASTER\\swbf2Remaster_theme.lvl"},}
+	temp.scripts_GT = {{modID = "REMA", filePath = "REMASTER\\swbf2Remaster_theme.lvl"},}
 
 	--[[local index = {}
 	index[0] = {}
