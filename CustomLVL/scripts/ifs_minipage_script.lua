@@ -2,7 +2,6 @@
 -- SWBF 2 Remaster by Anakin
 ------------------------------------------------------------------
 
--- TODO: handle the input order for listboxes lying over each other
 
 -- utility functions
 
