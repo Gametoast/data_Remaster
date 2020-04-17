@@ -168,24 +168,11 @@ ifs_minipage_script_scriptListbox_layout = {
 	PopulateFn = ifs_minipage_script_listbox_PopulateItem,
 }
 
-ifs_minipage_script_dropdown_layout = {
-	showcount = 10,
-	ySpacing = 0,
-	width = 130,
-	flashy = 0,
-	slider = 1,
-	halign = "left",
-	font = "gamefont_small_rema",
-	yHeight = ScriptCB_GetFontHeight("gamefont_small_rema"),
-	CreateFn = ifs_minipage_script_listbox_CreateItem,
-	PopulateFn = ifs_minipage_script_listbox_PopulateItem,
-}
-
 ifs_minipage_script_theme_layout = {
 	tag = "theme",
 	string = "button",
-	btnw = ifelem_minipage_getSize() * 0.25,
-	x = 0,
+	--btnw = ifelem_minipage_getSize() * 0.25, calculated later
+	--x = 0, calculated later
 	y = 0,
 	btnFont = "gamefont_medium_rema",
 	lstHeight = 200,
@@ -263,11 +250,50 @@ function ifs_opt_remaster_fnBuildScriptScreen()
 	local listHeight = ifs_minipage_script_scriptListbox_layout.showcount * ifs_minipage_script_scriptListbox_layout.yHeight
 	local xListOffset = ifs_minipage_script_scriptListbox_layout.width / 2
 	local yListOffset = listHeight / 2 + ScriptCB_GetFontHeight("gamefont_medium_rema") * 1.5 + yOffset
+
+	local headerContainerWidth = scrnW * 0.5
+	local headerContainerSpacing = scrnW * 0.1
 	
-	local dropListHeight = ifs_minipage_script_dropdown_layout.showcount * (ifs_minipage_script_dropdown_layout.yHeight + ifs_minipage_script_dropdown_layout.ySpacing)
-	local dropListWidth = ifs_minipage_script_dropdown_layout.width + 10
+	ifs_minipage_script_theme_layout.x = headerContainerSpacing + 60 -- width of text infront of dropdown
+	ifs_minipage_script_theme_layout.btnw = headerContainerWidth - ifs_minipage_script_theme_layout.x - 2 * ScriptCB_GetFontHeight(ifs_minipage_script_theme_layout.btnFont)
 	
 	local elements = NewIFContainer {
+		theme = NewIFContainer {
+			title = NewIFText {
+				x = 0,
+				y = 0,
+				halign = "left",
+				textw = 60 + headerContainerSpacing,
+				nocreatebackground = 1,
+				font = "gamefont_medium_rema",
+				string = "Theme:",
+			},
+			dropdown = ifelem_minipage_NewDropDownButton(ifs_minipage_script_theme_layout)
+		},
+		install = NewIFContainer {
+			btnInstall = NewPCIFButton {
+				y = ScriptCB_GetFontHeight("gamefont_medium_rema") * 0.5,
+				x = headerContainerWidth - BackButtonW * 0.5,
+				btnw = BackButtonW, 
+				btnh = ScriptCB_GetFontHeight("gamefont_medium_rema"),
+				font = "gamefont_medium_rema", 
+				bg_width = BackButtonW, 
+				noTransitionFlash = 1,
+				tag = "_installScript",
+				string = "installieren",
+			},
+		},
+		loadScriptsButton = NewPCIFButton {
+			y = ScriptCB_GetFontHeight("gamefont_medium_rema") * 0.5,
+			x = scrnW * 0.3 * 0.5,
+			btnw = BackButtonW, 
+			btnh = ScriptCB_GetFontHeight("gamefont_medium_rema"),
+			font = "gamefont_medium_rema", 
+			bg_width = BackButtonW, 
+			noTransitionFlash = 1,
+			tag = "_loadScripts",
+			string = "rema.ifs.opt.REMA2.btnLoad",
+		},
 		loadscreen = NewIFContainer {
 			x = -gSafeW * 0.25,
 			y = -gSafeH*0.1,
@@ -293,29 +319,6 @@ function ifs_opt_remaster_fnBuildScriptScreen()
 				ZPos = 50,
 				nocreatebackground = 1,
 			},
-		},
-		theme = NewIFContainer {
-			title = NewIFText {
-				x = -scrnW * 0.33,
-				y = 0,
-				halign = "hcenter",
-				textw = scrnW * 0.33,
-				nocreatebackground = 1,
-				font = "gamefont_medium_rema",
-				string = "Theme:",
-			},
-			dropdown = ifelem_minipage_NewDropDownButton(ifs_minipage_script_theme_layout)
-		},
-		loadScriptsButton = NewPCIFButton {
-			y = ScriptCB_GetFontHeight("gamefont_medium_rema") * 0.5,
-			x = scrnW * 0.3 * 0.5,
-			btnw = BackButtonW, 
-			btnh = ScriptCB_GetFontHeight("gamefont_medium_rema"),
-			font = "gamefont_medium_rema", 
-			bg_width = BackButtonW, 
-			noTransitionFlash = 1,
-			tag = "_loadScripts",
-			string = "rema.ifs.opt.REMA2.btnLoad",
 		},
 		scripts = NewIFContainer {
 			opScripts = NewIFContainer {
@@ -395,12 +398,13 @@ function ifs_opt_remaster_fnBuildScriptScreen()
 	ListManager_fnInitList(elements.scripts.igScripts.list, ifs_minipage_script_scriptListbox_layout)
 	elements.scripts.igScripts.list.hilight.skin = nil
 	elements.scripts.igScripts.list.cursor.skin = nil
+
+	-- theme
+	ifelem_minipage_setRelativePos(elements.theme, 0, 0)
 	
 	-- load button
-	ifelem_minipage_setRelativePos(elements.loadScriptsButton, 0.66, 0)
-	
-	-- theme
-	ifelem_minipage_setRelativePos(elements.theme, 0.33, 0)
+	ifelem_minipage_setRelativePos(elements.loadScriptsButton, 0.75, -0.05)
+	ifelem_minipage_setRelativePos(elements.install, 0.5, 0)
 	
 	-- loadscreen
 	IFObj_fnSetVis(elements.loadscreen, false)
