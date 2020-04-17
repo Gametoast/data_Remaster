@@ -1,8 +1,12 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
-- gui lib and redesign remaster settingspage
-- ScriptCB_GetFontheigh hacken und fontnamen austauschen
+> gui lib and redesign remaster settingspage
 - heros have no 2nd life bar in vehicle
+- AI number increase 
+- remove theme filepath from database
+- rename radio garbage
+- restructure rema_database
+- change scan to install function
 
 ==ADDITIONAL CONTENT==
 - movie previews

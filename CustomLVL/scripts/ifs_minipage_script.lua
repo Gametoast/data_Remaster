@@ -91,7 +91,7 @@ function ifs_minipage_script_listbox_PopulateItem(Dest, Data, bSelected, iColorR
 
 	else
 		-- Blank this entry
-		IFText_fnSetString(Dest.NameStr,"This is a very long text to fill the whole box")
+		IFText_fnSetString(Dest.NameStr,"")
 	end
 
 end

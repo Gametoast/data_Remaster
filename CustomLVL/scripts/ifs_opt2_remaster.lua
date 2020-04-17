@@ -67,13 +67,13 @@ function ifs_opt_remaster_ok_Pressed(this)
 end
 
 function ifs_opt_remaster_reset_Pressed(this)
-	
+
 	-- restore default settings
 	this.settings = swbf2Remaster_getDefaultSettings()
-	
+
 	-- save global
 	rema_database = this.settings
-	
+
 	-- save to the disk
 	--this.Disable_Saving()
 	swbf2Remaster_settingsManager("save", function(...) end)--, this.Enable_Saving)
@@ -83,7 +83,6 @@ end
 -- screen event functions
 
 function ifs_opt_remaster_Enter(this, bFwd)
-	print(">>> Hello there", bFwd)
 
 	UpdatePCTitleText(this)
 	ifelem_tabmanager_SetSelected(this, gPCMainTabsLayout, "_tab_options")
@@ -96,7 +95,7 @@ function ifs_opt_remaster_Enter(this, bFwd)
 		if not rema_database then
 			print("Houston, we got a problem!!")
 		end
-		rema_database["scripts_IF"] = {	"GDB",
+		--[[rema_database["scripts_IF"] = {	"GDB",
 										"ABC",
 										"XXX",
 										"XY1",
@@ -122,6 +121,7 @@ function ifs_opt_remaster_Enter(this, bFwd)
 										"XY1",
 										}
 		rema_database["scripts_GT"] = {	{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
+										{["modID"] = "RCM", ["filePath"]="..\\..\\addon\\RCM\\scripts\\rcm_theme_script.lvl", },
 										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
 										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
 										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
@@ -133,10 +133,7 @@ function ifs_opt_remaster_Enter(this, bFwd)
 										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
 										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
 										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										}
-		tprint(rema_database)
-		print("Data is here and this.settings, too")
+										}--]]
 		this.settings = rema_database
 	end
 	
@@ -148,12 +145,12 @@ function ifs_opt_remaster_Exit(this)
 end
 
 function ifs_opt_remaster_Input_Accept(this)
-
+	
 	-- if default handles this, we are done
 	if gShellScreen_fnDefaultInputAccept(this, true) then
 		return
 	end
-	
+
 	-- If the tab manager handled this event, then we're done
 	if(gPlatformStr == "PC") then
 		-- Check tabs to see if we have a hit
@@ -177,7 +174,7 @@ function ifs_opt_remaster_Input_Accept(this)
 			return
 		end -- this.Nextscreen is valid (i.e. clicked on a tab)
 	end -- cur platform == PC
-	
+
 	-- bottom buttons
 	if this.CurButton == "_ok" then
 		ifs_opt_remaster_ok_Pressed(this)
@@ -287,7 +284,6 @@ function ifs_opt_remaster_radiolist_PopulateItem(Dest, Data, bSelected, iColorR,
 end
 
 function ifs_opt_remaster_fillRadioList(this)
-	
 	local dest = this.minipage.list
 	ListManager_fnFillContents(dest, rema_database.regSet.radios, ifs_opt_remaster_radiolist_layout)
 end
@@ -385,18 +381,19 @@ ifs_opt_remaster = NewIFShellScreen {
     end,
 
     Input_Accept = function(this)
+
 		ifs_opt_remaster_Input_Accept(this)
-		
-		-- check default again but with listboxes this time
-		if gShellScreen_fnDefaultInputAccept(this, false) then
-			return
-		end
 		
 		-- Check radio buttons
 		for i = 1, table.getn(this.minipage.list) do
 			if ( ifelem_HandleRadioButtonInputAccept(this.minipage.list[i]) ) then
 				return
 			end
+		end
+
+		-- check default again but with listboxes this time
+		if gShellScreen_fnDefaultInputAccept(this, false) then
+			return
 		end
     end,
 	

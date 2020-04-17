@@ -414,6 +414,16 @@ function swbf2Remaster_getDefaultSettings()
 		themeIdx = 1,
 		regSet = swbf2Remaster_getDefRegSettings(),
 	}
+	
+	for i = 1, table.getn(defaultSettings.regSet.radios) do
+	
+		local values = defaultSettings.regSet.radios[i]
+		local tag = values.tag
+		
+		if defaultSettings.radios[tag] == nil then
+			defaultSettings.radios[tag] = values.default
+		end
+	end
 
 	return defaultSettings
 end
