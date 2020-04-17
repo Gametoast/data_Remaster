@@ -27,7 +27,7 @@ function ifs_minipage_script_loadingScripts(this)
 	ifs_minipage_script_showLoading(this, false)
 	
 	ifs_minipage_script_fillScriptLists(this)
-	--ifs_opt_remaster_ok_Pressed(this)
+	ifs_opt_remaster_ok_Pressed(this)
 end
 
 function ifs_minipage_script_loadScripts_Pressed(this)
@@ -205,6 +205,9 @@ ifs_minipage_script_theme_layout = {
 -- event functions
 
 function ifs_minipage_script_scriptManger_Enter(this)
+	
+	this.delayedFunc = nil
+	delayTimer = 0
 
 	ifs_minipage_script_fillScriptLists(this)
 	ifs_minipage_script_updateThemeList(this)
@@ -234,6 +237,17 @@ function ifs_minipage_script_scriptManger_Input_Accept(this)
 	elseif this.minipage.theme.dropdown.expanded == true then
 		this.minipage.theme.dropdown.expanded = false
 		ifs_minipage_script_updateThemeList(this)	
+	end
+end
+
+function ifs_minipage_script_scriptManger_Update(this, fDt)
+	if this.delayedFunc then
+		if this.delayTimer > 0 then
+			this.delayTimer = this.delayTimer - 1
+		else
+			this.delayedFunc(this)
+			this.delayedFunc = nil
+		end
 	end
 end
 
@@ -392,6 +406,11 @@ function ifs_opt_remaster_fnBuildScriptScreen()
 	IFObj_fnSetVis(elements.loadscreen, false)
 	
 	-- build screen
-	ifelem_minipage_add("REMA2", elements, ifs_minipage_script_scriptManger_Enter, nil, ifs_minipage_script_scriptManger_Input_Accept, nil)
+	ifelem_minipage_add("REMA2",
+						elements,
+						ifs_minipage_script_scriptManger_Enter,
+						nil, -- Exist function
+						ifs_minipage_script_scriptManger_Input_Accept,
+						ifs_minipage_script_scriptManger_Update)
 end
 

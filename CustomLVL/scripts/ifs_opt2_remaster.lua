@@ -95,45 +95,7 @@ function ifs_opt_remaster_Enter(this, bFwd)
 		if not rema_database then
 			print("Houston, we got a problem!!")
 		end
-		--[[rema_database["scripts_IF"] = {	"GDB",
-										"ABC",
-										"XXX",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										"XY1",
-										}
-		rema_database["scripts_GT"] = {	{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "RCM", ["filePath"]="..\\..\\addon\\RCM\\scripts\\rcm_theme_script.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										{["modID"] = "REMA", ["filePath"]="REMASTER\\swbf2Remaster_theme.lvl", },
-										}--]]
+
 		this.settings = rema_database
 	end
 	
