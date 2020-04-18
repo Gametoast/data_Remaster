@@ -6,7 +6,7 @@
 - remove theme filepath from database
 - rename radio garbage
 - restructure rema_database
-- localize installieren
+- localize installieren auf scripts minipage
 - show name for the other script lists, too
 
 ==ADDITIONAL CONTENT==
@@ -35,3 +35,4 @@ load gc doesn't work at all. Problem is the missing database already fixed?
 campaign crash
 gc Enter is used as two input accepted
 include code from testscripts
+remaster settings page redesign
