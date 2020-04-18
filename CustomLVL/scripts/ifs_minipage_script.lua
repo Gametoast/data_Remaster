@@ -10,7 +10,7 @@ function ifs_minipage_script_showLoading(this, bool)
 	IFObj_fnSetVis(this.minipage.loadscreen, bool)
 	IFObj_fnSetVis(this.minipage.scripts,not bool)
 	IFObj_fnSetVis(this.minipage.theme,not bool)
-	IFObj_fnSetVis(this.minipage.loadScriptsButton,not bool)
+	IFObj_fnSetVis(this.minipage.install,not bool)
 	IFObj_fnSetVis(this.donebutton,not bool)
 	IFObj_fnSetVis(this.resetbutton,not bool)
 	IFObj_fnSetVis(this._Tabs, not bool)
@@ -53,6 +53,95 @@ function ifs_minipage_script_processThemeChange(this, newIdx)
 	ifs_minipage_script_updateThemeList(this)
 end
 
+function ifs_minipage_script_removeBoxFocus()
+	-- only if noone else was faster
+	if gCurEditbox then
+		IFEditbox_fnHilight(gCurEditbox, nil)
+		gCurEditbox = nil
+	end
+end
+
+function ifs_minipage_script_install(this, eBox)
+	
+	local boxstring = IFEditbox_fnGetString(eBox)
+	eBox.CurStr = ""
+	IFEditbox_fnSetString(eBox, eBox.CurStr)
+	
+	
+	if boxstring == "*" then
+		ifs_minipage_script_showLoading(this, true)
+		ifs_minipage_script_loadingScripts(this)
+	else
+		-- split and check
+		local idlist = {}
+
+		for id in string.gfind(boxstring, "[^,|%s]+") do
+			table.insert(idlist, id)
+		end
+
+		for _, id in idlist do
+			local opPath = swbf2Remaster_getOPPath(id)
+			local ifPath = swbf2Remaster_getIFPath(id)
+			local igPath = swbf2Remaster_getIGPath(id)
+			local gtPath = swbf2Remaster_getGTPath(id)
+			
+			if ScriptCB_IsFileExist(opPath) ~= 0 then
+				local exists = false
+				for _, modID in rema_database.scripts_OP do
+					if modID == id then
+						exists = true
+						break
+					end
+				end
+				if exists == false then
+					table.insert(rema_database.scripts_OP, id)
+				end
+			end
+			
+			if ScriptCB_IsFileExist(ifPath) ~= 0 then
+				local exists = false
+				for _, modID in rema_database.scripts_IF do
+					if modID == id then
+						exists = true
+						break
+					end
+				end
+				if exists == false then
+					table.insert(rema_database.scripts_IF, id)
+				end
+			end
+			
+			if ScriptCB_IsFileExist(igPath) ~= 0 then
+				local exists = false
+				for _, modID in rema_database.scripts_IG do
+					if modID == id then
+						exists = true
+						break
+					end
+				end
+				if exists == false then
+					table.insert(rema_database.scripts_IG, id)
+				end
+			end
+			
+			if ScriptCB_IsFileExist(gtPath) ~= 0 then
+				local exists = false
+				for _, modID in rema_database.scripts_GT do
+					if modID == id then
+						exists = true
+						break
+					end
+				end
+				if exists == false then
+					table.insert(rema_database.scripts_GT, {modID = id, filePath = gtPath})
+				end
+			end
+		end
+		
+		ifs_minipage_script_fillScriptLists(this)
+		ifs_opt_remaster_ok_Pressed(this)
+	end
+end
 
 -- Listbox
 
@@ -191,16 +280,23 @@ ifs_minipage_script_theme_layout = {
 
 -- event functions
 
-function ifs_minipage_script_scriptManger_Enter(this)
+function ifs_minipage_script_Enter(this)
 	
 	this.delayedFunc = nil
 	delayTimer = 0
+	this.minipage.install.input.box.cursor.y = -20
 
 	ifs_minipage_script_fillScriptLists(this)
 	ifs_minipage_script_updateThemeList(this)
 end
 
-function ifs_minipage_script_scriptManger_Input_Accept(this)
+function ifs_minipage_script_Input_Accept(this)
+
+	-- remove focus, do delayed to accept enter for install
+	if not IFObj_fnTestHotSpot(this.minipage.install.input.box) and gCurEditbox then
+		this.delayTimer = 1
+		this.delayedFunc = ifs_minipage_script_removeBoxFocus
+	end
 	
 	if gMouseListBox == this.minipage.theme.dropdown.listbox then
 		ifs_minipage_script_processThemeChange(this, gMouseListBox.Layout.CursorIdx)
@@ -211,9 +307,8 @@ function ifs_minipage_script_scriptManger_Input_Accept(this)
 		return
 	end
 	
-
-	if this.CurButton == "_loadScripts" then
-		ifs_minipage_script_loadScripts_Pressed(this)
+	if this.CurButton == "_installScript" then
+		ifs_minipage_script_install(this, this.minipage.install.input.box)
 		ifelm_shellscreen_fnPlaySound(this.acceptSound)
 	elseif this.CurButton ~= nil and string.find(this.CurButton, "_ifeDropBtn_") == 1 then
 		this.minipage.theme.dropdown.expanded = not this.minipage.theme.dropdown.expanded
@@ -227,13 +322,25 @@ function ifs_minipage_script_scriptManger_Input_Accept(this)
 	end
 end
 
-function ifs_minipage_script_scriptManger_Update(this, fDt)
+function ifs_minipage_script_Update(this, fDt)
 	if this.delayedFunc then
 		if this.delayTimer > 0 then
 			this.delayTimer = this.delayTimer - 1
 		else
 			this.delayedFunc(this)
 			this.delayedFunc = nil
+		end
+	end
+end
+
+function ifs_minipage_script_Input_KeyDown(this, iKey)
+	if gCurEditbox then
+		if iKey == 10 or iKey == 13 then
+			-- Enter => install
+			ifs_minipage_script_install(this, gCurEditbox)
+			ifs_minipage_script_removeBoxFocus()
+		else
+			IFEditbox_fnAddChar(gCurEditbox, iKey)
 		end
 	end
 end
@@ -282,17 +389,21 @@ function ifs_opt_remaster_fnBuildScriptScreen()
 				tag = "_installScript",
 				string = "installieren",
 			},
-		},
-		loadScriptsButton = NewPCIFButton {
-			y = ScriptCB_GetFontHeight("gamefont_medium_rema") * 0.5,
-			x = scrnW * 0.3 * 0.5,
-			btnw = BackButtonW, 
-			btnh = ScriptCB_GetFontHeight("gamefont_medium_rema"),
-			font = "gamefont_medium_rema", 
-			bg_width = BackButtonW, 
-			noTransitionFlash = 1,
-			tag = "_loadScripts",
-			string = "rema.ifs.opt.REMA2.btnLoad",
+			input = NewIFContainer {
+				x = 0.5 * (headerContainerWidth - BackButtonW - headerContainerSpacing),
+				y = 10,
+				box = NewEditbox {
+					x = 0,
+					y = 0,
+					width = headerContainerWidth - BackButtonW - headerContainerSpacing,
+					height = 40,
+					font = "gamefont_medium_rema",
+					--string = "ID",
+					MaxLen = headerContainerWidth - BackButtonW - headerContainerSpacing - 35,
+					MaxChars = 20,
+					bKeepsFocus = 1,
+				},
+			},
 		},
 		loadscreen = NewIFContainer {
 			x = -gSafeW * 0.25,
@@ -403,18 +514,19 @@ function ifs_opt_remaster_fnBuildScriptScreen()
 	ifelem_minipage_setRelativePos(elements.theme, 0, 0)
 	
 	-- load button
-	ifelem_minipage_setRelativePos(elements.loadScriptsButton, 0.75, -0.05)
 	ifelem_minipage_setRelativePos(elements.install, 0.5, 0)
 	
 	-- loadscreen
 	IFObj_fnSetVis(elements.loadscreen, false)
 	
 	-- build screen
-	ifelem_minipage_add("REMA2",
-						elements,
-						ifs_minipage_script_scriptManger_Enter,
-						nil, -- Exist function
-						ifs_minipage_script_scriptManger_Input_Accept,
-						ifs_minipage_script_scriptManger_Update)
+	local callbackTable = {
+		Enter = ifs_minipage_script_Enter,
+		Input_Accept = ifs_minipage_script_Input_Accept,
+		Update = ifs_minipage_script_Update,
+		Input_KeyDown = ifs_minipage_script_Input_KeyDown,
+	}
+	
+	ifelem_minipage_add("REMA2", elements, callbackTable)
 end
 

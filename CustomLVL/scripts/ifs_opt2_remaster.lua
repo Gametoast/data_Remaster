@@ -103,11 +103,9 @@ function ifs_opt_remaster_Enter(this, bFwd)
 end
 
 function ifs_opt_remaster_Exit(this)
-	print(">>> Bye Bye opt2 screen")
 end
 
 function ifs_opt_remaster_Input_Accept(this)
-	
 	-- if default handles this, we are done
 	if gShellScreen_fnDefaultInputAccept(this, true) then
 		return
@@ -164,7 +162,6 @@ remaTabsLayout = {
 -- button press functions
 
 function ifs_opt_remaster_callbackToggle(buttongroup, btnNum)
-	print(">> toggle")
 	ifs_opt_remaster.settings.radios[buttongroup.tag] = btnNum
 end
 

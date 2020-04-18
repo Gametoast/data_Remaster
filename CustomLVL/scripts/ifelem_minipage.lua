@@ -171,14 +171,11 @@ end
 --
 --	parameter:	modID			- mod's 3-letter ID, string
 --				elements		- table with graphic elements, NewIFContainer
---				fnEnter			- callback for enter event, function
---				fnExit			- callback for exit event, function
---				fnInputAccept	- callback for Input_Accept event, function
---				fnUpdate		- callback for Update event, function
+--				callbackTable	- table with name and function that should be added, table
 --
 --	return:		none
 --
-function ifelem_minipage_add(modID, elements, fnEnter, fnExit, fnInputAccept, fnUpdate)
+function ifelem_minipage_add(modID, elements, callbackTable)
 	
 	local screen = NewIFShellScreen {
 		nologo = 1,
@@ -193,35 +190,43 @@ function ifelem_minipage_add(modID, elements, fnEnter, fnExit, fnInputAccept, fn
 		Enter = function(this, bFwd)
 			ifs_opt_remaster_Enter(this, bFwd)
 			
-			if fnEnter then
-				fnEnter(this, bFwd)
+			if callbackTable.Enter then
+				callbackTable.Enter(this, bFwd)
 			end
 		end,
 		
 		Exit = function(this)
 			ifs_opt_remaster_Exit(this)
 			
-			if fnExit then
-				fnExit(this)
+			if callbackTable.Exit then
+				callbackTable.Exit(this)
 			end
 		end,
 
 		Input_Accept = function(this)
 			ifs_opt_remaster_Input_Accept(this)
 			
-			if fnInputAccept then
-				fnInputAccept(this)
+			if callbackTable.Input_Accept then
+				callbackTable.Input_Accept(this)
 			end
 		end,
 		
 		Update = function(this, fDt)
 			ifs_opt_remaster_Update(this, fDt)
 			
-			if fnUpdate then
-				fnUpdate(this, fDt)
+			if callbackTable.Update then
+				callbackTable.Update(this, fDt)
 			end
 		end
 	}
+	
+	-- add additional callbacks
+	for name, func in pairs(callbackTable) do
+		-- already handled those function names
+		if name ~= "Enter" and name ~= "Exit" and name ~= "Input_Accept" and name ~= "Update" then
+			screen[name] = func
+		end
+	end
 	
 	-- header and tabs
 	AddPCTitleText(screen)
@@ -265,7 +270,6 @@ function ifelem_minipage_add(modID, elements, fnEnter, fnExit, fnInputAccept, fn
 	local idx = table.getn(ifelem_minipage_tables) + 1
 	screen.tabIdx = "_tab_" .. tostring(idx)
 	ifelem_minipage_tables[idx] = { tabID = screen.tabIdx, screen = "minipage_" .. modID, }
-	
 	-- build the screen
 	AddIFScreen(screen, "minipage_" .. modID)
 	screen = DoPostDelete(screen)
