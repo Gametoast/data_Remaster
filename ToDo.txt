@@ -6,6 +6,8 @@
 - remove theme filepath from database
 - rename radio garbage
 - restructure rema_database
+- localize installieren
+- show name for the other script lists, too
 
 ==ADDITIONAL CONTENT==
 - movie previews
