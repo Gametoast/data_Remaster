@@ -1193,64 +1193,113 @@ Group("player1vehiclehealthbar")
 
 }
 
-Group("player1herobar")
+Group("player1herobaroutsidevehicle")
 {
-    Position(0.008386, 0.942448, 0.000000, "Viewport")
-    EventEnable("player1.hero.healthFraction")
-    EventDisable("player1.hero.healthDisable")
-    BarBitmap("player1herobar_COLOR")
-    {
-        ScaleTexture(0)
-        EventValue("player1.hero.healthFraction")
-        Bitmap("hud_herobar_saberglow")
-        BitmapRect(100.000000, 25.000000, "Left", "Top", "Pixels")
-        Position(100.000000, -25.000000, 0.000000, "Pixels")
-        Scale(4.000000, 1.000000, 1.000000)
-        ZOrder(7)
-        Alpha(0.800000)
-        Color(0, 150, 213)
-        EventEnable("initialize")
-        EventColor("player1.heroHealthColor")
-    }
+	EventEnable("player1.vehicle.healthDisable")
+    EventDisable("player1.vehicle.health")
+	Group("player1herobar")
+	{
+		Position(0.008386, 0.942448, 0.000000, "Viewport")
+		EventEnable("player1.hero.healthFraction")
+		EventDisable("player1.hero.healthDisable")
+		BarBitmap("player1herobar_COLOR")
+		{
+			ScaleTexture(0)
+			EventValue("player1.hero.healthFraction")
+			Bitmap("hud_herobar_saberglow")
+			BitmapRect(100.000000, 25.000000, "Left", "Top", "Pixels")
+			Position(100.000000, -25.000000, 0.000000, "Pixels")
+			Scale(4.000000, 1.000000, 1.000000)
+			ZOrder(7)
+			Alpha(0.800000)
+			Color(0, 150, 213)
+			EventEnable("initialize")
+			EventColor("player1.heroHealthColor")
+		}
 
-    BarBitmap("player1herobar_INNERWHITE")
-    {
-        ScaleTexture(0)
-        FlashyScale(0.000000)
-        EventValue("player1.hero.healthFraction")
-        Bitmap("hud_herobar_saberglow")
-        BitmapRect(95.000000, 15.000000, "Left", "Top", "Pixels")
-        Position(100.000000, -20.000000, 0.000000, "Pixels")
-        Scale(4.000000, 1.000000, 1.000000)
-        ZOrder(6)
-        Alpha(0.800000)
-        EventEnable("initialize")
-    }
+		BarBitmap("player1herobar_INNERWHITE")
+		{
+			ScaleTexture(0)
+			FlashyScale(0.000000)
+			EventValue("player1.hero.healthFraction")
+			Bitmap("hud_herobar_saberglow")
+			BitmapRect(95.000000, 15.000000, "Left", "Top", "Pixels")
+			Position(100.000000, -20.000000, 0.000000, "Pixels")
+			Scale(4.000000, 1.000000, 1.000000)
+			ZOrder(6)
+			Alpha(0.800000)
+			EventEnable("initialize")
+		}
 
-    ProceduralBarBitmap("player1herobar_PULSE")
-    {
-        ScaleTexture(0)
-        EventValue("player1.hero.healthFraction")
-        Bitmap("hud_herobar_saberglow")
-        BitmapRect(95.000000, 33.200207, "Left", "Top", "Pixels")
-        Position(100.000000, -30.000000, 0.000000, "Pixels")
-        Scale(3.000000, 1.000000, 1.000000)
-        ZOrder(0)
-        Alpha(0.082560)
-        BlendMode("Additive")
-        EventEnable("initialize")
-    }
+		ProceduralBarBitmap("player1herobar_PULSE")
+		{
+			ScaleTexture(0)
+			EventValue("player1.hero.healthFraction")
+			Bitmap("hud_herobar_saberglow")
+			BitmapRect(95.000000, 33.200207, "Left", "Top", "Pixels")
+			Position(100.000000, -30.000000, 0.000000, "Pixels")
+			Scale(3.000000, 1.000000, 1.000000)
+			ZOrder(0)
+			Alpha(0.082560)
+			BlendMode("Additive")
+			EventEnable("initialize")
+		}
 
-    Bitmap("player1herobar_herobarsaberhilt")
-    {
-        Bitmap("hud_herobar_saberhilt")
-        BitmapRect(100.000000, 25.000000, "Left", "Top", "Pixels")
-        Position(1.462264, -27.136909, 0.000000, "Pixels")
-        Alpha(0.750000)
-        EventEnable("player1.hero.health")
-        EventDisable("player1.hero.healthDisable")
-    }
+		Bitmap("player1herobar_herobarsaberhilt")
+		{
+			Bitmap("hud_herobar_saberhilt")
+			BitmapRect(100.000000, 25.000000, "Left", "Top", "Pixels")
+			Position(1.462264, -27.136909, 0.000000, "Pixels")
+			Alpha(0.750000)
+			EventEnable("player1.hero.health")
+			EventDisable("player1.hero.healthDisable")
+		}
 
+	}
+}
+
+Group("player1herobarinsidevehicle")
+{
+	EventEnable("player1.vehicle.health")
+    EventDisable("player1.vehicle.healthDisable")
+	Group("player1herobarvehicle")
+	{
+		Position(0.120799, 0.986269, 0.000000, "Viewport")
+		EventEnable("player1.hero.healthFraction")
+		EventDisable("player1.hero.healthDisable")
+		Text("player1healthinvehicle_numbers")
+		{
+			TextBreak("Word")
+			TextStyle("Shadow")
+			TextAlignment("Center", "Center")
+			TextFont("gamefont_large_rema")
+			EventNumber("player1.hero.health")
+			//Position(0.000000, 19.000000, 0.000000, "Pixels")
+			Position(0.000000, -30.000000, 0.000000, "Pixels")
+			ZOrder(1)
+			EventEnable("player1.hero.health")
+			EventDisable("player1.hero.healthDisable")
+		}
+
+		BarBitmap("player1healthinvehicle_fill")
+		{
+			FlashyIncFadeOutTime(1.000000)
+			FlashyDecFadeOutTime(1.000000)
+			EventValue("player1.hero.healthFraction")
+			Bitmap("hud_jetpack_and_energybar_fill")
+			BitmapRect(280.000000, 20.000000, "Center", "Center", "Pixels")
+			TexCoords(0.000000, 0.500000, 1.000000, 1.000000)
+			//Position(0.000000, 19.000000, 0.000000, "Pixels")
+			Position(0.000000, -30.000000, 0.000000, "Pixels")
+			ZOrder(1)
+			Color(0, 0, 200)
+			ColorChange(0, 0, 0)
+			ColorChangeRate(0.000000)
+			EventEnable("player1.hero.health")
+			EventDisable("player1.hero.healthDisable")
+			EventColor("player1.heroHealthColor")
+		}
+	}
 }
 
 MultilineText("player1systemMessages")

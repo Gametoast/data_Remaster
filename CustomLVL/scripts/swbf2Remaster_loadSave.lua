@@ -14,9 +14,9 @@ local remaIO_AddIFScreen = AddIFScreen
 
 AddIFScreen = function(table, name,...)
 	
-	-- save and restore instant options
+	--[[ save and restore instant options
 	if name == "ifs_instant_options" then
-		
+
 		-- backup old function
 		local remaIO_instOpPush = ifs_instant_options.push_prefs
 		
@@ -28,7 +28,7 @@ AddIFScreen = function(table, name,...)
 				rema_database.instOp.GamePrefs = this.GamePrefs
 				rema_database.instOp.HeroPrefs = this.HeroPrefs
 			end
-			
+			print("marker 5")
 			-- let the original function happen
 			return remaIO_instOpPush(this)
 		end
@@ -41,7 +41,6 @@ AddIFScreen = function(table, name,...)
 			
 			-- let the original function happen, but catch return values
 			local remaIO_returnVal = {remaIO_instOpDefault(this)}
-
 			-- if setting is activated..
 			if rema_database.radios.saveSpOptions == 2 then
 
@@ -52,13 +51,14 @@ AddIFScreen = function(table, name,...)
 				
 				if rema_database.instOp.HeroPrefs ~= nil then
 					this.HeroPrefs = rema_database.instOp.HeroPrefs
+					tprint(this.HeroPrefs)
 				end
 			end
 
 			-- return the original return values
 			return unpack(remaIO_returnVal)
 		end
-	end
+	end--]]
 	
 	-- instal backdoor to avoid errors
 	if name == "ifs_saveop" then
@@ -147,10 +147,74 @@ AddIFScreen = function(table, name,...)
 	return remaIO_AddIFScreen(table, name, unpack(arg))
 end
 
+local tempSet = ScriptCB_SetNetGameDefaults
+ScriptCB_SetNetGameDefaults = function(defaults, ...)
+	if rema_database then
+		if rema_database.radios.saveSpOptions == 2 then
+			rema_database.instOp.GamePrefs = defaults
+		end
+	else
+		print("marker no databse in ScriptCB_SetNetGameDefaults")
+	end
+	
+	return tempSet(defaults, unpack(arg))
+end
+
+local tempSetHero = ScriptCB_SetNetHeroDefaults
+ScriptCB_SetNetHeroDefaults = function(defaults, ...)
+	if rema_database then
+		if rema_database.radios.saveSpOptions == 2 then
+			rema_database.instOp.HeroPrefs = defaults
+		end
+	else
+		print("marker no databse in ScriptCB_SetNetHeroDefaults")
+	end
+	
+	return tempSetHero(defaults, unpack(arg))
+end
+
+local tempGet = ScriptCB_GetNetGameDefaults
+ScriptCB_GetNetGameDefaults = function(...)
+	if rema_database then
+		if rema_database.radios.saveSpOptions == 2 then
+			if rema_database.instOp.GamePrefs ~= nil then
+				return rema_database.instOp.GamePrefs
+			else
+				print("marker no GamePrefs in ScriptCB_GetNetGameDefaults")
+				return tempGet(unpack(arg))
+			end
+		else
+			return tempGet(unpack(arg))
+		end
+	else
+		print("marker no databse in ScriptCB_GetNetGameDefaults")
+		return tempGet(unpack(arg))
+	end
+end
+
+local tempGetHero = ScriptCB_GetNetHeroDefaults
+ScriptCB_GetNetHeroDefaults = function(...)
+	if rema_database then
+		if rema_database.radios.saveSpOptions == 2 then
+			if rema_database.instOp.HeroPrefs ~= nil then
+				return rema_database.instOp.HeroPrefs
+			else
+				print("marker no HeroPrefs in ScriptCB_GetNetHeroDefaults")
+				return tempGetHero(unpack(arg))
+			end
+		else
+			return tempGetHero(unpack(arg))
+		end
+	else
+		print("marker no databse in ScriptCB_GetNetHeroDefaults")
+		return tempGetHero(unpack(arg))
+	end
+end
 
 ------------------------------------------------------------------
 -- wrap ScriptCB_PushScreen
 -- load settings before ifs_boot
+-- refresh instant options 
 local remaIO_PushScreen = ScriptCB_PushScreen
 
 ScriptCB_PushScreen = function(name,...)
@@ -160,12 +224,20 @@ ScriptCB_PushScreen = function(name,...)
 			function(failure)
 				swbf2Remaster_dataIntegrityTest(failure)
 				swbf2Remaster_loadTheme()
+				
+				-- restore instant options if needed and known
+				-- TODO
+				print("marker 1")
+				ifs_instant_options:set_defaults()
+				ifs_instant_options:push_prefs()
+				--ScriptCB_SetNetGameDefaults(ScriptCB_GetNetGameDefaults())
+				--ScriptCB_SetNetHeroDefaults(ScriptCB_GetNetHeroDefaults())
+				
 				remaIO_PushScreen("ifs_boot")
 				end)
 	else
 		remaIO_PushScreen(name, unpack(arg))
 	end
-
 end
 
 

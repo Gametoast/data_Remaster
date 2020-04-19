@@ -1,7 +1,7 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
 > gui lib, new minipage docu
-- heros 2nd life bar in vehicle
+> save instant options does not work when not entering the settings page once
 - restructure rema_database (rename radio garbage, remove theme filepath from database)
 
 ==ADDITIONAL CONTENT==
@@ -32,3 +32,4 @@ gc Enter is used as two input accepted
 include code from testscripts
 remaster settings page redesign
 AI number increase
+overlap healthbar for heros in vehicle
