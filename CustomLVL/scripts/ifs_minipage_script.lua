@@ -194,16 +194,28 @@ function ifs_minipage_script_fillScriptLists(this)
 	local ifStrings = {}
 	local igStrings = {}
 	
-	for i = 1, table.getn(rema_database.scripts_OP) do
-		opStrings[i] = ScriptCB_tounicode(rema_database.scripts_OP[i])
+	for i, modID in rema_database.scripts_OP do
+		local modName = " - " .. ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.modName." .. modID))
+		if modName == " - [NULL]" then
+			modName = ""
+		end
+		opStrings[i] = ScriptCB_tounicode(modID .. modName)
 	end
 	
-	for i = 1, table.getn(rema_database.scripts_IF) do
-		ifStrings[i] = ScriptCB_tounicode(rema_database.scripts_IF[i])
+	for i, modID in rema_database.scripts_IF do
+		local modName = " - " .. ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.modName." .. modID))
+		if modName == " - [NULL]" then
+			modName = ""
+		end
+		ifStrings[i] = ScriptCB_tounicode(modID .. modName)
 	end
 	
-	for i = 1, table.getn(rema_database.scripts_IG) do
-		igStrings[i] = ScriptCB_tounicode(rema_database.scripts_IG[i])
+	for i, modID in rema_database.scripts_IG do
+		local modName = " - " .. ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.modName." .. modID))
+		if modName == " - [NULL]" then
+			modName = ""
+		end
+		igStrings[i] = ScriptCB_tounicode(modID .. modName)
 	end
 	
 	ListManager_fnFillContents(dest.opScripts.list, opStrings, ifs_minipage_script_scriptListbox_layout)
@@ -387,7 +399,7 @@ function ifs_opt_remaster_fnBuildScriptScreen()
 				bg_width = BackButtonW, 
 				noTransitionFlash = 1,
 				tag = "_installScript",
-				string = "installieren",
+				string = "rema.ifs.opt.REMA2.btnInstall",
 			},
 			input = NewIFContainer {
 				x = 0.5 * (headerContainerWidth - BackButtonW - headerContainerSpacing),

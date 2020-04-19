@@ -371,6 +371,30 @@ else
 	print("        : ScriptCB_GetScreenInfo() not found!")
 end
 
+-- try to wrap ScriptCB_GetNetGameDefaults ----------------------------
+-- change instant options
+-- increase max AI bots
+if ScriptCB_GetNetGameDefaults then
+	
+	-- backup old function
+	local remaGUI_ScriptCB_GetNetGameDefaults = ScriptCB_GetNetGameDefaults
+	
+	-- wrap ScriptCB_GetNetGameDefaults
+	ScriptCB_GetNetGameDefaults = function(...)
+		-- let the original function happen and catch the return value
+		local defaultTable = remaGUI_ScriptCB_GetNetGameDefaults(unpack(arg))
+		
+		-- increase max AI bots
+		defaultTable.iMaxBots = 64
+		
+		-- return the manipulated values
+		return defaultTable
+	end
+else
+	print("Remaster: Error")
+	print("        : ScriptCB_GetNetGameDefaults() not found!")
+end
+
 -- try to wrap AddIFScreen ---------------------------------------
 -- fix profile select screen
 -- fix multiplayer current online match screen

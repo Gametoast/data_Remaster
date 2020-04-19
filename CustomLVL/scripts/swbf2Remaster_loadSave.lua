@@ -41,7 +41,7 @@ AddIFScreen = function(table, name,...)
 			
 			-- let the original function happen, but catch return values
 			local remaIO_returnVal = {remaIO_instOpDefault(this)}
-			
+
 			-- if setting is activated..
 			if rema_database.radios.saveSpOptions == 2 then
 
@@ -54,7 +54,7 @@ AddIFScreen = function(table, name,...)
 					this.HeroPrefs = rema_database.instOp.HeroPrefs
 				end
 			end
-			
+
 			-- return the original return values
 			return unpack(remaIO_returnVal)
 		end

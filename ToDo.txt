@@ -1,13 +1,8 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
 > gui lib, new minipage docu
-- heros have no 2nd life bar in vehicle
-- AI number increase 
-- remove theme filepath from database
-- rename radio garbage
-- restructure rema_database
-- localize installieren auf scripts minipage
-- show name for the other script lists, too
+- heros 2nd life bar in vehicle
+- restructure rema_database (rename radio garbage, remove theme filepath from database)
 
 ==ADDITIONAL CONTENT==
 - movie previews
@@ -36,3 +31,4 @@ campaign crash
 gc Enter is used as two input accepted
 include code from testscripts
 remaster settings page redesign
+AI number increase

@@ -365,7 +365,7 @@ function ifs_opt_remaster_fnBuildScreen(this)
 
 	-- Debuglog
 	IFText_fnSetUString(this.debuglog, ScriptCB_tounicode(tostring(gScrnW) .. "x" .. tostring(gScrnH) .. "\n" .. tostring(gSafeW) .. "x" .. tostring(gSafeH)))
-
+	IFObj_fnSetVis(this.debuglog, false)
 
 	-- header and tabs
 	AddPCTitleText(this) 
