@@ -8,58 +8,10 @@ local remaInstFilename = "RemasterInstOpt"
 
 ------------------------------------------------------------------
 -- wrap AddIFScreen
--- save and restore instant options
 -- install backdoor in ifs_saveop.Exit
 local remaIO_AddIFScreen = AddIFScreen
-
 AddIFScreen = function(table, name,...)
-	
-	--[[ save and restore instant options
-	if name == "ifs_instant_options" then
-
-		-- backup old function
-		local remaIO_instOpPush = ifs_instant_options.push_prefs
 		
-		-- wrap ifs_instant_options.push_prefs
-		ifs_instant_options.push_prefs = function(this)
-
-			-- if the setting is activated, backup the data
-			if rema_database.radios.saveSpOptions == 2 then
-				rema_database.instOp.GamePrefs = this.GamePrefs
-				rema_database.instOp.HeroPrefs = this.HeroPrefs
-			end
-			print("marker 5")
-			-- let the original function happen
-			return remaIO_instOpPush(this)
-		end
-		
-		-- backup old function
-		local remaIO_instOpDefault = ifs_instant_options.set_defaults
-		
-		-- wrap ifs_instant_options.set_defaults
-		ifs_instant_options.set_defaults = function(this)
-			
-			-- let the original function happen, but catch return values
-			local remaIO_returnVal = {remaIO_instOpDefault(this)}
-			-- if setting is activated..
-			if rema_database.radios.saveSpOptions == 2 then
-
-				-- ..and the values are known, restore them
-				if rema_database.instOp.GamePrefs ~= nil then
-					this.GamePrefs = rema_database.instOp.GamePrefs
-				end
-				
-				if rema_database.instOp.HeroPrefs ~= nil then
-					this.HeroPrefs = rema_database.instOp.HeroPrefs
-					tprint(this.HeroPrefs)
-				end
-			end
-
-			-- return the original return values
-			return unpack(remaIO_returnVal)
-		end
-	end--]]
-	
 	-- instal backdoor to avoid errors
 	if name == "ifs_saveop" then
 					
@@ -139,112 +91,112 @@ AddIFScreen = function(table, name,...)
 			Popup_YesNo:fnActivate(1)
 			gPopup_fnSetTitleStr(Popup_YesNo, ifs_saveop.PlatformBaseStr .. ".save25")
 		end
-		
-	
 	end
 
 	-- let the original function happen
 	return remaIO_AddIFScreen(table, name, unpack(arg))
 end
 
-local tempSet = ScriptCB_SetNetGameDefaults
+
+------------------------------------------------------------------
+-- wrap ScriptCB_Set/GetNetGame/HeroDefaults
+-- grap settings when pushed
+-- give saved settings back when asked for
+
+local remaIO_SetGameDefaults = ScriptCB_SetNetGameDefaults
 ScriptCB_SetNetGameDefaults = function(defaults, ...)
+	-- if we have a database..
 	if rema_database then
+		-- ..and option is active..
 		if rema_database.radios.saveSpOptions == 2 then
+			-- ..save new settings
 			rema_database.instOp.GamePrefs = defaults
 		end
-	else
-		print("marker no databse in ScriptCB_SetNetGameDefaults")
 	end
-	
-	return tempSet(defaults, unpack(arg))
+
+	-- let ScriptCB save, too
+	return remaIO_SetGameDefaults(defaults, unpack(arg))
 end
 
-local tempSetHero = ScriptCB_SetNetHeroDefaults
+local remaIO_SetHeroDefaults = ScriptCB_SetNetHeroDefaults
 ScriptCB_SetNetHeroDefaults = function(defaults, ...)
+	-- if we have a database..
 	if rema_database then
+		-- ..and option is active..
 		if rema_database.radios.saveSpOptions == 2 then
+			-- ..save new settings
 			rema_database.instOp.HeroPrefs = defaults
 		end
-	else
-		print("marker no databse in ScriptCB_SetNetHeroDefaults")
 	end
-	
-	return tempSetHero(defaults, unpack(arg))
+
+	-- let ScriptCB save, too
+	return remaIO_SetHeroDefaults(defaults, unpack(arg))
 end
 
-local tempGet = ScriptCB_GetNetGameDefaults
+local remaIO_GetGameDefaults = ScriptCB_GetNetGameDefaults
 ScriptCB_GetNetGameDefaults = function(...)
+	-- if there is a database..
 	if rema_database then
+		-- ..and the option is active..
 		if rema_database.radios.saveSpOptions == 2 then
+			-- ..and we have the data..
 			if rema_database.instOp.GamePrefs ~= nil then
+				-- ..return it
 				return rema_database.instOp.GamePrefs
-			else
-				print("marker no GamePrefs in ScriptCB_GetNetGameDefaults")
-				return tempGet(unpack(arg))
 			end
-		else
-			return tempGet(unpack(arg))
 		end
-	else
-		print("marker no databse in ScriptCB_GetNetGameDefaults")
-		return tempGet(unpack(arg))
 	end
+
+	-- in any other cases, return the scriptCB data
+	return remaIO_GetGameDefaults(unpack(arg))
 end
 
-local tempGetHero = ScriptCB_GetNetHeroDefaults
+local remaIO_GetHeroDefaults = ScriptCB_GetNetHeroDefaults
 ScriptCB_GetNetHeroDefaults = function(...)
+	-- if there is a database..
 	if rema_database then
+		-- ..and the option is active..
 		if rema_database.radios.saveSpOptions == 2 then
+			-- ..and we have the data..
 			if rema_database.instOp.HeroPrefs ~= nil then
+			-- ..return it
 				return rema_database.instOp.HeroPrefs
-			else
-				print("marker no HeroPrefs in ScriptCB_GetNetHeroDefaults")
-				return tempGetHero(unpack(arg))
 			end
-		else
-			return tempGetHero(unpack(arg))
 		end
-	else
-		print("marker no databse in ScriptCB_GetNetHeroDefaults")
-		return tempGetHero(unpack(arg))
 	end
+	
+	-- in any other cases, return the scriptCB data
+	return remaIO_GetHeroDefaults(unpack(arg))
 end
 
 
-local temp = ScriptCB_SetIFScreen
-
-ScriptCB_SetIFScreen = function(scrTab, ...)
+------------------------------------------------------------------
+-- wrap ScriptCB_SetIFScreen
+-- push to options on entering instant action to set settings
+local remaIO_SetIFScreen = ScriptCB_SetIFScreen
+ScriptCB_SetIFScreen = function(screenName, ...)
 	
-	print("marker >>", scrTab)
-	if scrTab == "ifs_missionselect" then
-		temp("ifs_instant_options")
+	if screenName == "ifs_missionselect" then
+		remaIO_SetIFScreen("ifs_instant_options")
 	end
 	
-	return temp(scrTab, unpack(arg))
+	-- let the original function happen
+	return remaIO_SetIFScreen(screenName, unpack(arg))
 end
+
 
 ------------------------------------------------------------------
 -- wrap ScriptCB_PushScreen
 -- load settings before ifs_boot
 -- refresh instant options 
 local remaIO_PushScreen = ScriptCB_PushScreen
-
 ScriptCB_PushScreen = function(name,...)
-	print("marker", name)
+
 	if name == "ifs_boot" then
 		swbf2Remaster_settingsManager("load",
 			function(failure)
 				swbf2Remaster_dataIntegrityTest(failure)
 				swbf2Remaster_loadTheme()
-				
-				-- restore instant options if needed and known
-				-- TODO
-				--remaIO_PushScreen("ifs_instant_options")
-				--ScriptCB_PopScreen()
-				--ScriptCB_SetNetGameDefaults(ScriptCB_GetNetGameDefaults())
-				--ScriptCB_SetNetHeroDefaults(ScriptCB_GetNetHeroDefaults())
-				
 				remaIO_PushScreen("ifs_boot")
 				end)
 	else
