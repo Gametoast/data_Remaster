@@ -211,6 +211,19 @@ ScriptCB_GetNetHeroDefaults = function(...)
 	end
 end
 
+
+local temp = ScriptCB_SetIFScreen
+
+ScriptCB_SetIFScreen = function(scrTab, ...)
+	
+	print("marker >>", scrTab)
+	if scrTab == "ifs_missionselect" then
+		temp("ifs_instant_options")
+	end
+	
+	return temp(scrTab, unpack(arg))
+end
+
 ------------------------------------------------------------------
 -- wrap ScriptCB_PushScreen
 -- load settings before ifs_boot
@@ -218,7 +231,7 @@ end
 local remaIO_PushScreen = ScriptCB_PushScreen
 
 ScriptCB_PushScreen = function(name,...)
-
+	print("marker", name)
 	if name == "ifs_boot" then
 		swbf2Remaster_settingsManager("load",
 			function(failure)
@@ -227,9 +240,8 @@ ScriptCB_PushScreen = function(name,...)
 				
 				-- restore instant options if needed and known
 				-- TODO
-				print("marker 1")
-				ifs_instant_options:set_defaults()
-				ifs_instant_options:push_prefs()
+				--remaIO_PushScreen("ifs_instant_options")
+				--ScriptCB_PopScreen()
 				--ScriptCB_SetNetGameDefaults(ScriptCB_GetNetGameDefaults())
 				--ScriptCB_SetNetHeroDefaults(ScriptCB_GetNetHeroDefaults())
 				
