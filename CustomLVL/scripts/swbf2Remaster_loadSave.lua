@@ -439,7 +439,7 @@ function swbf2Remaster_getDefaultSettings()
 
 	local defaultSettings = {
 		isRemaDatabase = true,
-		radios = {},
+		data = {},
 		instOp = {},
 		scripts_IF = {},
 		scripts_IG = {},
@@ -450,7 +450,7 @@ function swbf2Remaster_getDefaultSettings()
 		themeIdx = 1,
 		regSet = swbf2Remaster_getDefRegSettings(),
 	}
-	
+
 	for i = 1, table.getn(defaultSettings.regSet.radios) do
 	
 		local values = defaultSettings.regSet.radios[i]
