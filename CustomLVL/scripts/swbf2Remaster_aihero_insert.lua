@@ -48,7 +48,7 @@ if ScriptPostLoad then
 				
 				if AIHeroNumTeams > 0 then
 					AIHeroScript:New{gameMode = heroScriptMode, heroClassName = AIHeroClasses, numTeams = AIHeroNumTeams,
-										heroBroadcastVO = (rema_database.radios.heroVO == 2), heroSpawnDelay = heroScriptSpawnDelay, heroRespawnTime = heroScriptRespawnTime,}:Start()
+										heroBroadcastVO = (rema_database.data.heroVO == 2), heroSpawnDelay = heroScriptSpawnDelay, heroRespawnTime = heroScriptRespawnTime,}:Start()
 				end
 			end
 		end

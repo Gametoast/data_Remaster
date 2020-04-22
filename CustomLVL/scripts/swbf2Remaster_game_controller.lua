@@ -240,12 +240,12 @@ end
 if not ScriptCB_InMultiplayer() then
 
 	-- load ai heros if enabled in settings
-	if rema_database.radios.aihero == 2 then
+	if rema_database.data.aihero == 2 then
 		ScriptCB_DoFile("swbf2Remaster_aihero_insert")
 	end
 	
 	-- disable award weapons if enabled in the settings
-	if rema_database.radios.awardWeapons == 1 then
+	if rema_database.data.awardWeapons == 1 then
 		ScriptCB_DoFile("swbf2Remaster_noAwardWeapons")
 	end
 end

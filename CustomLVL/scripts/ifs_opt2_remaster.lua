@@ -54,7 +54,7 @@ end
 function ifs_opt_remaster_ok_Pressed(this)
 
 	-- forget instant options if they shouldn't be saved
-	if this.settings.radios.saveSpOptions == false then
+	if this.settings.data.saveSpOptions == false then
 		this.settings.instOp = { }
 	end
 
@@ -162,7 +162,7 @@ remaTabsLayout = {
 -- button press functions
 
 function ifs_opt_remaster_callbackToggle(buttongroup, btnNum)
-	ifs_opt_remaster.settings.radios[buttongroup.tag] = btnNum
+	ifs_opt_remaster.settings.data[buttongroup.tag] = btnNum
 end
 
 
@@ -222,7 +222,7 @@ function ifs_opt_remaster_radiolist_PopulateItem(Dest, Data, bSelected, iColorR,
 		IFText_fnSetUString(Dest.radiobuttons["1"][2].radiotext, ScriptCB_tounicode(Data.buttonStrings[2]))
 		
 		-- select correct value
-		ifelem_SelectRadioButton(Dest.radiobuttons["1"], ifs_opt_remaster.settings.radios[Data.tag], true)
+		ifelem_SelectRadioButton(Dest.radiobuttons["1"], ifs_opt_remaster.settings.data[Data.tag], true)
 		
 		-- need this to identify the button group.numChildren
 		Dest.radiobuttons["1"].tag = Data.tag

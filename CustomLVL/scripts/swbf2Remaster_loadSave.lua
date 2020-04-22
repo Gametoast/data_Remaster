@@ -108,7 +108,7 @@ ScriptCB_SetNetGameDefaults = function(defaults, ...)
 	-- if we have a database..
 	if rema_database then
 		-- ..and option is active..
-		if rema_database.radios.saveSpOptions == 2 then
+		if rema_database.data.saveSpOptions == 2 then
 			-- ..save new settings
 			rema_database.instOp.GamePrefs = defaults
 		end
@@ -123,7 +123,7 @@ ScriptCB_SetNetHeroDefaults = function(defaults, ...)
 	-- if we have a database..
 	if rema_database then
 		-- ..and option is active..
-		if rema_database.radios.saveSpOptions == 2 then
+		if rema_database.data.saveSpOptions == 2 then
 			-- ..save new settings
 			rema_database.instOp.HeroPrefs = defaults
 		end
@@ -138,7 +138,7 @@ ScriptCB_GetNetGameDefaults = function(...)
 	-- if there is a database..
 	if rema_database then
 		-- ..and the option is active..
-		if rema_database.radios.saveSpOptions == 2 then
+		if rema_database.data.saveSpOptions == 2 then
 			-- ..and we have the data..
 			if rema_database.instOp.GamePrefs ~= nil then
 				-- ..return it
@@ -156,7 +156,7 @@ ScriptCB_GetNetHeroDefaults = function(...)
 	-- if there is a database..
 	if rema_database then
 		-- ..and the option is active..
-		if rema_database.radios.saveSpOptions == 2 then
+		if rema_database.data.saveSpOptions == 2 then
 			-- ..and we have the data..
 			if rema_database.instOp.HeroPrefs ~= nil then
 			-- ..return it
@@ -289,7 +289,7 @@ function swbf2Remaster_dataIntegrityTest(failure)
 	
 	-- check if all data is there
 	if rema_database.isRemaDatabase == nil or 
-		rema_database.radios == nil or
+		rema_database.data == nil or
 		rema_database.instOp == nil or
 		rema_database.scripts_IF == nil or
 		rema_database.scripts_IG == nil or
@@ -374,18 +374,18 @@ function swbf2Remaster_dataIntegrityTest(failure)
 		local values = rema_database.regSet.radios[i]
 		local tag = values.tag
 		
-		if rema_database.radios[tag] == nil then
-			rema_database.radios[tag] = values.default
+		if rema_database.data[tag] == nil then
+			rema_database.data[tag] = values.default
 		end
 	end
 
 	-- In case there are more settings saved than registered
 	-- clean up the global settings. Next save will clean the file
-	for tag, values in pairs(rema_database.radios) do
+	for tag, values in pairs(rema_database.data) do
 		
 		-- the registered setting does not exist
 		if not swbf2Remaster_settingExists(tag) then
-			rema_database.radios[tag] = nil
+			rema_database.data[tag] = nil
 		end
 	end
 
@@ -456,8 +456,8 @@ function swbf2Remaster_getDefaultSettings()
 		local values = defaultSettings.regSet.radios[i]
 		local tag = values.tag
 		
-		if defaultSettings.radios[tag] == nil then
-			defaultSettings.radios[tag] = values.default
+		if defaultSettings.data[tag] == nil then
+			defaultSettings.data[tag] = values.default
 		end
 	end
 
@@ -553,7 +553,7 @@ function swbf2Remaster_saveSettings(nameIO, nameInst, funcDone, skipInst)
 	-- save instant options?
 	local saveInstOpt = false
 	
-	if rema_database.radios.saveSpOptions == 2 and rema_database.instOp.GamePrefs ~= nil and skipInst == nil then
+	if rema_database.data.saveSpOptions == 2 and rema_database.instOp.GamePrefs ~= nil and skipInst == nil then
 		saveInstOpt = true
 	end
 	

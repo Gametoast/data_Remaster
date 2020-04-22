@@ -17,7 +17,7 @@ if ScriptCB_IsFileExist then
 				print("Houston, we got a problem!!")
 			end
 			
-			if rema_database.radios.customColor == 2 then
+			if rema_database.data.customColor == 2 then
 				return 0
 			else
 				return 1
@@ -29,7 +29,7 @@ if ScriptCB_IsFileExist then
 				print("Houston, we got a problem!!")
 			end
 			
-			if rema_database.radios.awardEffects == 2 then
+			if rema_database.data.awardEffects == 2 then
 				return 0
 			else
 				return 1
