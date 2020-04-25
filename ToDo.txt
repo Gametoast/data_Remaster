@@ -1,8 +1,7 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
 > gui lib, new minipage docu
-> restructure rema_database (rename radio garbage, remove theme filepath from database)
-- scan does not show loading message
+> restructure rema_database (regSet)
 
 Message Severity: 3
 C:\Battlefront2\main\Battlefront2\Source\LuaHelper.cpp(312)
@@ -12,6 +11,8 @@ stack traceback:
 	(none): in function <(none):1551>
 
 ==ADDITIONAL CONTENT==
+- dirty hack to avoid us und gc scripts
+- gc hero bonus fix
 - movie previews
 - save button for match settings
 - disable forcepowers

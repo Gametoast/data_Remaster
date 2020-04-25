@@ -22,13 +22,17 @@ function swbf2Remaster_getIGPath(modID)
 end
 
 function swbf2Remaster_getGTPath(modID)
-	return "..\\..\\addon\\" .. modID .. "\\scripts\\" .. modID .. "_theme_script.lvl"
+	if modID == "REMA" then
+		return "REMASTER\\swbf2Remaster_theme.lvl"
+	else
+		return "..\\..\\addon\\" .. modID .. "\\scripts\\" .. modID .. "_theme_script.lvl"
+	end
 end
 
 function swbf2Remaster_loadTheme()
-	print("load theme:", rema_database.scripts_GT[rema_database.themeIdx].filePath, rema_database.scripts_GT[rema_database.themeIdx].modID .. "_theme_script")
-	ReadDataFile(rema_database.scripts_GT[rema_database.themeIdx].filePath)
-	ScriptCB_DoFile(rema_database.scripts_GT[rema_database.themeIdx].modID .. "_theme_script")
+	print("load theme:", swbf2Remaster_getGTPath(rema_database.scripts_GT[rema_database.themeIdx]), rema_database.scripts_GT[rema_database.themeIdx] .. "_theme_script")
+	ReadDataFile(swbf2Remaster_getGTPath(rema_database.scripts_GT[rema_database.themeIdx]))
+	ScriptCB_DoFile(rema_database.scripts_GT[rema_database.themeIdx] .. "_theme_script")
 end
 
 function swbf2Remaster_runInterfaceScripts()
@@ -59,7 +63,7 @@ function swbf2Remaster_loadScripts()
 	temp.scripts_OP = {}
 	temp.scripts_IF = {}
 	temp.scripts_IG = {}
-	temp.scripts_GT = {{modID = "REMA", filePath = "REMASTER\\swbf2Remaster_theme.lvl"},}
+	temp.scripts_GT = { "REMA" }
 
 	--[[local index = {}
 	index[0] = {}
@@ -120,7 +124,7 @@ function swbf2Remaster_loadScripts()
 				end
 				
 				if exists(gtPath) ~= 0 then
-					temp.scripts_GT[table.getn(temp.scripts_GT) + 1] = {modID = modID, filePath = gtPath}
+					temp.scripts_GT[table.getn(temp.scripts_GT) + 1] = modID
 				end
 				
 				end

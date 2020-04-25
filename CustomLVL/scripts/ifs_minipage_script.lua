@@ -70,7 +70,8 @@ function ifs_minipage_script_install(this, eBox)
 	
 	if boxstring == "*" then
 		ifs_minipage_script_showLoading(this, true)
-		ifs_minipage_script_loadingScripts(this)
+		this.delayedFunc = ifs_minipage_script_loadingScripts
+		this.delayTimer = 1
 	else
 		-- split and check
 		local idlist = {}
@@ -133,7 +134,7 @@ function ifs_minipage_script_install(this, eBox)
 					end
 				end
 				if exists == false then
-					table.insert(rema_database.scripts_GT, {modID = id, filePath = gtPath})
+					table.insert(rema_database.scripts_GT, id)
 				end
 			end
 		end
@@ -229,8 +230,7 @@ function ifs_minipage_script_updateThemeList(this)
 	local themeStrings = {}
 	
 	-- generate list with theme names
-	for i = 1, table.getn(rema_database.scripts_GT) do
-		local modID = rema_database.scripts_GT[i].modID
+	for i, modID in ipairs(rema_database.scripts_GT) do
 		local modName = " - " .. ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.modName." .. modID))
 		if modName == " - [NULL]" then
 			modName = ""
@@ -244,7 +244,7 @@ function ifs_minipage_script_updateThemeList(this)
 		RoundIFButtonLabel_fnSetString(dest.dropdown.button, "")
 	else
 		IFObj_fnSetVis(dest.dropdown.listbox, false)
-		local modID = rema_database.scripts_GT[rema_database.themeIdx].modID
+		local modID = rema_database.scripts_GT[rema_database.themeIdx]
 		local modName = ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.modName." .. modID))
 		if modName == "[NULL]" then
 			modName = modID

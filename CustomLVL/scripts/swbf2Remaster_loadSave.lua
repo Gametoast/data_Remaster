@@ -295,6 +295,7 @@ function swbf2Remaster_dataIntegrityTest(failure)
 		rema_database.scripts_IG == nil or
 		rema_database.scripts_OP == nil or
 		rema_database.scripts_GT == nil or
+		type(rema_database.scripts_GT[1]) == "table" or		-- old database structure
 		rema_database.themeIdx == nil or
 		rema_database.regSet == nil then
 		
@@ -306,22 +307,22 @@ function swbf2Remaster_dataIntegrityTest(failure)
 	local exists = ScriptCB_IsFileExist
 	for i = 1, table.getn(rema_database.scripts_OP) do
 		if exists(swbf2Remaster_getOPPath(rema_database.scripts_OP[i])) == 0 then
-			rema_database.scripts_OP[i] = nil
+			table.remove(rema_database.scripts_OP, i)
 		end
 	end
 	for i = 1, table.getn(rema_database.scripts_IF) do
 		if exists(swbf2Remaster_getIFPath(rema_database.scripts_IF[i])) == 0 then
-			rema_database.scripts_IF[i] = nil
+			table.remove(rema_database.scripts_IF, i)
 		end
 	end
 	for i = 1, table.getn(rema_database.scripts_IG) do
 		if exists(swbf2Remaster_getIGPath(rema_database.scripts_IG[i])) == 0 then
-			rema_database.scripts_IG[i] = nil
+			table.remove(rema_database.scripts_IG, i)
 		end
 	end
 	for i = 1, table.getn(rema_database.scripts_GT) do
-		if exists(rema_database.scripts_GT[i].filePath) == 0 then
-			rema_database.scripts_GT[i] = nil
+		if exists(swbf2Remaster_getGTPath(rema_database.scripts_GT[i])) == 0 then
+			table.remove(rema_database.scripts_GT, i)
 			rema_database.themeIdx = 1
 		end
 	end	
@@ -444,9 +445,7 @@ function swbf2Remaster_getDefaultSettings()
 		scripts_IF = {},
 		scripts_IG = {},
 		scripts_OP = {},
-		scripts_GT = {
-			{modID = "REMA", filePath = "REMASTER\\swbf2Remaster_theme.lvl"},
-		},
+		scripts_GT = { "REMA" },
 		themeIdx = 1,
 		regSet = swbf2Remaster_getDefRegSettings(),
 	}
