@@ -177,6 +177,7 @@ local remaIO_SetIFScreen = ScriptCB_SetIFScreen
 ScriptCB_SetIFScreen = function(screenName, ...)
 	
 	if screenName == "ifs_missionselect" then
+		ifs_instant_options_SetOptionGroup(ifs_ioo_OptionButton_layout.buttonlist[1].tag, "_opt_global")
 		remaIO_SetIFScreen("ifs_instant_options")
 	end
 	
