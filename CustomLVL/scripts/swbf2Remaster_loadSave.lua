@@ -273,8 +273,8 @@ end
 -- new functions
 
 function swbf2Remaster_settingExists(tag)
-	for i = 1, table.getn(rema_database.regSet.radios) do
-		if rema_database.regSet.radios[i].tag == tag then
+	for i = 1, table.getn(rema_database.qs) do
+		if rema_database.qs[i].tag == tag then
 			return true
 		end
 	end
@@ -298,7 +298,7 @@ function swbf2Remaster_dataIntegrityTest(failure)
 		rema_database.scripts_GT == nil or
 		type(rema_database.scripts_GT[1]) == "table" or		-- old database structure
 		rema_database.themeIdx == nil or
-		rema_database.regSet == nil then
+		rema_database.qs == nil then
 		
 		print("Remaster: data integrity test failed, loading default..")
 		rema_database = swbf2Remaster_getDefaultSettings()
@@ -329,51 +329,45 @@ function swbf2Remaster_dataIntegrityTest(failure)
 	end	
 
 	-- clean registered settings
-	rema_database.regSet.radios = nil
-	rema_database.regSet.radios = {}
-
-	-- load default registered settings
-	local regSet = swbf2Remaster_getDefRegSettings()
-	for i = 1, table.getn(regSet.radios) do
-		local values = regSet.radios[i]
-		local tag = values.tag
-
-		rema_database.regSet.radios[table.getn(rema_database.regSet.radios) + 1] = values
-	end
+	rema_database.qs = nil
+	rema_database.qs = swbf2Remaster_getDefaultQuickSettings()
 
 	-- load custom registered settings
-	for i = 1, table.getn(rema_database.scripts_OP) do
+	for i, modID in ipairs(rema_database.scripts_OP) do
 	
 		-- force garbage collection
-		swbf2Remaster_getCustomSettings = nil
+		swbf2Remaster_getCustomQuickSettings = nil
 		
-		-- run the settings script that defines swbf2Remaster_getCustomSettings
-		local modID = rema_database.scripts_OP[i]
+		-- run the settings script that defines swbf2Remaster_getCustomQuickSettings
 		ReadDataFile(swbf2Remaster_getOPPath(modID))
 		ScriptCB_DoFile(modID .. "_option_script")
 		
 		-- get the custom settings and forget about the getter function
-		local customSettings = swbf2Remaster_getCustomSettings()
-		swbf2Remaster_getCustomSettings = nil
+		local customSettings = {}
+		if swbf2Remaster_getCustomQuickSettings ~= nil then
+			customSettings = swbf2Remaster_getCustomQuickSettings()
+		else
+			print("Remaster: loading custom quicksetting failed..")
+			print("        : swbf2Remaster_getCustomQuickSettings not found")
+			print("        : probably " .. modID .. "_option_script needs to be updated to new API 1.4")
+		end
+		swbf2Remaster_getCustomQuickSettings = nil
 		
 		-- process the custom settings
-		for i = 1, table.getn(customSettings.radios) do
-			
-			local values = customSettings.radios[i]
+		for i, values in ipairs(customSettings) do
 			local tag = values.tag
 			
 			-- continue only if tag does not already exists
 			if not swbf2Remaster_settingExists(tag) then
-				rema_database.regSet.radios[table.getn(rema_database.regSet.radios) + 1] = values
+				table.insert(rema_database.qs, values)
 			end
 		end
 	end
 
 	-- In case there is a registered settings that was not
 	-- loaded use the default value instead
-	for i = 1, table.getn(rema_database.regSet.radios) do
+	for i, values in ipairs(rema_database.qs) do
 	
-		local values = rema_database.regSet.radios[i]
 		local tag = values.tag
 		
 		if rema_database.data[tag] == nil then
@@ -396,45 +390,61 @@ function swbf2Remaster_dataIntegrityTest(failure)
 
 end
 
-function swbf2Remaster_getDefRegSettings()
+function swbf2Remaster_getDefaultQuickSettings()
 	
-	-- default registered settings
-	local regSet = {
-		radios = {
-			{
-				tag = "aihero",
-				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.no")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.yes"))},
-				default = 2
-			},
-			{
-				tag = "heroVO",
-				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.no")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.yes"))},
-				default = 2
-			},
-			{
-				tag = "customColor",
-				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.off")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.on"))},
-				default = 2
-			},
-			{
-				tag = "awardEffects",
-				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.off")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.on"))},
-				default = 1
-			},
-			{
-				tag = "awardWeapons",
-				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.off")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.on"))},
-				default = 2
-			},
-			{
-				tag = "saveSpOptions",
-				buttonStrings = {ScriptCB_ununicode(ScriptCB_getlocalizestr("common.no")), ScriptCB_ununicode(ScriptCB_getlocalizestr("common.yes"))},
-				default = 1
-			},
-		}
+	-- default quicksettings
+	local quicksettings = {
+		{
+			tag = "aihero",
+			buttonStrings = {
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.no")),
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.yes")),
+				},
+			default = 2,
+		},
+		{
+			tag = "heroVO",
+			buttonStrings = {
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.no")),
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.yes")),
+				},
+			default = 2,
+		},
+		{
+			tag = "customColor",
+			buttonStrings = {
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.off")),
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.on")),
+				},
+			default = 2,
+		},
+		{
+			tag = "awardEffects",
+			buttonStrings = {
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.off")),
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.on")),
+				},
+			default = 1,
+		},
+		{
+			tag = "awardWeapons",
+			buttonStrings = {
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.off")),
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.on")),
+				},
+			default = 2,
+		},
+		{
+			tag = "saveSpOptions",
+			buttonStrings = {
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.no")),
+				ScriptCB_ununicode(ScriptCB_getlocalizestr("common.yes")),
+				},
+			default = 1,
+		},
 	}
 	
-	return regSet
+	return quicksettings
 end
 
 function swbf2Remaster_getDefaultSettings()
@@ -447,12 +457,11 @@ function swbf2Remaster_getDefaultSettings()
 		scripts_OP = {},
 		scripts_GT = { "REMA" },
 		themeIdx = 1,
-		regSet = swbf2Remaster_getDefRegSettings(),
+		qs = swbf2Remaster_getDefaultQuickSettings(),
 	}
 
-	for i = 1, table.getn(defaultSettings.regSet.radios) do
+	for i, values in ipairs(defaultSettings.qs) do
 	
-		local values = defaultSettings.regSet.radios[i]
 		local tag = values.tag
 		
 		if defaultSettings.data[tag] == nil then

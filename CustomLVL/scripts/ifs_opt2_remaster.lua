@@ -244,7 +244,7 @@ end
 
 function ifs_opt_remaster_fillRadioList(this)
 	local dest = this.minipage.list
-	ListManager_fnFillContents(dest, rema_database.regSet.radios, ifs_opt_remaster_radiolist_layout)
+	ListManager_fnFillContents(dest, rema_database.qs, ifs_opt_remaster_radiolist_layout)
 end
 
 

@@ -1,7 +1,7 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
-> gui lib, new minipage docu
-> restructure rema_database (regSet)
+> minipage api and docu
+> update quicksettings docu (old customSettings)
 
 Message Severity: 3
 C:\Battlefront2\main\Battlefront2\Source\LuaHelper.cpp(312)
@@ -23,6 +23,7 @@ x side select
 
 ==TO TEST==
 - Credits, back button => GC map and stuck reported by sweg
+> new quicksettings api
 
 ==DONE==
 new HUD
