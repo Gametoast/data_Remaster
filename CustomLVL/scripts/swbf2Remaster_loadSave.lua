@@ -213,19 +213,21 @@ if SetState then
 	local remaIO_setState = SetState
 		
 		SetState = function(...)
-			-- we don't need those infos ingame
-			rema_database.instOp = nil
-			rema_database.scripts_OP = nil
-			rema_database.scripts_GT = nil
-			rema_database.themeIdx = nil
-			rema_database.regSet = nil
+		
+			-- we only need this data
+			local lite_databse = {
+				isRemaDatabase = true,
+				data = rema_database.data,
+				scripts_IF = rema_database.scripts_IF,
+				scripts_IG = rema_database.scripts_IG,
+			}
 			
 			if ScriptCB_IsMetagameStateSaved() then
 				-- there is old data
 				local temp = {ScriptCB_LoadMetagameState()}
 
 				ScriptCB_SaveMetagameState(
-					rema_database,
+					lite_databse,
 					temp[1],
 					temp[2],
 					temp[3],
@@ -256,7 +258,7 @@ if SetState then
 				
 			else
 				-- there is no old data
-				ScriptCB_SaveMetagameState(rema_database)
+				ScriptCB_SaveMetagameState(lite_databse)
 			end
 			
 			return remaIO_setState(unpack(arg))
