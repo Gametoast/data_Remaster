@@ -290,8 +290,7 @@ function swbf2Remaster_dataIntegrityTest(failure)
 	end
 	
 	-- check if all data is there
-	if rema_database.isRemaDatabase == nil or 
-		rema_database.data == nil or
+	if rema_database.data == nil or
 		rema_database.instOp == nil or
 		rema_database.scripts_IF == nil or
 		rema_database.scripts_IG == nil or
@@ -441,7 +440,6 @@ end
 function swbf2Remaster_getDefaultSettings()
 
 	local defaultSettings = {
-		isRemaDatabase = true,
 		data = {},
 		instOp = {},
 		scripts_IF = {},

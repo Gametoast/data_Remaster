@@ -55,6 +55,7 @@ ScriptCB_DoFile = function(...)
 			-- if it is the database
 			if temp[1] and temp[1].isRemaDatabase then
 				rema_database = temp[1]
+				rema_database.isRemaDatabase = nil
 				
 				if not (next(temp, 1) == nil) then
 					-- there is more, push it back to the pipe
@@ -108,9 +109,9 @@ ScriptCB_EnterMission = function(...)
 	-- we only need this data
 	local lite_databse = {
 		isRemaDatabase = true,
-		data = rema_database.data
-		scripts_IF = rema_database.scripts_IF
-		scripts_IG = rema_database.scripts_IG
+		data = rema_database.data,
+		scripts_IF = rema_database.scripts_IF,
+		scripts_IG = rema_database.scripts_IG,
 	}
 	
 	if ScriptCB_IsMetagameStateSaved() then
