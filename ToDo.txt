@@ -1,6 +1,5 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
-> Click order theme dropdown
 
 ==ADDITIONAL CONTENT==
 - dirty hack to avoid us und gc scripts

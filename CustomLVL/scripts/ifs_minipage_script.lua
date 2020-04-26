@@ -237,10 +237,10 @@ function ifs_minipage_script_updateThemeList(this)
 		end
 		themeStrings[i] = modID .. modName
 	end
-	
+
 	if dest.dropdown.expanded == true then
 		IFObj_fnSetVis(dest.dropdown.listbox, true)
-		ListManager_fnFillContents(dest.dropdown.listbox, themeStrings, ifs_minipage_script_theme_layout.lst)
+		ListManager_fnAutoscroll(dest.dropdown.listbox, themeStrings, ifs_minipage_script_theme_layout.lst)
 		RoundIFButtonLabel_fnSetString(dest.dropdown.button, "")
 	else
 		IFObj_fnSetVis(dest.dropdown.listbox, false)
@@ -297,23 +297,27 @@ function ifs_minipage_script_Enter(this)
 	this.delayedFunc = nil
 	delayTimer = 0
 	this.minipage.install.input.box.cursor.y = -20
-
+	
 	ifs_minipage_script_fillScriptLists(this)
 	ifs_minipage_script_updateThemeList(this)
 end
 
 function ifs_minipage_script_Input_Accept(this)
-	print("marker 1")
+
+	if this.minipage.theme.dropdown.expanded == true then
+		HandleMouse_Listbox(this.minipage.theme.dropdown.listbox, this.MouseX,this.MouseY)
+	end
+	
 	-- remove focus, do delayed to accept enter for install
 	if not IFObj_fnTestHotSpot(this.minipage.install.input.box) and gCurEditbox then
 		this.delayTimer = 1
 		this.delayedFunc = ifs_minipage_script_removeBoxFocus
 	end
-	print("marker 2")
+
 	if gMouseListBox == this.minipage.theme.dropdown.listbox then
 		ifs_minipage_script_processThemeChange(this, gMouseListBox.Layout.CursorIdx)
 	end
-	print("marker 3")
+
 	-- check default again but with listboxes this time
 	if gShellScreen_fnDefaultInputAccept(this, false) then
 		return
@@ -324,9 +328,9 @@ function ifs_minipage_script_Input_Accept(this)
 		ifelm_shellscreen_fnPlaySound(this.acceptSound)
 	elseif this.CurButton ~= nil and string.find(this.CurButton, "_ifeDropBtn_") == 1 then
 		this.minipage.theme.dropdown.expanded = not this.minipage.theme.dropdown.expanded
-		ifs_minipage_script_theme_layout.SelectedIdx = rema_database.themeIdx
-		ifs_minipage_script_theme_layout.CursorIdx = rema_database.themeIdx
-		ifs_minipage_script_theme_layout.FirstShownIdx = rema_database.themeIdx
+		ifs_minipage_script_theme_layout.lst.SelectedIdx = rema_database.themeIdx
+		ifs_minipage_script_theme_layout.lst.CursorIdx = rema_database.themeIdx
+		ifs_minipage_script_theme_layout.lst.FirstShownIdx = rema_database.themeIdx
 		ifs_minipage_script_updateThemeList(this)
 	elseif this.minipage.theme.dropdown.expanded == true then
 		this.minipage.theme.dropdown.expanded = false
@@ -357,6 +361,11 @@ function ifs_minipage_script_Input_KeyDown(this, iKey)
 	end
 end
 
+function ifs_minipage_script_HandleMouse(this, fMouseX, fMouseY)
+	gIFShellScreenTemplate_fnHandleMouse(this, fMouseX, fMouseY)
+	this.MouseX = fMouseX
+	this.MouseY = fMouseY
+end
 
 -- Build
 
@@ -537,6 +546,7 @@ function ifs_opt_remaster_fnBuildScriptScreen()
 		Input_Accept = ifs_minipage_script_Input_Accept,
 		Update = ifs_minipage_script_Update,
 		Input_KeyDown = ifs_minipage_script_Input_KeyDown,
+		HandleMouse = ifs_minipage_script_HandleMouse,
 	}
 	
 	ifelem_minipage_add("REMA2", elements, callbackTable)
