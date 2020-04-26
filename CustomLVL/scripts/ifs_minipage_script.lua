@@ -303,17 +303,17 @@ function ifs_minipage_script_Enter(this)
 end
 
 function ifs_minipage_script_Input_Accept(this)
-
+	print("marker 1")
 	-- remove focus, do delayed to accept enter for install
 	if not IFObj_fnTestHotSpot(this.minipage.install.input.box) and gCurEditbox then
 		this.delayTimer = 1
 		this.delayedFunc = ifs_minipage_script_removeBoxFocus
 	end
-	
+	print("marker 2")
 	if gMouseListBox == this.minipage.theme.dropdown.listbox then
 		ifs_minipage_script_processThemeChange(this, gMouseListBox.Layout.CursorIdx)
 	end
-
+	print("marker 3")
 	-- check default again but with listboxes this time
 	if gShellScreen_fnDefaultInputAccept(this, false) then
 		return

@@ -166,7 +166,7 @@ function ifelem_minipage_NewDropDownButton(layout)
 end
 
 ------------------------------------------------------------------
--- ifelem_minipage_add(modID, elements, fnEnter, fnExit, fnInputAccept, fnUpdate)
+-- ifelem_minipage_add(modID, elements, callbackTable)
 -- creates a new minipage from given elements
 --
 --	parameter:	modID			- mod's 3-letter ID, string

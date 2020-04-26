@@ -1,7 +1,6 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
-> minipage api(?) and docu
-> update quicksettings docu (old customSettings)
+> Click order theme dropdown
 
 ==ADDITIONAL CONTENT==
 - dirty hack to avoid us und gc scripts
@@ -16,8 +15,6 @@ x side select
 
 ==TO TEST==
 - Credits, back button => GC map and stuck reported by sweg
-> new quicksettings api
-> minipage api
 
 ==DONE==
 new HUD
@@ -37,3 +34,5 @@ remaster settings page redesign
 AI number increase
 overlap healthbar for heros in vehicle
 save instant options does not work when not entering the settings page once
+> new quicksettings api
+> minipage api

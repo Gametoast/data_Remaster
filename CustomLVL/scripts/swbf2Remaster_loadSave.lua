@@ -378,13 +378,14 @@ function swbf2Remaster_dataIntegrityTest(failure)
 
 	-- In case there are more settings saved than registered
 	-- clean up the global settings. Next save will clean the file
-	for tag, values in pairs(rema_database.data) do
+	-- it can be from a settingspage, so don't use this anymore
+	--[[for tag, values in pairs(rema_database.data) do
 		
 		-- the registered setting does not exist
 		if not swbf2Remaster_settingExists(tag) then
 			rema_database.data[tag] = nil
 		end
-	end
+	end--]]
 
 	-- Run interface scripts after data integrity test
 	swbf2Remaster_runInterfaceScripts()

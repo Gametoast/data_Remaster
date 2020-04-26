@@ -13,11 +13,15 @@ I'm gonna use my CustomLVL maker tool to munge custom LVLs http://gametoast.com/
 
 Some general information about the custom scripts:
 All scripts will be placed in your GameData\addon\XXX\scripts folder. In order to be loaded the scripts
-need to be installed from in the game. For that you need to go to the REMASTER settings page in the game
-and press 'load scripts'. The loading process will take some time and register your script in the remaster
-database. This needs to be done only once, no matter how often you change the script itself. If you delete
+need to be installed from in the game. For that you need to go to the REMASTER settings page in the game,
+change to script manager tab, enter your mod ID to the editbox and press 'install'. If you want to install
+multiple mod IDs you can put a list of them seperated by ',' or ' ' in the editbox before you hit 'install'.
+In case you don't actually know all the IDs or there are so many new scripts you can pass '*' to the box.
+Now the script manager will search all possible 3 letter combinations and search for scripts. The scan 
+process will take some time, so i recommand not to use this if you want to install only one new mod. The
+install process needs to be done only once, no matter how often you change the script itself. If you delete
 the remaster's settings file, or reset the settings to default you need to load the scripts again. A list
-of all detected scripts can be found on the REMASTER setting page, too. Depending on the script you may
+of all detected scripts can be found on the script manager tab, too. Depending on the script you may
 need to restart the game. Information about this will be given in the corresponding subsections. Make sure
 to inform in your readme that the users need to run this process, too, once they installed your mod!
 
@@ -39,8 +43,9 @@ http://www.gametoast.com/viewtopic.php?f=27&t=29836
 
 A completely new feature of this mod is the custom setting support. You can register your own setting on the
 Remaster's setting page and access the current state of your option from any other interface or game script.
-At this time only radio buttons are supported, but other kinds of settings such as dropboxes or sliders are
-planed. To learn about this cont with the "Settings Tutorial".
+While you can only add radio buttons to the Remaster's setting page, you can in addition create your complete
+own minipage that is accessible through the tab list on the remaster settings. To learn about this continue
+with the "Settings Tutorial".
 
 
 -----------------------------------------------------------------------------------------------------------
