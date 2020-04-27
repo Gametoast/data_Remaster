@@ -2,7 +2,7 @@
 - Versionsnamen ändern
 
 ==ADDITIONAL CONTENT==
-- dirty hack to avoid us und gc scripts
+- improve scripting and avoid pipe solution using the new hack to load data on startup. Can this solve the loadscreen thing, too??
 - gc hero bonus fix
 - movie previews
 - save button for match settings
@@ -10,10 +10,11 @@
 - hero deny cp capture
 - don't show settings file in GC loadscreen
 - fix Han solo bug
-x side select
+- side select
 
 ==TO TEST==
 - Credits, back button => GC map and stuck reported by sweg
+- dirty hack to avoid us und gc scripts
 
 ==DONE==
 new HUD

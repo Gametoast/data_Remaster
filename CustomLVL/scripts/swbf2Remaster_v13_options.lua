@@ -1,7 +1,7 @@
 ------------------------------------------------------------------
 -- SWBF 2 Remaster by Anakin
 ------------------------------------------------------------------
-
+print("marker 1")
 -- try to wrap ScriptCB_IsFileExist ------------------------------
 if ScriptCB_IsFileExist then
 	
@@ -12,7 +12,7 @@ if ScriptCB_IsFileExist then
 	ScriptCB_IsFileExist = function(...)
 	
 		if arg[1] == "..\\..\\addon\\AAA-v1.3patch\\settings\\noColors.txt" then
-			
+			print("marker 2")
 			if not rema_database then
 				print("Houston, we got a problem!!")
 			end
@@ -24,7 +24,7 @@ if ScriptCB_IsFileExist then
 			end
 			
 		elseif arg[1] == "..\\..\\addon\\AAA-v1.3patch\\settings\\noAwards.txt" then
-		
+			print("marker 3")
 			if not rema_database then
 				print("Houston, we got a problem!!")
 			end
