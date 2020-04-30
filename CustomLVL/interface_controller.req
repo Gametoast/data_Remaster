@@ -1,0 +1,26 @@
+ucft
+{
+    REQN
+    {
+        "script"
+		"interface_testscript"
+		"galactic_conquest"
+		"ifelem_minipage"
+		"ifs_minipage_script"
+		"ifs_opt_remaster"
+		"interface_controller"
+		"interface_fixes"
+		"load_save"
+		"script_manager"
+		"uop13_options"
+    }
+	
+	REQN
+	{
+		"texture"
+		"swbf2Remaster_splash"
+		"lucasarts_logo"
+		"pandemic_logo"
+		"swbf2Remaster_loading"
+	}
+}
