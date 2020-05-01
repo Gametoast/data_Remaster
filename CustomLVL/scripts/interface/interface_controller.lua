@@ -3,7 +3,7 @@
 ------------------------------------------------------------------
 
 -- TEST ----------------------------------------------------------
-ScriptCB_DoFile("ui_testscript")
+--ScriptCB_DoFile("interface_testscript")
 
 ------------------------------------------------------------------
 
@@ -13,33 +13,33 @@ rema_firstLoad = true
 local w, h = ScriptCB_GetScreenInfo()
 
 if h >= 2000 then
-	ReadDataFile("REMASTER\\Fonts\\arialblack_4k.lvl")
+	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_4k.lvl")
 elseif h >= 1000 then
-	ReadDataFile("REMASTER\\Fonts\\arialblack_2k.lvl")
+	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_2k.lvl")
 else
-	ReadDataFile("REMASTER\\Fonts\\arialblack_default.lvl")
+	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_default.lvl")
 end
 
 -- load strings
-ReadDataFile("REMASTER\\swbf2remaster_localize.lvl")
+ReadDataFile("..\\..\\addon\\Remaster\\localize_main.lvl")
 
 -- run script manager
-ScriptCB_DoFile("swbf2Remaster_script_manager")
+ScriptCB_DoFile("script_manager")
 
 -- init load/store functions
 -- delayed run interface scripts
 -- delayed load theme
 -- delayed continue push ifs_boot
-ScriptCB_DoFile("swbf2Remaster_loadSave")
+ScriptCB_DoFile("load_save")
 
 -- run GUI upgrade
-ScriptCB_DoFile("swbf2Remaster_guiUpgrade")
+ScriptCB_DoFile("interface_fixes")
 
 -- add v1.3 options
-ScriptCB_DoFile("swbf2Remaster_v13_options")
+ScriptCB_DoFile("uop13_options")
 
 -- upgrade galactic conquest
-ScriptCB_DoFile("swbf2Remaster_galactic_conquest")
+ScriptCB_DoFile("galactic_conquest")
 
 -- searching database, do this delayed to avoid bugs
 local remaUI_doFile = ScriptCB_DoFile

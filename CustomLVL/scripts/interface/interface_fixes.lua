@@ -335,7 +335,7 @@ if ScriptCB_DoFile then
 			
 			table.insert(gPCOptionsTabsLayout, 2, {tag = "_tab_remaster", string = "REMASTER", screen = "ifs_opt_remaster", yPos = 45, width = tabWidth})
 		elseif arg[1] == "ifs_opt_sound" then 
-			ScriptCB_DoFile("ifs_opt2_remaster")
+			ScriptCB_DoFile("ifs_opt_remaster")
 		end
 		
 		-- return the original values

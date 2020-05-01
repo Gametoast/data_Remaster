@@ -3,7 +3,7 @@
 -- AIHeroScript by Rayman1103
 ------------------------------------------------------------------
 
-ScriptCB_DoFile("AIHeroScript")
+ScriptCB_DoFile("aihero_script")
 
 local AIHeroClasses = {}
 local AIHeroNumTeams = 0

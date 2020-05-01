@@ -1,7 +1,7 @@
 ------------------------------------------------------------------
 -- SWBF 2 Remaster by Anakin
 ------------------------------------------------------------------
-print("game_testscript: entered")
+print("ingame_testscript: entered")
 
 function getn(v)
     local v_type = type(v);
@@ -214,4 +214,4 @@ end
 
 
 
-print("game_testscript: exited")
+print("ingame_testscript: exited")

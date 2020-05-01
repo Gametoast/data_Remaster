@@ -1,0 +1,16 @@
+ucft
+{
+    REQN
+    {
+        "script"
+		"ingame_testscript"
+		"aihero_insert"
+		"aihero_script"
+		"ingame_controller"
+		"remove_award_weapons"
+		"sound_fixes"
+		"load_save"
+		"script_manager"
+		"uop13_options"
+    }
+}

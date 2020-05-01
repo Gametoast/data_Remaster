@@ -23,7 +23,7 @@ end
 
 function swbf2Remaster_getGTPath(modID)
 	if modID == "REMA" then
-		return "REMASTER\\swbf2Remaster_theme.lvl"
+		return "..\\..\\addon\\Remaster\\scripts\\REMA_theme_script.lvl"
 	else
 		return "..\\..\\addon\\" .. modID .. "\\scripts\\" .. modID .. "_theme_script.lvl"
 	end

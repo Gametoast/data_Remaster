@@ -3,7 +3,7 @@
 ------------------------------------------------------------------
 
 -- TEST ----------------------------------------------------------
-ScriptCB_DoFile("game_testscript")
+--ScriptCB_DoFile("ingame_testscript")
 
 ------------------------------------------------------------------
 
@@ -11,11 +11,11 @@ ScriptCB_DoFile("game_testscript")
 local w, h = ScriptCB_GetScreenInfo()
 
 if h >= 2000 then
-	ReadDataFile("REMASTER\\Fonts\\arialblack_4k.lvl")
+	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_4k.lvl")
 elseif h >= 1000 then
-	ReadDataFile("REMASTER\\Fonts\\arialblack_2k.lvl")
+	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_2k.lvl")
 else
-	ReadDataFile("REMASTER\\Fonts\\arialblack_default.lvl")
+	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_default.lvl")
 end
 
 -- wait for interface_util to be loaded and swap stock fonts
@@ -71,23 +71,23 @@ if not rema_noHUD then
 	local aspectRatio = screenWidth / screenHeight
 
 	if aspectRatio >= 1.63 and aspectRatio <= 1.9 then
-		ReadDataFile("REMASTER\\HUD\\hud_16x09.lvl")
+		ReadDataFile("..\\..\\addon\\Remaster\\HUD\\hud_16x09.lvl")
 	elseif aspectRatio >= 1.4 and aspectRatio <= 1.63 then
-		ReadDataFile("REMASTER\\HUD\\hud_16x10.lvl")
+		ReadDataFile("..\\..\\addon\\Remaster\\HUD\\hud_16x10.lvl")
 	else
-		ReadDataFile("REMASTER\\HUD\\hud_04x03.lvl")
+		ReadDataFile("..\\..\\addon\\Remaster\\HUD\\hud_04x03.lvl")
 	end
 
 end
 
 -- run script manager
-ScriptCB_DoFile("swbf2Remaster_script_manager")
+ScriptCB_DoFile("script_manager")
 
 -- fixing missing sounds
-ScriptCB_DoFile("swbf2Remaster_sound_fixes")
+ScriptCB_DoFile("sound_fixes")
 
 -- load v1.3 options
-ScriptCB_DoFile("swbf2Remaster_v13_options")
+ScriptCB_DoFile("uop13_options")
 
 -- searching database
 if ScriptCB_IsMetagameStateSaved() then
@@ -241,12 +241,12 @@ if not ScriptCB_InMultiplayer() then
 
 	-- load ai heros if enabled in settings
 	if rema_database.data.aihero == 2 then
-		ScriptCB_DoFile("swbf2Remaster_aihero_insert")
+		ScriptCB_DoFile("aihero_insert")
 	end
 	
 	-- disable award weapons if enabled in the settings
 	if rema_database.data.awardWeapons == 1 then
-		ScriptCB_DoFile("swbf2Remaster_noAwardWeapons")
+		ScriptCB_DoFile("remove_award_weapons")
 	end
 end
 

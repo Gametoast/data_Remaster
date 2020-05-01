@@ -33,7 +33,7 @@ if ReadDataFile then
 		-- fixing Tatooine music bug
 		if string.find(arg[1], "sound\\tat.lvl") ~= nil then 
 		--if arg[1] == "TAT\\tat2.lvl" or arg[1] == "TAT\\tat3.lvl" then
-			soundFix_ReadDataFile("REMASTER\\sounds\\tatmusicfix.lvl;tat_music_fix")
+			soundFix_ReadDataFile("..\\..\\addon\\Remaster\\_LVL_PREMUNGE\\tatmusicfix.lvl;tat_music_fix")
 		end
 		
 --[[		if remaSndStackAdd ~= nil and string.len(arg[1]) > 5 and string.sub(arg[1], 1, 5) == "sound" then

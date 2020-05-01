@@ -5,7 +5,7 @@
 
 --attempt to take control of (or listen to the calls of) the ReadDataFile function
 if ReadDataFile then
-	if ScriptCB_IsFileExist("REMASTER\\noawardweapons.lvl") == 1 then
+	if ScriptCB_IsFileExist("..\\..\\addon\\Remaster\\_LVL_PREMUNGE\\noawardweapons.lvl") == 1 then
 		
 		local hasReadAwardData = false
 		

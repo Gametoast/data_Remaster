@@ -1,7 +1,7 @@
 ------------------------------------------------------------------
 -- SWBF 2 Remaster by Anakin
 ------------------------------------------------------------------
-print("ui_testscript: entered")
+print("interface_testscript: entered")
 
 
 function getn(v)
@@ -251,22 +251,22 @@ ScriptCB_PushScreen = function(screen, ...)
 
 end
 
-print("game_testscript: searching AddIFScreen()..")
+print("interface_testscript: searching AddIFScreen()..")
 if AddIFScreen then
-	print("game_testscript: success")
+	print("interface_testscript: success")
 	
 	-- backup old function
 	local remaTEST_AddIFScreen = AddIFScreen
 
 	-- wrap AddIFScreen
-	print("game_testscript: wrap AddIFScreen()")
+	print("interface_testscript: wrap AddIFScreen()")
 	AddIFScreen = function(table, name,...)
 
 		-- let the original function happen
 	    return remaTEST_AddIFScreen(table, name, unpack(arg))
 	end
 else
-	print("game_testscript: AddIFScreen() not found!")
+	print("interface_testscript: AddIFScreen() not found!")
 end
 --]]
 --ifs_instant_options.set_defaults(this)
@@ -359,4 +359,4 @@ for x = 1, 36 do
 end
 --]]
 
-print("game_testscript: exited")
+print("interface_testscript: exited")
