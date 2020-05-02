@@ -1,8 +1,5 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
-- restructure file paths
-- bug for installer
-
 
 ==ADDITIONAL CONTENT==
 - Difficulty_mod_2_swbf2
@@ -18,25 +15,5 @@
 
 ==TO TEST==
 - Credits, back button => GC map and stuck reported by sweg
-- dirty hack to avoid us und gc scripts
 
 ==DONE==
-new HUD
-data integrity test
-settings save fixen
-MP crash after match
-include font
-sound fix fixed
-cis award rifle missing HUD icon
-campaing loadscreen
-load/save remaster 13 gc does not work
-load gc doesn't work at all. Problem is the missing database already fixed?
-campaign crash
-gc Enter is used as two input accepted
-include code from testscripts
-remaster settings page redesign
-AI number increase
-overlap healthbar for heros in vehicle
-save instant options does not work when not entering the settings page once
-> new quicksettings api
-> minipage api
