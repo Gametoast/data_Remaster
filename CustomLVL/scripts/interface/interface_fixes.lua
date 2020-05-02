@@ -399,6 +399,7 @@ end
 -- fix profile select screen
 -- fix multiplayer current online match screen
 -- fixing mulitplayer create session screen
+-- fix instant action era text width
 -- fix general option screen
 -- fix graphic option screen
 -- fix sound option screen
@@ -492,9 +493,32 @@ if AddIFScreen then
 			ifs_mp_sessionlist.LoginAsText2.y = (510 + 12) * screenH/600
 		end
 		
+		-- fix instant action era text width
+		if name == "ifs_missionselect" then
+			-- increase era text box width
+			local idlist =  {
+				"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+				"K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+				"U", "V", "W", "X", "Y", "Z", "1", "2"
+			}
+			for i, id in idlist do
+				ifsTable["Era_" .. id .. "_box"].Text_Era.textw = ifsTable.EraListbox.width
+			end
+		end
+		
 		-- fixing mulitplayer create session screen
 		if name == "ifs_missionselect_pcMulti" then
-		
+			
+			-- increase era text box width
+			local idlist =  {
+				"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+				"K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+				"U", "V", "W", "X", "Y", "Z", "1", "2"
+			}
+			for i, id in idlist do
+				ifsTable["Era_" .. id .. "_box"].Text_Era.textw = ifsTable.EraListbox.width
+			end
+			
 			-- fixing servername and passwort position and name length
 			ifs_missionselect_pcMulti.EditContainer.ScreenRelativeY = 0.05
 			ifs_missionselect_pcMulti.EditContainer.ScreenRelativeX = 0.8
@@ -1207,7 +1231,7 @@ end
 -- increase text width to fit the zoomed size
 -- fix position bug caused by this fix, too
 if IFText_fnSetString then
-	
+
 	-- backup old function
 	local remaGUI_setIFTextString = IFText_fnSetString
 

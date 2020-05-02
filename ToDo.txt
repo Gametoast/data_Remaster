@@ -1,7 +1,9 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
+- auf standard zurücksetzten too short for bigger text
 
 ==ADDITIONAL CONTENT==
+- v1.3 options funktionieren in gc nicht
 - Difficulty_mod_2_swbf2
 - improve scripting and avoid pipe solution using the new hack to load data on startup. Can this solve the loadscreen thing, too??
 - gc hero bonus fix
@@ -17,3 +19,4 @@
 - Credits, back button => GC map and stuck reported by sweg
 
 ==DONE==
+- instant action era boxen zu klein für RC namen
