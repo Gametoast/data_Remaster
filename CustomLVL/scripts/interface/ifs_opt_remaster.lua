@@ -401,14 +401,18 @@ function ifs_opt_remaster_fnBuildScreen(this)
 	this.resetbutton = NewPCIFButton {
 		ScreenRelativeX = 0.5, -- center
 		ScreenRelativeY = 1.0, -- bottom
-		y = -15, -- just above bottom						
+		y = -15, -- just above bottom
+		x = 0,
 		btnw = BackButtonW * 1.5,
 		btnh = BackButtonH,
 		font = "gamefont_medium_rema",
+		bg_tail = 20,
 		noTransitionFlash = 1,
 		tag = "_reset",
 		string = "common.reset",
 	}
+	this.resetbutton.label.textw = 1.5 * this.resetbutton.label.textw
+	this.resetbutton.label.x = -this.resetbutton.label.textw * 0.5
 	
 	this.donebutton = NewPCIFButton {
 		ScreenRelativeX = 1.0, -- right
@@ -430,5 +434,5 @@ ifs_opt_remaster_fnBuildTabsLayout()
 ifs_opt_remaster_fnBuildScreen(ifs_opt_remaster)
 ifs_opt_remaster_fnBuildScreen = nil
 AddIFScreen(ifs_opt_remaster,"ifs_opt_remaster")
-ifs_opt_remaster = DoPostDelete(ifs_opt_remaster)
 ifs_opt_remaster_fnBuildScriptScreen()
+ifs_opt_remaster = DoPostDelete(ifs_opt_remaster)

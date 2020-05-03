@@ -251,6 +251,8 @@ function ifelem_minipage_add(modID, elements, callbackTable)
 		tag = "_reset",
 		string = "common.reset",
 	}
+	screen.resetbutton.label.textw = 1.5 * screen.resetbutton.label.textw
+	screen.resetbutton.label.x = -screen.resetbutton.label.textw * 0.5
 	
 	screen.donebutton = NewPCIFButton {
 		ScreenRelativeX = 1.0, -- right

@@ -1,6 +1,5 @@
 ==NECESSARY CONTENT==
 - Versionsnamen ändern
-- auf standard zurücksetzten too short for bigger text
 
 ==ADDITIONAL CONTENT==
 - v1.3 options funktionieren in gc nicht

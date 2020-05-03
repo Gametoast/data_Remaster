@@ -561,13 +561,26 @@ if AddIFScreen then
 		
 		-- fix general option screen
 		if name == "ifs_opt_general" then
-		
+			local dest = ifsTable.resetbutton.label
+			dest.textw = 1.5 * dest.textw
+			dest.x = -dest.textw * 0.5
+
 			-- fixing slider's value text
 			ifs_opt_general.formcontainergeneral.form.buttons.reticulealpha.label.x = 0.25 * (ifs_opt_general.formcontainergeneral.form.sliders.reticulealpha.width - 180)
+		end
+		
+		-- fix pc controlls option screen
+		if name == "ifs_opt_pccontrols" then
+			local dest = ifsTable.resetbutton.label
+			dest.textw = 1.5 * dest.textw
+			dest.x = -dest.textw * 0.5
 		end
 
 		-- fix graphic option screen
 		if name == "ifs_opt_pcvideo" then
+			local dest = ifsTable.autodetectbutton.label
+			dest.textw = 1.5 * dest.textw
+			dest.x = -dest.textw * 0.5
 			
 			-- some values
 			local offset = 120 * (1 - (800 / 600 * screenH / screenW))
@@ -686,7 +699,10 @@ if AddIFScreen then
 		
 		-- fix sound option screen
 		if name == "ifs_opt_sound" then
-			
+			local dest = ifsTable.resetbutton.label
+			dest.textw = 1.5 * dest.textw
+			dest.x = -dest.textw * 0.5
+
 			-- save bar width, function will return different value after relative changes
 			local barWidth = ifs_opt_sound_getBarSize(ifs_opt_sound)
 			
@@ -763,7 +779,10 @@ if AddIFScreen then
 		
 		-- fix online option screen
 		if name == "ifs_opt_mp" then
-		
+			local dest = ifsTable.resetbutton.label
+			dest.textw = 1.5 * dest.textw
+			dest.x = -dest.textw * 0.5
+			
 			-- some values
 			local offset = 120 * (1 - (800 / 600 * screenH / screenW))
 			local width = ifs_opt_mp.formcontainer.form.dropdowns.players.listbox.width - 12
