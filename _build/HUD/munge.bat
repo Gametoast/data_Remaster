@@ -53,7 +53,7 @@
 @REM levelpack -inputfile HUD_16x10.req %MUNGE_ARGS% -sourcedir %SOURCE_DIR% -inputdir %MUNGE_DIR% -outputdir %OUTPUT_DIR% 2>>%MUNGE_LOG%
 
  
-xcopy %OUTPUT_DIR% "C:\Users\carst\AppData\Local\VirtualStore\Program Files (x86)\LucasArts\Star Wars Battlefront II\GameData\data\_lvl_pc\REMASTER\HUD" /Y
+xcopy %OUTPUT_DIR% "C:\Program Files (x86)\LucasArts\Star Wars Battlefront II\GameData\addon\Remaster\HUD" /Y
 
 @REM If the munge log was created locally and has anything in it, view it
 @if not %MUNGE_LOG%x==%LOCAL_MUNGE_LOG%x goto skip_mungelog

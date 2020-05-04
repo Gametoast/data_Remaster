@@ -630,7 +630,7 @@ Group("player1weaponinformation")
 
             MeshInfo("ewk_spear")
             {
-                Position(-0.086126, 0.206732, 199.969666, "Viewport")
+                Position(-0.086126, 0.229651, 199.969666, "Viewport")
                 Rotation(0.804269, 90.747269, 359.999695)
                 Scale(0.590000, 0.590000, 0.010000)
             }
@@ -908,9 +908,9 @@ Group("player1weaponinformation")
 
             MeshInfo("ewk_rock")
             {
-                Position(-0.060943, 0.076415, 276.444824, "Viewport")
-                Rotation(0.056783, 359.996582, 359.999695)
-                Scale(0.780000, 0.780000, 0.780000)
+                Position(-0.061044, 0.113826, 276.444824, "Viewport")
+                Rotation(6.046906, 29.372454, 0.000000)
+                Scale(0.780000, 0.780000, 0.010000)
             }
 
             MeshInfo("com_weap_probedroid")

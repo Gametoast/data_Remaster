@@ -42,7 +42,7 @@
 
 @for /f %%A in ('dir %SOURCE_DIR%\Fonts /b /Ad') do levelpack -inputfile %%A.req %MUNGE_ARGS% -sourcedir %SOURCE_DIR% -inputdir %MUNGE_DIR%\%%A -outputdir %OUTPUT_DIR% 2>>%MUNGE_LOG%
  
-xcopy %OUTPUT_DIR% "C:\Users\carst\AppData\Local\VirtualStore\Program Files (x86)\LucasArts\Star Wars Battlefront II\GameData\data\_lvl_pc\REMASTER\Fonts" /Y
+xcopy %OUTPUT_DIR% "C:\Program Files (x86)\LucasArts\Star Wars Battlefront II\GameData\addon\Remaster\Fonts" /Y
 
 @REM If the munge log was created locally and has anything in it, view it
 @if not %MUNGE_LOG%x==%LOCAL_MUNGE_LOG%x goto skip_mungelog
