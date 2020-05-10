@@ -3,7 +3,6 @@ ucft
     REQN
     {
         "script"
-		"ingame_testscript"
 		"aihero_insert"
 		"aihero_script"
 		"ingame_controller"

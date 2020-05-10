@@ -3,7 +3,6 @@ ucft
     REQN
     {
         "script"
-		"interface_testscript"
 		"galactic_conquest"
 		"ifelem_minipage"
 		"ifs_minipage_script"

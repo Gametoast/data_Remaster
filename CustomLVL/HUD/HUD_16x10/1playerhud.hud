@@ -335,7 +335,7 @@ Group("player1weaponinformation")
             {
                 Position(-0.149620, 0.261806, 145.627090, "Viewport")
                 Rotation(0.804269, 90.747269, 359.999695)
-                Scale(1.000000, 1.000000, 0.010000)
+                Scale(0.800000, 0.800000, 0.020000)
             }
 
             MeshInfo("arcrifle")
