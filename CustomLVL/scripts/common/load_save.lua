@@ -309,22 +309,22 @@ function swbf2Remaster_dataIntegrityTest(failure)
 	local exists = ScriptCB_IsFileExist
 	for i = 1, table.getn(rema_database.scripts_OP) do
 		if exists(swbf2Remaster_getOPPath(rema_database.scripts_OP[i])) == 0 then
-			table.remove(rema_database.scripts_OP, i)
+			rema_database.scripts_OP[i] = nil
 		end
 	end
 	for i = 1, table.getn(rema_database.scripts_IF) do
 		if exists(swbf2Remaster_getIFPath(rema_database.scripts_IF[i])) == 0 then
-			table.remove(rema_database.scripts_IF, i)
+			rema_database.scripts_IF[i] = nil
 		end
 	end
 	for i = 1, table.getn(rema_database.scripts_IG) do
 		if exists(swbf2Remaster_getIGPath(rema_database.scripts_IG[i])) == 0 then
-			table.remove(rema_database.scripts_IG, i)
+			rema_database.scripts_IG[i] = nil
 		end
 	end
 	for i = 1, table.getn(rema_database.scripts_GT) do
 		if exists(swbf2Remaster_getGTPath(rema_database.scripts_GT[i])) == 0 then
-			table.remove(rema_database.scripts_GT, i)
+			rema_database.scripts_GT[i] = nil
 			rema_database.themeIdx = 1
 		end
 	end	

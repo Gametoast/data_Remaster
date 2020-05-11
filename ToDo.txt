@@ -1,5 +1,4 @@
 ==NECESSARY CONTENT==
-- Versionsnamen ändern
 
 ==ADDITIONAL CONTENT==
 - v1.3 options funktionieren in gc nicht
