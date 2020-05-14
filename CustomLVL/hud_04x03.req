@@ -1,11 +1,5 @@
 ucft
 {
-	REQN
-	{
-		"model"
-		"hud_weapon2_backdrop_rema"
-		"hud_cis_wristblaster_award"
-	}
     REQN
     {
         "config"
@@ -15,4 +9,12 @@ ucft
         "3playerhud"
         "4playerhud"
     }
+
+	REQN
+	{
+		"model"
+		"hud_weapon2_backdrop"
+		"hud_cis_wristblaster_award"
+		"com_inv_mesh"
+	}
 }

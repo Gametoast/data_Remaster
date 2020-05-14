@@ -109,7 +109,7 @@ Group("player1weaponinformation")
 
     Model3D("player1weapon1backdrop")
     {
-        Mesh("hud_weapon2_backdrop_rema")
+        Mesh("hud_weapon2_backdrop")
         Position(0.152284, -0.098922, -0.002803, "Viewport")
         Scale(0.200000, 0.200000, 0.200000)
         ZOrder(8)
@@ -121,7 +121,7 @@ Group("player1weaponinformation")
 
     Model3D("player1weapon2backdrop")
     {
-        Mesh("hud_weapon2_backdrop_rema")
+        Mesh("hud_weapon2_backdrop")
         Position(0.152284, -0.174183, -0.125021, "Viewport")
         Scale(0.200001, 0.200001, 0.200001)
         ZOrder(8)
