@@ -18,7 +18,7 @@ if ReadDataFile then
 			if string.find(string.lower(sourceFilename), "side\\") and not hasReadAwardData then
 				hasReadAwardData = true
 
-				ReadDataFile("REMASTER\\noawardweapons.lvl",
+				ReadDataFile("..\\..\\addon\\Remaster\\_LVL_PREMUNGE\\noawardweapons.lvl",
 								"com_weap_award_pistol",
 								"com_weap_award_rifle",
 								"com_weap_award_rocket_launcher",

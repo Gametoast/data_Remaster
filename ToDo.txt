@@ -1,4 +1,5 @@
 ==NECESSARY CONTENT==
+- no 64 ai units
 
 ==ADDITIONAL CONTENT==
 - v1.3 options funktionieren in gc nicht
@@ -17,4 +18,5 @@
 - Credits, back button => GC map and stuck reported by sweg
 
 ==DONE==
-- instant action era boxen zu klein für RC namen
+- double weapon backdrop fix
+- red lines for floating fixed mods removed
