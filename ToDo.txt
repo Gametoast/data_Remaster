@@ -2,14 +2,13 @@
 - no 64 ai units
 
 ==ADDITIONAL CONTENT==
-- v1.3 options funktionieren in gc nicht
 - Difficulty_mod_2_swbf2
 - improve scripting and avoid pipe solution using the new hack to load data on startup. Can this solve the loadscreen thing, too??
 - gc hero bonus fix
-- movie previews
-- save button for match settings
 - disable forcepowers
 - hero deny cp capture
+- movie previews
+- save button for match settings
 - don't show settings file in GC loadscreen
 - fix Han solo bug
 - side select
@@ -20,3 +19,4 @@
 ==DONE==
 - double weapon backdrop fix
 - red lines for floating fixed mods removed
+- v1.3 options funktionieren in gc nicht (award effects)
