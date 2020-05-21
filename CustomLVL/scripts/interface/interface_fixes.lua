@@ -95,7 +95,6 @@ end
 
 -- overwrite ScriptCB_GetCurrentPCTitleVersion, no need to backup, we don't need the old version
 ScriptCB_GetCurrentPCTitleVersion = function ()
-		
 	return "Star Wars Battlefront II " .. ScriptCB_ununicode(ScriptCB_getlocalizestr("rema.version"))
 end
 

@@ -7,8 +7,6 @@
 
 ------------------------------------------------------------------
 
-rema_firstLoad = true
-
 -- load fonts
 local w, h = ScriptCB_GetScreenInfo()
 
@@ -19,9 +17,6 @@ elseif h >= 1000 then
 else
 	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_default.lvl")
 end
-
--- load strings
-ReadDataFile("..\\..\\addon\\Remaster\\localize_main.lvl")
 
 -- run script manager
 ScriptCB_DoFile("script_manager")
