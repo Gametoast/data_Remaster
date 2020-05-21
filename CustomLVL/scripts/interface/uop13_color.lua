@@ -22,6 +22,8 @@ if ScriptCB_IsFileExist then
 			else
 				return 1
 			end
+		else
+			return remaV13_ScriptCB_IsFileExist(unpack(arg))
 		end
 	end
 else

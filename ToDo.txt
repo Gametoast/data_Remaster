@@ -3,7 +3,7 @@
 
 ==ADDITIONAL CONTENT==
 - Difficulty_mod_2_swbf2
-- improve scripting and avoid pipe solution using the new hack to load data on startup. Can this solve the loadscreen thing, too??
+- improve scripting and avoid pipe solution using the new hack to load data on startup. Can this solve the loadscreen thing, too?? interface does not work
 - gc hero bonus fix (insert file GameData.bHeroesEnabled is false)
 - disable forcepowers
 - hero deny cp capture
