@@ -9,9 +9,9 @@ ucft
 		"ifs_opt_remaster"
 		"interface_controller"
 		"interface_fixes"
+		"uop13_color"
 		"load_save"
 		"script_manager"
-		"uop13_options"
     }
 	
 	REQN

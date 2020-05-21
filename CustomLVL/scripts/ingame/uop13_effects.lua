@@ -11,25 +11,12 @@ if ScriptCB_IsFileExist then
 	-- wrap ScriptCB_IsFileExist
 	ScriptCB_IsFileExist = function(...)
 	
-		if arg[1] == "..\\..\\addon\\AAA-v1.3patch\\settings\\noColors.txt" then
-
-			if not rema_database then
-				print("Houston, we got a problem!!")
-			end
-			
-			if rema_database.data.customColor == 2 then
-				return 0
-			else
-				return 1
-			end
-			
-		elseif arg[1] == "..\\..\\addon\\AAA-v1.3patch\\settings\\noAwards.txt" then
-			-- we are doing this somewhere else
+		if arg[1] == "..\\..\\addon\\AAA-v1.3patch\\settings\\noAwards.txt" then
+			print("Remaster: don't care about award settings file. I handle this.")
 			return 0
 		else
 			return remaV13_ScriptCB_IsFileExist(unpack(arg))
 		end
-		
 	end
 else
 	print("Remaster: Error")
@@ -47,7 +34,7 @@ if ScriptPostLoad then
 	ScriptPostLoad = function(...)
 
 		if not rema_database then
-			print("Houston, we got a problem!!")
+			print("Remaster: This shouldn't happen. Please contact Anakin!!")
 		end
 		
 		if rema_database.data.awardEffects == 1 and ff_awardEffectsOn == 1 then

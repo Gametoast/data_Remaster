@@ -87,7 +87,7 @@ ScriptCB_DoFile("script_manager")
 ScriptCB_DoFile("sound_fixes")
 
 -- load v1.3 options
-ScriptCB_DoFile("uop13_options")
+ScriptCB_DoFile("uop13_effects")
 
 -- searching database
 if ScriptCB_IsMetagameStateSaved() then

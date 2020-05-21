@@ -36,7 +36,7 @@ ScriptCB_DoFile("load_save")
 ScriptCB_DoFile("interface_fixes")
 
 -- add v1.3 options
-ScriptCB_DoFile("uop13_options")
+ScriptCB_DoFile("uop13_color")
 
 -- upgrade galactic conquest
 ScriptCB_DoFile("galactic_conquest")
