@@ -7,9 +7,6 @@
 
 ------------------------------------------------------------------
 
---[[
-
---]]
 
 -- load fonts
 local w, h = ScriptCB_GetScreenInfo()
@@ -68,6 +65,33 @@ else
 	print("        : ScriptCB_DoFile() not found!")
 end
 
+
+-- try to wrap ScriptCB_GetNetGameDefaults ----------------------------
+-- increase max AI bots
+if ScriptCB_GetNetGameDefaults then
+	
+	-- backup old function
+	local remaIG_ScriptCB_GetNetGameDefaults = ScriptCB_GetNetGameDefaults
+	
+	-- wrap ScriptCB_GetNetGameDefaults
+	ScriptCB_GetNetGameDefaults = function(...)
+		-- let the original function happen and catch the return value
+		local defaultTable = remaIG_ScriptCB_GetNetGameDefaults(unpack(arg))
+		
+		-- increase max AI bots
+		defaultTable.iMaxBots = 32
+		defaultTable.iASSNumBots = defaultTable.iNumBots
+		defaultTable.iCONNumBots = defaultTable.iNumBots
+		defaultTable.iCTFNumBots = defaultTable.iNumBots
+		-- return the manipulated values
+		return defaultTable
+	end
+else
+	print("Remaster: Error")
+	print("        : ScriptCB_GetNetGameDefaults() not found!")
+end
+
+
 -- load hud if not deactivated
 if not rema_noHUD then
 
@@ -75,11 +99,11 @@ if not rema_noHUD then
 	local aspectRatio = screenWidth / screenHeight
 
 	if aspectRatio >= 1.63 and aspectRatio <= 1.9 then
-		ReadDataFile("..\\..\\addon\\Remaster\\HUD\\hud_16x09.lvl")
+		ReadRemasterFile("HUD\\hud_16x09.lvl")
 	elseif aspectRatio >= 1.4 and aspectRatio <= 1.63 then
-		ReadDataFile("..\\..\\addon\\Remaster\\HUD\\hud_16x10.lvl")
+		ReadRemasterFile("HUD\\hud_16x10.lvl")
 	else
-		ReadDataFile("..\\..\\addon\\Remaster\\HUD\\hud_04x03.lvl")
+		ReadRemasterFile("HUD\\hud_04x03.lvl")
 	end
 
 end
@@ -105,6 +129,21 @@ if ScriptCB_IsMetagameStateSaved() then
 		
 		if not (next(temp, 1) == nil) then
 			-- there is more, push it back to the pipe
+			
+			__thisIsGC__ = true
+			
+			if temp[21] then
+				if temp[21][1] and temp[21][1] == "leader" then
+					__hero1__ = true
+				end
+				
+				if temp[21][2] and temp[21][2] == "leader" then
+					__hero2__ = true
+				end
+				
+				__faction__ = temp[3]
+			end
+
 			ScriptCB_SaveMetagameState(
 				temp[2],
 				temp[3],
@@ -256,3 +295,8 @@ end
 
 print("Remaster: game upgrade complete")
 print("")
+
+
+ReadRemasterFile("remaster_hook.lvl")
+ScriptCB_DoFile("stock_game_interface")
+

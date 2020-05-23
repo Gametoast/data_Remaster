@@ -148,7 +148,12 @@ ScriptCB_GetNetGameDefaults = function(...)
 	end
 
 	-- in any other cases, return the scriptCB data
-	return remaIO_GetGameDefaults(unpack(arg))
+	local defaultTable = remaIO_GetGameDefaults(unpack(arg))
+	defaultTable.iMaxBots = 32
+	defaultTable.iASSNumBots = defaultTable.iNumBots
+	defaultTable.iCONNumBots = defaultTable.iNumBots
+	defaultTable.iCTFNumBots = defaultTable.iNumBots
+	return defaultTable
 end
 
 local remaIO_GetHeroDefaults = ScriptCB_GetNetHeroDefaults

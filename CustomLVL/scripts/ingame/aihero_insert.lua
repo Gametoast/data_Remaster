@@ -25,9 +25,33 @@ if ScriptPostLoad then
 		-- changes by Rayman1103
 		if not IsCampaign() and not AIHeroSupport then
 			local GameData = ScriptCB_GetNetGameDefaults()
-			
-			if GameData.bHeroesEnabled then
+
+			if GameData.bHeroesEnabled or (__thisIsGC__ and (__hero1__ or __hero2__))then
+				
 				local HeroData = ScriptCB_GetNetHeroDefaults()
+				
+				if __thisIsGC__ then
+					HeroData.iHeroUnlockVal = 0
+					HeroData.iHeroRespawn = 2
+					HeroData.iHeroRespawnVal = 90
+					
+					if not __hero1__ then
+						for i, val in AIHeroClasses do
+							if string.sub(val, 1, 3) == __faction__ then
+								AIHeroClasses[i] = false
+							end
+						end
+					end
+					
+					if not __hero2__ then
+						for i, val in AIHeroClasses do
+							if string.sub(val, 1, 3) ~= __faction__ then
+								AIHeroClasses[i] = false
+							end
+						end
+					end
+				end
+				
 				local heroScriptMode = "unknown"
 				local heroScriptSpawnDelay = 5
 				local heroScriptRespawnTime = HeroData.iHeroRespawnVal

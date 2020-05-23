@@ -1,16 +1,16 @@
 ucft
 {
     REQN
-    {
-        "script"
+	{
+		"script"
 		"galactic_conquest"
 		"ifelem_minipage"
 		"ifs_minipage_script"
 		"ifs_opt_remaster"
 		"interface_controller"
 		"interface_fixes"
-		"uop13_color"
 		"load_save"
+		"uop13_color"
 		"script_manager"
     }
 	

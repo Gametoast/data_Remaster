@@ -11,11 +11,11 @@
 local w, h = ScriptCB_GetScreenInfo()
 
 if h >= 2000 then
-	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_4k.lvl")
+	ReadRemasterFile("Fonts\\arialblack_4k.lvl")
 elseif h >= 1000 then
-	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_2k.lvl")
+	ReadRemasterFile("Fonts\\arialblack_2k.lvl")
 else
-	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_default.lvl")
+	ReadRemasterFile("Fonts\\arialblack_default.lvl")
 end
 
 -- run script manager

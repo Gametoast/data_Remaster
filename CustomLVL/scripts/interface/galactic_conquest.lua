@@ -464,7 +464,7 @@ if ReadDataFile then
 
 		-- load meshes faster than the stock game
 		if arg[1] == "gal\\gal1.lvl" then
-			ReadDataFile("..\\..\\addon\\Remaster\\freeform\\freeform_meshs.lvl")
+			ReadRemasterFile("freeform\\freeform_meshs.lvl")
 		end
 		
 		-- let the original function happen
@@ -472,7 +472,7 @@ if ReadDataFile then
 		
 		-- overwrite existing textures
 		if arg[1] == "gal\\gal1.lvl" then
-			ReadDataFile("..\\..\\addon\\Remaster\\freeform\\freeform_textures.lvl")
+			ReadRemasterFile("freeform\\freeform_textures.lvl")
 		end
 			
 		-- return unmodified return values

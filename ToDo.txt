@@ -1,22 +1,22 @@
 ==NECESSARY CONTENT==
-- no 64 ai units
+> disable forcepowers
 
 ==ADDITIONAL CONTENT==
 - Difficulty_mod_2_swbf2
-- improve scripting and avoid pipe solution using the new hack to load data on startup. Can this solve the loadscreen thing, too?? interface does not work
-- gc hero bonus fix (insert file GameData.bHeroesEnabled is false)
-- disable forcepowers
-- hero deny cp capture
 - movie previews
 - save button for match settings
 - don't show settings file in GC loadscreen
 - fix Han solo bug
 - side select
+- hero deny cp capture
+x improve scripting and avoid pipe solution using the new hack to load data on startup. Does not work, loading process is done parallel, i cannot interupt the process
+x no 64 ai units does not work, hard coded limit checking
 
 ==TO TEST==
-- Credits, back button => GC map and stuck reported by sweg
+
 
 ==DONE==
 - double weapon backdrop fix
 - red lines for floating fixed mods removed
 - v1.3 options funktionieren in gc nicht (award effects)
+- gc hero bonus fix

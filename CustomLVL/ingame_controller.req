@@ -9,7 +9,6 @@ ucft
 		"remove_award_weapons"
 		"sound_fixes"
 		"uop13_effects"
-		"load_save"
 		"script_manager"
     }
 }
