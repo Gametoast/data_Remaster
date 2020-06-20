@@ -12,11 +12,11 @@
 local w, h = ScriptCB_GetScreenInfo()
 
 if h >= 2000 then
-	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_4k.lvl")
+	ReadRemasterFile("Fonts\\arialblack_4k.lvl")
 elseif h >= 1000 then
-	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_2k.lvl")
+	ReadRemasterFile("Fonts\\arialblack_2k.lvl")
 else
-	ReadDataFile("..\\..\\addon\\Remaster\\Fonts\\arialblack_default.lvl")
+	ReadRemasterFile("Fonts\\arialblack_default.lvl")
 end
 
 -- wait for interface_util to be loaded and swap stock fonts
@@ -99,13 +99,24 @@ if not rema_noHUD then
 	local aspectRatio = screenWidth / screenHeight
 
 	if aspectRatio >= 1.63 and aspectRatio <= 1.9 then
-		ReadRemasterFile("HUD\\hud_16x09.lvl")
+		if ScriptCB_IsFileExist("..\\..\\addon\\Remaster\\HUD\\HD\\hud_16x09.lvl") == 1 then
+			ReadRemasterFile("HUD\\HD\\hud_16x09.lvl")
+		else
+			ReadRemasterFile("HUD\\hud_16x09.lvl")
+		end
 	elseif aspectRatio >= 1.4 and aspectRatio <= 1.63 then
-		ReadRemasterFile("HUD\\hud_16x10.lvl")
+		if ScriptCB_IsFileExist("..\\..\\addon\\Remaster\\HUD\\HD\\hud_16x10.lvl") == 1 then
+			ReadRemasterFile("HUD\\HD\\hud_16x10.lvl")
+		else
+			ReadRemasterFile("HUD\\hud_16x10.lvl")
+		end
 	else
-		ReadRemasterFile("HUD\\hud_04x03.lvl")
+		if ScriptCB_IsFileExist("..\\..\\addon\\Remaster\\HUD\\HD\\hud_04x03.lvl") == 1 then
+			ReadRemasterFile("HUD\\HD\\hud_04x03.lvl")
+		else
+			ReadRemasterFile("HUD\\hud_04x03.lvl")
+		end
 	end
-
 end
 
 -- run script manager
