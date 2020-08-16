@@ -25,25 +25,27 @@ end
 
 
 -- try to wrap ScriptPostLoad ------------------------------------
-if ScriptPostLoad then
-	-- backup old function
-	local remaV13_ScriptPostLoad = ScriptPostLoad
+if not ScriptCB_InMultiplayer() then
+	if ScriptPostLoad then
+		-- backup old function
+		local remaV13_ScriptPostLoad = ScriptPostLoad
 
-	-- wrap ScriptPostLoad
+		-- wrap ScriptPostLoad
 
-	ScriptPostLoad = function(...)
+		ScriptPostLoad = function(...)
 
-		if not rema_database then
-			print("Remaster: This shouldn't happen. Please contact Anakin!!")
+			if not rema_database then
+				print("Remaster: This shouldn't happen. Please contact Anakin!!")
+			end
+			
+			if rema_database.data.awardEffects == 1 and ff_awardEffectsOn == 1 then
+				ff_CommandRemoveAwardEffects()
+			end
+			
+			return remaV13_ScriptPostLoad(unpack(arg))
 		end
-		
-		if rema_database.data.awardEffects == 1 and ff_awardEffectsOn == 1 then
-			ff_CommandRemoveAwardEffects()
-		end
-		
-		return remaV13_ScriptPostLoad(unpack(arg))
+	else
+		print("Remaster: Error")
+		print("        : ScriptPostLoad() not found!")
 	end
-else
-	print("Remaster: Error")
-	print("        : ScriptPostLoad() not found!")
 end

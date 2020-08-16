@@ -68,28 +68,28 @@ end
 
 -- try to wrap ScriptCB_GetNetGameDefaults ----------------------------
 -- increase max AI bots
-if ScriptCB_GetNetGameDefaults then
+-- if ScriptCB_GetNetGameDefaults then
 	
-	-- backup old function
-	local remaIG_ScriptCB_GetNetGameDefaults = ScriptCB_GetNetGameDefaults
+	-- -- backup old function
+	-- local remaIG_ScriptCB_GetNetGameDefaults = ScriptCB_GetNetGameDefaults
 	
-	-- wrap ScriptCB_GetNetGameDefaults
-	ScriptCB_GetNetGameDefaults = function(...)
-		-- let the original function happen and catch the return value
-		local defaultTable = remaIG_ScriptCB_GetNetGameDefaults(unpack(arg))
+	-- -- wrap ScriptCB_GetNetGameDefaults
+	-- ScriptCB_GetNetGameDefaults = function(...)
+		-- -- let the original function happen and catch the return value
+		-- local defaultTable = remaIG_ScriptCB_GetNetGameDefaults(unpack(arg))
 		
-		-- increase max AI bots
-		defaultTable.iMaxBots = 32
-		defaultTable.iASSNumBots = defaultTable.iNumBots
-		defaultTable.iCONNumBots = defaultTable.iNumBots
-		defaultTable.iCTFNumBots = defaultTable.iNumBots
-		-- return the manipulated values
-		return defaultTable
-	end
-else
-	print("Remaster: Error")
-	print("        : ScriptCB_GetNetGameDefaults() not found!")
-end
+		-- -- increase max AI bots
+		-- defaultTable.iMaxBots = 32
+		-- defaultTable.iASSNumBots = defaultTable.iNumBots
+		-- defaultTable.iCONNumBots = defaultTable.iNumBots
+		-- defaultTable.iCTFNumBots = defaultTable.iNumBots
+		-- -- return the manipulated values
+		-- return defaultTable
+	-- end
+-- else
+	-- print("Remaster: Error")
+	-- print("        : ScriptCB_GetNetGameDefaults() not found!")
+-- end
 
 
 -- load hud if not deactivated

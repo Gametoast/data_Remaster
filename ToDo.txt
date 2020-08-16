@@ -14,9 +14,15 @@ x improve scripting and avoid pipe solution using the new hack to load data on s
 x no 64 ai units does not work, hard coded limit checking
 
 ==TO TEST==
+Wookiee Thermal Detonator icon is stretched (old); mission timer clips into mini-map (new)
+Esc > Restart mission crashed. Vermutlich mehrfachladen von stock_game_interface funktioniert nicht
+Kampange crashed
 
 
 ==DONE==
+1.6:
+ai not spawning when hosting MP
+1.5:
 - double weapon backdrop fix
 - red lines for floating fixed mods removed
 - v1.3 options funktionieren in gc nicht (award effects)
