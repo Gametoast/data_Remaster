@@ -290,6 +290,16 @@ ScriptCB_QuitToShell = function(...)
 	return rema_QuitToShell(unpack(arg))
 end
 
+-- hook ScriptCB_RestartMission to add data to the pipe
+local rema_RestartMission = ScriptCB_RestartMission
+ScriptCB_RestartMission = function(...)
+	
+	ScriptCB_SaveMetagameState(rema_database)
+	
+	-- let the original function happen
+	return rema_RestartMission(unpack(arg))
+end
+
 -- options that are only for singleplayer
 if not ScriptCB_InMultiplayer() then
 
