@@ -701,9 +701,9 @@ Group("player1weaponinformation")
 
             MeshInfo("wok_weap_inf_thermaldetonator")
             {
-                Position(-0.252174, 0.237626, 0.006280, "Viewport")
-                Rotation(2.198172, 63.675468, 329.888580)
-                Scale(1.963860, 1.963860, 1.963860)
+                Position(-0.276505, 0.237626, 0.006280, "Viewport")
+                Rotation(33.532089, 299.117523, 0.260492)
+                Scale(1.960000, 1.960000, 0.010000)
             }
 
             MeshInfo("gun_weap_inf_grenadethermal")
@@ -1496,7 +1496,7 @@ ObjectiveList("player1objectives")
 
 Group("objectivetimerGROUP")
 {
-    Position(0.890941, 0.219211, 0.000000, "Viewport")
+    Position(0.890941, 0.258330, 0.000000, "Viewport")
     EventEnable("objectivetimer")
     EventDisable("objectivetimer.disable")
     Text("objectivetimer")
