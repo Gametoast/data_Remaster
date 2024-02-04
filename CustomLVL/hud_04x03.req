@@ -1,0 +1,20 @@
+ucft
+{
+    REQN
+    {
+        "config"
+        "hudtransforms"
+        "1playerhud"
+        "2playerhud"
+        "3playerhud"
+        "4playerhud"
+    }
+
+	REQN
+	{
+		"model"
+		"hud_weapon2_backdrop"
+		"hud_cis_wristblaster_award"
+		"com_inv_mesh"
+	}
+}

@@ -1,0 +1,12 @@
+ucft
+{
+	REQN
+	{
+		"font"
+		"gamefont_large_rema"
+		"gamefont_medium_rema"
+		"gamefont_small_rema"
+		"gamefont_tiny"
+		"gamefont_super_tiny"
+	}
+}

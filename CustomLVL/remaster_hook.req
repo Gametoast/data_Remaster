@@ -1,0 +1,9 @@
+ucft
+{
+    REQN
+    {
+        "script"
+		"stock_shell_interface"
+		"stock_game_interface"
+	}
+}

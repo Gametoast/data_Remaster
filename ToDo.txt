@@ -1,0 +1,34 @@
+==NECESSARY CONTENT==
+
+
+==ADDITIONAL CONTENT==
+- Difficulty_mod_2_swbf2
+- movie previews
+- save button for match settings
+- don't show settings file in GC loadscreen
+- fix Han solo bug
+- side select
+- hero deny cp capture
+- disable forcepowers
+x improve scripting and avoid pipe solution using the new hack to load data on startup. Does not work, loading process is done parallel, i cannot interupt the process
+x no 64 ai units does not work, hard coded limit checking
+
+==Idea list==
+- select all does add not installed eras/mods to playlist
+
+==TO TEST==
+
+Kampange crashed
+
+
+==DONE==
+1.6:
+Wookiee Thermal Detonator icon is stretched (old); mission timer clips into mini-map (new)
+Esc > Restart mission crashed. Vermutlich mehrfachladen von stock_game_interface funktioniert nicht
+ai not spawning when hosting MP
+
+1.5:
+- double weapon backdrop fix
+- red lines for floating fixed mods removed
+- v1.3 options funktionieren in gc nicht (award effects)
+- gc hero bonus fix

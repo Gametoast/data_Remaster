@@ -1,0 +1,68 @@
+STAR WARS BATTLEFRONT II - REMASTER
+Developer Documentation by Anakin
+
+
+Settings Tutorial
+
+
+-----------------------------------------------------------------------------------------------------------
+-- Quicksettings
+
+For custom settings we need a new custom lvl with the name 'RTP_option_script.lvl' and an script called
+'RTP_option_script' inside this lvl. Define a new function called 'swbf2Remaster_getCustomQuickSettings'.
+We don't need to worry about overwriting an existing function or that another script will overwrite our 
+function. Remaster will handle to call this function only once and to clean up afterwards. Inside the
+function we define a local table that contains the data for each of our settings. You can see the structure
+in the example script. Make sure that the tag you are using is unique. Any tags that are used twice will be
+ignored. You can use on/off yes/no or any other combination for the button labels. As shown in the example
+script you can use Republic/Rebels, too and maybe later in a gamescript switch the teams depending on the
+settings. Of course you can use localize strings, too. Those can be existing once as demonstrated on the
+example of the off/on buttons or completely new defined once.
+The name of your quicksetting is a localize string 'rema.ifs.opt.REMA1.tag'. Where 'tag' is your unique tag.
+If the localize string is missing '[NULL]' will be displayed.
+You can access the value of your custom settings by using one of the two following code snippets
+
+==CODE=======================================================================
+-- Variant 1
+local cusTag1State = rema_database.data.cusTag1
+
+--Variant 2
+local cusTag1State = rema_database.data["cusTag1"]
+
+=============================================================================
+
+The value depends on the order of your button strings. The first string gets value 1 and the second value 2.
+After first loading your script on the settings page you need to restart the game to show your buttons on
+the settings page.
+
+
+-----------------------------------------------------------------------------------------------------------
+-- Custom Minipage
+
+You need more than just simple radio buttons? Or you have a bunch of them and want them on your own page?
+Well, this is what the custom minipage is made for. The remaster api supports you to generate your page and
+integrates it as a new tab on the remaster setting page. No need to care about page handling or save/store,
+just use the existing remaster infrastructure.
+In your 'RTP_option_script' script call the function 'ifelem_minipage_add(modID, elements, callbackTable)'.
+The example script shows how to use the function but only shows some simple ui elements. Many others can
+be found in the original shell scripts.
+If you need to store information you can do it by adding it to the rema_database table. I strongly recommend
+to save your data in your modID's sub-table. Be aware that the SWBF2 memory is very limited, so do not store
+big data. Use tags and localize strings for example instead of saving long string names.
+Since there is a even lower limit for passing data from the interface to ingame, only information stored in
+the data subtable will be available ingame. Make sure to put only data here that is absolut needed and keep
+it small!!
+
+==CODE=======================================================================
+-- save interface data example
+rema_database.RTP = {
+	"A string",
+	aVariable = 5,
+}
+
+-- save game data example
+rema_database.data.uniqueVariableName = 10
+
+=============================================================================
+
+To give your tab a name you need to add a localize string for 'rema.modName.modID'

@@ -1,0 +1,79 @@
+STAR WARS BATTLEFRONT II - REMASTER
+Developer Documentation by Anakin
+
+
+Remaster Tutorial
+
+This mod offers different kinds of scripts and features. I will describe shortly what they are about and
+how you can use them. For the details I'll refer sometimes to the corresponding tutorial files.
+While writing I'm doing all those steps by myself to ensure that they work. This tutorial isn't intended
+to be a beginner tutorial. You should already know about SWBF2 modding, e.g. how to munge a custom lvl.
+I'm gonna use RTP (Remaster Tutorial Project) as my project ID. You need to change this for you. Further
+I'm gonna use my CustomLVL maker tool to munge custom LVLs http://gametoast.com/viewtopic.php?f=64&t=30995
+
+Some general information about the custom scripts:
+All scripts will be placed in your GameData\addon\XXX\scripts folder. In order to be loaded the scripts
+need to be installed from in the game. For that you need to go to the REMASTER settings page in the game,
+change to script manager tab, enter your mod ID to the editbox and press 'install'. If you want to install
+multiple mod IDs you can put a list of them seperated by ',' or ' ' in the editbox before you hit 'install'.
+In case you don't actually know all the IDs or there are so many new scripts you can pass '*' to the box.
+Now the script manager will search all possible 3 letter combinations and search for scripts. The scan 
+process will take some time, so i recommand not to use this if you want to install only one new mod. The
+install process needs to be done only once, no matter how often you change the script itself. If you delete
+the remaster's settings file, or reset the settings to default you need to load the scripts again. A list
+of all detected scripts can be found on the script manager tab, too. Depending on the script you may
+need to restart the game. Information about this will be given in the corresponding subsections. Make sure
+to inform in your readme that the users need to run this process, too, once they installed your mod!
+
+-----------------------------------------------------------------------------------------------------------
+-- Custom HUD
+
+The stock HUD is really not beautiful and of course you have so many ideas how to do it better. Now you
+can! In your mission lua add "rema_noHUD = true" to the first line of your ScriptInit() function. Now
+the HUD config files won't be loaded. You can do whatever HUD you like and simply load your HUD config
+files from your mission. Be aware that ALL hud config files will be removed (1player.hud, 2player.hud,
+3player.hud, 4player.hud and hudtransforms.hud). If you only want to change the minimap you need to add
+all other parts from the stock .hud  files to your custom one, too. For more information about HUD
+development and how to remove only little parts, refer to my detailed HUD tutorial on Gametoast:
+http://www.gametoast.com/viewtopic.php?f=27&t=29836
+
+
+-----------------------------------------------------------------------------------------------------------
+-- Custom settings
+
+A completely new feature of this mod is the custom setting support. You can register your own setting on the
+Remaster's setting page and access the current state of your option from any other interface or game script.
+While you can only add radio buttons to the Remaster's setting page, you can in addition create your complete
+own minipage that is accessible through the tab list on the remaster settings. To learn about this continue
+with the "Settings Tutorial".
+
+
+-----------------------------------------------------------------------------------------------------------
+-- Interface scripts
+
+The v1.3 custom_gc scripts can be used for a lot more than only adding custom galactic conquest. That's why
+those scripts are called Interface scripts now. As the name suggest those scripts are loaded when you enter
+the menu. You can add wrapper for existing functions, define your own screens, or what ever idea comes to
+your mind. Those custom lvl files need to be called 'RTP_interface_script.lvl' and need to contain a
+'RTP_interface_script' script. The most common thing those scripts are used for is for adding a custom
+galactic conquest. To learn how to do that with the new Interface scripts instead of the v1.3. custom_gc
+scripts, continue with the "Galactic Conquest Tutorial".
+
+
+-----------------------------------------------------------------------------------------------------------
+-- Game scripts
+
+The v1.3 user scripts are called game script in my Remaster mod. Simple reason for that, it is actually
+what those scripts do. They are loaded on the game's start and not in the interface. You can for example
+do something depending on your previous registered custom setting. There is not a common thing that is done
+with those game scripts, so i don't have an example at this point. Make sure you name your custom lvl
+'RTP_game_script.lvl' and the script 'RTP_game_script'. There is no need to restart the game after you
+load the script on the setting's page.
+
+
+-----------------------------------------------------------------------------------------------------------
+-- Theme scripts
+
+You want to change the background images, font colors or other design elements? This is the script of your
+choice. You need to restart the game after you load the script and change the used theme on the setting's
+page. To learn about this continue with the "Theme Tutorial".

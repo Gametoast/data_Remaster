@@ -1,0 +1,19 @@
+ucft
+{
+	REQN
+	{
+		"script"
+		"REMA_theme_script"
+	}
+	
+    REQN
+    {
+        "texture"
+		"iface_bg_1"
+		"iface_bgmeta_space"
+		"profile_manager"
+		"single_player_campaign"
+		"single_player_conquest"
+		"single_player_option"
+    }
+}
