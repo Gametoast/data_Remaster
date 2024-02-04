@@ -13,6 +13,9 @@
 x improve scripting and avoid pipe solution using the new hack to load data on startup. Does not work, loading process is done parallel, i cannot interupt the process
 x no 64 ai units does not work, hard coded limit checking
 
+==Idea list==
+- select all does add not installed eras/mods to playlist
+
 ==TO TEST==
 
 Kampange crashed
